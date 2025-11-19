@@ -1,0 +1,47 @@
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.admin-table th {
+    background-color: #eee;
+    padding: 1rem;
+    text-align: left;
+    font-weight: bold;
+}
+
+.admin-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 버튼 스타일 */
+.btn-approve { background-color: var(--accent-blue); color: white; border: none; padding: 5px 10px; border-radius: 4px; margin-right: 5px; }
+.btn-return { background-color: #27ae60; color: white; border: none; padding: 5px 15px; border-radius: 4px; }
+.btn-delete { background-color: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; }
+.btn-delete-sm { background-color: #aaa; color: white; border: none; padding: 2px 6px; border-radius: 50%; }
+.btn-excel { background-color: #217346; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold;}
+
+/* 모달 스타일 */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center; z-index: 1000;
+}
+.modal-content {
+    background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px;
+    text-align: center;
+}
+.modal-input { width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; }
+.modal-actions { display: flex; gap: 10px; justify-content: center; }
+.btn-confirm { background: var(--main-navy); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+.btn-cancel { background: #999; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+
+.add-item-form { display: flex; gap: 10px; margin-top: 10px; }
+.add-item-form input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; flex: 1; }
+
+.admin-stock-page {
+    max-width: 1200px;
+    margin: 2rem auto;
+}

@@ -1,0 +1,36 @@
+.login-container {
+    max-width: 400px;
+    margin: 5rem auto;
+    text-align: center;
+}
+
+.login-form h2 {
+    margin-bottom: 1rem;
+    color: var(--main-navy);
+}
+
+.login-form p {
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.login-form .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--main-navy);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+}

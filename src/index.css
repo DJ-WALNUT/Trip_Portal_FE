@@ -1,0 +1,59 @@
+/* src/index.css */
+:root {
+    --main-navy: #001f3f;
+    --light-sky-blue: #A9D0F5;
+    --accent-blue: #3498db;
+    --saegil-blue: #3986c6;
+    --background-color: #f8f9fa;
+    --text-color: #333;
+    --light-gray: #e9ecef;
+    --white: #ffffff;
+    --danger: #e74c3c;
+    --success: #2ecc71;
+    --font-family: 'Pretendard', sans-serif;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-family), -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+
+    word-break: keep-all;      /* 한글 단어가 잘리지 않고 통째로 줄바꿈됨 */
+    overflow-wrap: break-word; /* 너무 긴 영어 단어나 URL은 뚫고 나가지 않고 줄바꿈됨 */
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { font-family: inherit; }
+
+/* 전체 레이아웃 래퍼 */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.content { 
+    flex: 1;
+    max-width: 100%; /* [수정] 1200px -> 100% */
+    padding: 0 2rem; /* 양옆에 여백 살짝 주기 */
+}
+
+/* 공통 컨테이너 */
+.container {
+    max-width: 100%; /* [수정] 1000px -> 100% */
+    margin: 2rem;  /* 위아래 여백만 남김 */
+    padding: 2rem;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* 모바일 반응형 (헤더 등) */
+@media (max-width: 768px) {
+    .container { margin: 1rem; padding: 1rem; }
+}

@@ -1,0 +1,91 @@
+.check-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.check-form {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+}
+
+.check-form input {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    flex: 1;
+}
+
+.check-form button {
+    width: auto;
+    padding: 0 2rem;
+    white-space: nowrap;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #eee;
+    margin: 2rem 0;
+}
+
+/* 결과 메시지 */
+.message {
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 1rem;
+}
+.message.error { background-color: #fce8e6; color: #d93025; }
+.message.info { background-color: #e8f0fe; color: #1a73e8; }
+
+/* 사용자 정보 박스 */
+.user-info-box {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border-left: 5px solid var(--main-navy);
+}
+
+/* 테이블 스타일 */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px; /* 모바일에서 너무 찌그러지지 않게 */
+}
+
+.history-table th, .history-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.history-table th {
+    background-color: #f1f3f5;
+    color: #495057;
+    font-weight: 600;
+}
+
+/* 상태 뱃지 */
+.status-badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+.status-pending { background-color: #fff3cd; color: #856404; } /* 신청 (노랑) */
+.status-warning { background-color: #fce8e6; color: #d93025; } /* 미반납 (빨강) */
+.status-success { background-color: #d4edda; color: #155724; } /* 반납완료 (초록) */
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .check-form { flex-direction: column; }
+    .check-form button { width: 100%; padding: 0.8rem; }
+}

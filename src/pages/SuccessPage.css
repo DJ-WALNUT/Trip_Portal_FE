@@ -1,0 +1,98 @@
+.success-container {
+    max-width: 600px; /* 너무 넓지 않게 */
+    margin: 2rem auto;
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.success-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--success);
+}
+
+.success-box h2 {
+    font-size: 1.8rem;
+    color: var(--main-navy);
+    margin-bottom: 2rem;
+    word-break: keep-all;
+}
+
+/* 파란색 안내 박스 */
+.info-box {
+    background-color: #eaf5fc;
+    color: var(--main-navy);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.warning-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 2rem;
+    word-break: keep-all;
+}
+
+/* 상세 정보 영역 */
+.details-area {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: left; /* 내용은 왼쪽 정렬 */
+    margin-bottom: 2rem;
+    border: 1px solid #eee;
+}
+
+.date-info {
+    color: #555;
+    margin-bottom: 1rem;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 1rem;
+}
+
+.borrowed-list {
+    margin-bottom: 1.5rem;
+}
+
+.borrowed-list p {
+    margin-bottom: 0.5rem;
+    color: var(--main-navy);
+}
+
+.borrowed-list ul {
+    list-style: none;
+    padding-left: 0.5rem;
+}
+
+.borrowed-list li {
+    color: #333;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+}
+
+.return-info {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid var(--main-navy);
+    color: var(--main-navy);
+}
+
+.home-btn {
+    display: inline-block;
+    background-color: var(--main-navy);
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.home-btn:hover {
+    background-color: #003366;
+    transform: translateY(-2px);
+}

@@ -1,0 +1,48 @@
+/* src/pages/HomePage.css */
+.hero-section {
+    background: linear-gradient(135deg, var(--main-navy), var(--accent-blue));
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-bottom: -2rem; /* 컨테이너와 겹치게 하기 위함 */
+}
+
+.catch-phrase p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 0.5rem; }
+.catch-phrase h1 { font-size: 2.5rem; font-weight: 700; }
+
+.shortcut-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.shortcut-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--light-gray);
+}
+
+.shortcut-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    border-color: var(--accent-blue);
+}
+
+.main-card .icon { font-size: 2.5rem; }
+.main-card h3 { font-size: 1.5rem; color: var(--main-navy); margin-bottom: 0.5rem; }
+.main-card p { color: #666; }
+
+/* 작은 그리드 (외부 링크) */
+.small-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.small-card { 
+    justify-content: center; 
+    font-weight: 600; 
+    padding: 1.5rem;
+    color: var(--text-color);
+}
