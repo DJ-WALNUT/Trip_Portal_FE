@@ -30,11 +30,15 @@ function Header() {
           <ul>
             <li><Link to="/borrow" onClick={closeMenu}>물품대여</Link></li>
             <li><Link to="/check" onClick={closeMenu}>신청/대여 확인</Link></li>
+            <li>
+              <a href="https://2025saegil.cukeng.kr" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
+                2025 새길
+              </a>
+            </li>
             <li><Link to="/admin" onClick={closeMenu}>관리자 페이지</Link></li>
           </ul>
         </nav>
 
-        {/* 모바일 햄버거 버튼 */}
         <button className="hamburger-btn" onClick={toggleMenu}>
           ☰
         </button>
