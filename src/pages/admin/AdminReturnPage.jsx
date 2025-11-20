@@ -5,17 +5,23 @@ import './AdminCommon.css';
 
 function AdminReturnPage() {
   const [rentals, setRentals] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
   const [selectedId, setSelectedId] = useState(null);
   const [handlerName, setHandlerName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchRentals = () => {
-    axios.get('/api/admin/ongoing') // 미반납 목록 가져오기
+    axios.get('/api/admin/ongoing')
       .then(res => setRentals(res.data.data))
       .catch(err => console.error(err));
   };
 
   useEffect(() => { fetchRentals(); }, []);
+
+  // ▼▼▼ 검색 필터링 로직 ▼▼▼
+  const filteredRentals = rentals.filter(item => 
+    item.name.includes(searchTerm) || item.student_id.includes(searchTerm)
+  );
 
   const openReturnModal = (id) => {
     setSelectedId(id);
@@ -42,6 +48,23 @@ function AdminReturnPage() {
         <h1>반납 현황 관리</h1>
         <p>아직 반납되지 않은 대여 건 목록입니다.</p>
 
+        {/* ▼▼▼ 검색창 추가 ▼▼▼ */}
+        <div style={{ display: 'flex', gap: '10px', margin: '1.5rem 0' }}>
+          <input 
+            type="text" 
+            placeholder="이름 또는 학번으로 검색" 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: '0.8rem', 
+              border: '1px solid #ccc', 
+              borderRadius: '8px', 
+              width: '300px',
+              fontSize: '1rem'
+            }}
+          />
+        </div>
+
         <div className="table-responsive">
           <table className="admin-table">
             <thead>
@@ -54,9 +77,9 @@ function AdminReturnPage() {
               </tr>
             </thead>
             <tbody>
-              {rentals.length === 0 ? (
-                <tr><td colspan="5">미반납 건이 없습니다.</td></tr>
-              ) : rentals.map((item, idx) => (
+              {filteredRentals.length === 0 ? (
+                <tr><td colSpan="5">검색 결과가 없거나 미반납 건이 없습니다.</td></tr>
+              ) : filteredRentals.map((item, idx) => (
                 <tr key={idx}>
                   <td>{item.date}</td>
                   <td>{item.name}</td>
@@ -72,7 +95,6 @@ function AdminReturnPage() {
         </div>
       </div>
 
-      {/* 반납 모달 */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">

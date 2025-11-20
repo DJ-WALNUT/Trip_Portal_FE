@@ -14,31 +14,30 @@
     width: 100%;
 }
 
-/* 내부 콘텐츠 (로고 - 메뉴 - 버튼) */
+/* 내부 콘텐츠 */
 .header-content {
     width: 100%;
     max-width: 100%; 
     margin: 0 auto;
     padding: 0 2rem; 
-    
     display: flex;
     justify-content: space-between; 
     align-items: center;
     flex-wrap: nowrap; 
 }
 
-/* 로고 스타일 (이미지 + 텍스트) */
+/* 로고 스타일 */
 .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
     color: white;
     white-space: nowrap;
-    gap: 12px; /* 이미지와 텍스트 사이 간격을 조금 늘림 */
+    gap: 12px;
 }
 
 .logo-img {
-    height: 35px; 
+    height: 40px; 
     width: auto;  
     object-fit: contain;
 }
@@ -55,6 +54,8 @@
     margin-right: 1rem;
 }
 
+/* 1단계 메뉴 (.dropdown-menu가 아닌 직계 ul만 타겟팅하도록 수정할 수도 있지만, 
+   기존 구조 유지를 위해 아래에서 dropdown 스타일의 우선순위를 높입니다.) */
 .main-nav ul {
     display: flex;
     gap: 2rem; 
@@ -78,7 +79,7 @@
     opacity: 1;
 }
 
-/* 햄버거 버튼 (PC에선 숨김) */
+/* 햄버거 버튼 (PC 숨김) */
 .hamburger-btn {
     display: none;
     background: none;
@@ -86,6 +87,65 @@
     color: white;
     font-size: 1.8rem;
     cursor: pointer;
+}
+
+/* --- 드롭다운 메뉴 스타일 (우선순위 강화) --- */
+
+/* 1. 드롭다운 컨테이너 */
+.dropdown-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dropdown-btn .arrow {
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+}
+
+/* 2. 드롭다운 메뉴 박스 (PC) */
+/* [중요] .main-nav를 앞에 붙여 우선순위를 높임 (display: flex 상속 방지) */
+.main-nav .dropdown-menu {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    top: 150%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #444;
+    border-radius: 8px;
+    padding: 10px 0;
+    min-width: 120px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 200;
+    flex-direction: column;
+    gap: 0; 
+}
+
+/* 드롭다운 열렸을 때 */
+.main-nav .dropdown-menu.show {
+    display: flex; /* 토글 시에만 보임 */
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 20px;
+    color: #ddd;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.dropdown-menu a:hover {
+    background-color: #555;
+    color: white;
 }
 
 /* 모바일 반응형 (768px 이하) */
@@ -108,13 +168,17 @@
         box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     }
 
-    /* 햄버거 버튼 보이기 */
+    /* 관리자 페이지 모바일 메뉴 배경색 오버라이드 */
+    .header.admin-header .main-nav {
+        background-color: #333 !important;
+        border-top: 1px solid #444;
+    }
+
     .hamburger-btn {
         display: block;
         margin-left: auto; 
     }
 
-    /* 활성화됐을 때 (JS 제어) */
     .main-nav.active {
         display: flex;
     }
@@ -125,10 +189,28 @@
         align-items: center;
         width: 100%;
     }
-    
-    /* 관리자 페이지 모바일 메뉴 배경색 오버라이드 */
-    .header.admin-header .main-nav {
-        background-color: #333 !important;
-        border-top: 1px solid #444;
+
+    /* --- 모바일 드롭다운 (아코디언) --- */
+    .dropdown-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* 모바일에서도 우선순위 유지 */
+    .main-nav .dropdown-menu {
+        position: static; 
+        transform: none;
+        background-color: rgba(0,0,0,0.2); 
+        width: 100%;
+        box-shadow: none;
+        margin-top: 10px;
+        padding: 0;
+    }
+
+    .dropdown-menu a {
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 }

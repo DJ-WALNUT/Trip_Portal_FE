@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminHeader from '../../components/AdminHeader';
-import './AdminCommon.css'; // 관리자 공통 스타일 (아래에서 만듭니다)
+import './AdminCommon.css';
 
 function AdminApprovePage() {
   const [requests, setRequests] = useState([]);
-  const [selectedId, setSelectedId] = useState(null); // 승인할 대여 건 ID
-  const [handlerName, setHandlerName] = useState(''); // 승인 담당자 이름
+  const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태 추가
+  const [selectedId, setSelectedId] = useState(null);
+  const [handlerName, setHandlerName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 데이터 불러오기
   const fetchRequests = () => {
     axios.get('/api/admin/requests')
       .then(res => setRequests(res.data.data))
@@ -18,13 +18,16 @@ function AdminApprovePage() {
 
   useEffect(() => { fetchRequests(); }, []);
 
-  // 승인 모달 열기
+  // ▼▼▼ 검색 필터링 로직 ▼▼▼
+  const filteredRequests = requests.filter(req => 
+    req.name.includes(searchTerm) || req.student_id.includes(searchTerm)
+  );
+
   const openApproveModal = (id) => {
     setSelectedId(id);
     setIsModalOpen(true);
   };
 
-  // 승인 처리 (API 호출)
   const handleApprove = async (e) => {
     e.preventDefault();
     try {
@@ -32,13 +35,12 @@ function AdminApprovePage() {
       alert("승인 처리되었습니다.");
       setIsModalOpen(false);
       setHandlerName('');
-      fetchRequests(); // 목록 새로고침
+      fetchRequests();
     } catch (err) {
       alert("오류 발생: " + err.message);
     }
   };
 
-  // 삭제(거절) 처리
   const handleDelete = async (id) => {
     if (window.confirm("정말 이 신청을 삭제(거절)하시겠습니까?")) {
       try {
@@ -58,6 +60,23 @@ function AdminApprovePage() {
         <h1>대여 신청 수락</h1>
         <p>사용자가 신청한 대기 목록입니다.</p>
 
+        {/* ▼▼▼ 검색창 추가 ▼▼▼ */}
+        <div style={{ display: 'flex', gap: '10px', margin: '1.5rem 0' }}>
+          <input 
+            type="text" 
+            placeholder="이름 또는 학번으로 검색" 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: '0.8rem', 
+              border: '1px solid #ccc', 
+              borderRadius: '8px', 
+              width: '300px',
+              fontSize: '1rem'
+            }}
+          />
+        </div>
+
         <div className="table-responsive">
           <table className="admin-table">
             <thead>
@@ -70,9 +89,9 @@ function AdminApprovePage() {
               </tr>
             </thead>
             <tbody>
-              {requests.length === 0 ? (
-                <tr><td colspan="5">대기 중인 신청이 없습니다.</td></tr>
-              ) : requests.map((req, idx) => (
+              {filteredRequests.length === 0 ? (
+                <tr><td colSpan="5">검색 결과가 없거나 대기 중인 신청이 없습니다.</td></tr>
+              ) : filteredRequests.map((req, idx) => (
                 <tr key={idx}>
                   <td>{req.date}</td>
                   <td>{req.name}</td>
@@ -89,7 +108,6 @@ function AdminApprovePage() {
         </div>
       </div>
 
-      {/* 승인 모달 */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">

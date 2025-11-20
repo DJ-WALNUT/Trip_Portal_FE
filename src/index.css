@@ -10,50 +10,80 @@
     --white: #ffffff;
     --danger: #e74c3c;
     --success: #2ecc71;
-    --font-family: 'Pretendard', sans-serif;
+    --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
     --border-radius: 12px;
     --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Vite 기본 스타일 초기화 */
+:root {
+    font-family: var(--font-family);
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: var(--font-family), -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    margin: 0;
+    width: 100%;
+    /* [중요] 화면보다 커지는 것을 원천 봉쇄 */
+    min-height: 100vh;
     background-color: var(--background-color);
     color: var(--text-color);
-    line-height: 1.6;
-
-    word-break: keep-all;      /* 한글 단어가 잘리지 않고 통째로 줄바꿈됨 */
-    overflow-wrap: break-word; /* 너무 긴 영어 단어나 URL은 뚫고 나가지 않고 줄바꿈됨 */
+    overflow-x: hidden; /* 가로 스크롤바 숨김 */
+    
+    word-break: keep-all;      
+    overflow-wrap: break-word; 
 }
 
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
-button { font-family: inherit; }
+button { font-family: inherit; cursor: pointer; }
 
-/* 전체 레이아웃 래퍼 */
+/* 전체 레이아웃 */
 .wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-}
-.content { 
-    flex: 1;
-    max-width: 100%; /* [수정] 1200px -> 100% */
-    padding: 0 2rem; /* 양옆에 여백 살짝 주기 */
+    width: 100%;
+    overflow-x: hidden; /* 이중 안전장치 */
 }
 
-/* 공통 컨테이너 */
+.content {
+    flex: 1;
+    width: 100%;
+    min-width: 0; 
+    padding: 0 2rem; 
+    margin: 0 auto;
+}
+
+/* 공통 컨테이너 (페이지별 박스) */
 .container {
-    max-width: 100%; /* [수정] 1000px -> 100% */
-    margin: 2rem;  /* 위아래 여백만 남김 */
+    width: auto;
+    max-width: 100%; 
+    margin: 2rem; 
     padding: 2rem;
     background-color: var(--white);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
+    box-sizing: border-box;
 }
 
-/* 모바일 반응형 (헤더 등) */
+/* 모바일 대응 (768px 이하) */
 @media (max-width: 768px) {
-    .container { margin: 1rem; padding: 1rem; }
+    .content {
+        padding: 0 1rem; /* 여백 축소 */
+    }
+    
+    .container { 
+        margin: 1rem 0; 
+        padding: 1.5rem 1rem; /* 내부 여백 축소 */
+        width: 100%;
+    }
 }

@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // /api 로 시작하는 요청이 오면 시놀로지 백엔드로 토스!
       '/api': {
-        target: 'http://192.168.0.5:5050', // 본인 시놀로지 IP로 수정 필수!
+        target: 'https://trip-api.cukeng.kr', // 본인 시놀로지 IP로 수정 필수! - http://192.168.0.5:5050
         changeOrigin: true,
         secure: false,
       }

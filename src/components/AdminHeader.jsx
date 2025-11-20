@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Header.css'; // 사용자용 헤더 CSS 재사용
+import './Header.css'; 
 
 function AdminHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태 추가
   const navigate = useNavigate();
 
-  // 메뉴 토글 함수
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // 메뉴 닫기 (이동 시)
   const closeMenu = () => {
     setIsMenuOpen(false);
+    setIsDropdownOpen(false); // 메뉴 닫을 때 드롭다운도 닫기
+  };
+
+  // 드롭다운 토글 함수
+  const toggleDropdown = (e) => {
+    e.preventDefault(); // 링크 이동 방지
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleLogout = () => {
@@ -24,26 +30,37 @@ function AdminHeader() {
   };
 
   return (
-    <header className="header admin-header" style={{backgroundColor: '#333'}}> {/* 관리자는 짙은 회색 배경 */}
+    <header className="header admin-header" style={{backgroundColor: '#333'}}>
       <div className="header-content">
-        {/* 1. 로고 */}
         <Link to="/admin/dashboard" className="logo" onClick={closeMenu}>
            <span className="logo-text">Trip (관리자)</span>
         </Link>
 
-        {/* 2. 메뉴 리스트 (모바일에서는 숨겨짐) */}
         <nav className={`main-nav ${isMenuOpen ? 'active' : ''}`}>
           <ul>
             <li><Link to="/" onClick={closeMenu}>사용자 홈</Link></li>
             <li><Link to="/admin/dashboard" onClick={closeMenu}>대시보드</Link></li>
-            <li><Link to="/admin/approve" onClick={closeMenu}>대여 수락</Link></li>
-            <li><Link to="/admin/return" onClick={closeMenu}>반납 관리</Link></li>
-            <li><Link to="/admin/stock" onClick={closeMenu}>재고 관리</Link></li>
-            <li><Link to="/admin/log" onClick={closeMenu}>전체 기록</Link></li>
+            
+            {/* ▼▼▼ 드롭다운 메뉴 시작 ▼▼▼ */}
+            <li className="dropdown-container">
+              <a href="#" onClick={toggleDropdown} className="dropdown-btn">
+                대여 사업 <span className="arrow">▼</span>
+              </a>
+              
+              {/* 드롭다운 내용 */}
+              <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
+                <li><Link to="/admin/approve" onClick={closeMenu}>대여 수락</Link></li>
+                <li><Link to="/admin/return" onClick={closeMenu}>반납 관리</Link></li>
+                <li><Link to="/admin/stock" onClick={closeMenu}>재고 관리</Link></li>
+                <li><Link to="/admin/log" onClick={closeMenu}>전체 기록</Link></li>
+              </ul>
+            </li>
+            {/* ▲▲▲ 드롭다운 메뉴 끝 ▲▲▲ */}
+
             <li>
                 <button 
                     onClick={() => { closeMenu(); handleLogout(); }} 
-                    style={{background:'none', border:'none', color:'#ff6b6b', fontSize:'1rem', cursor:'pointer', fontWeight:'bold'}}
+                    style={{background:'none', border:'none', color:'#ff6b6b', fontSize:'1rem', cursor:'pointer', fontWeight:'bold', padding: '0'}}
                 >
                     로그아웃
                 </button>
