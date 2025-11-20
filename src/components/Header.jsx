@@ -18,9 +18,10 @@ function Header() {
   return (
     <header className="header">
       <div className="header-content">
-        {/* 로고 (클릭 시 메인으로) */}
         <Link to="/" className="logo" onClick={closeMenu}>
-           {/* 로고 이미지가 있다면 여기에 <img> 태그를 넣으면 됩니다 */}
+           {/* ▼▼▼ 로고 이미지 추가 (글자 왼쪽에 배치) ▼▼▼ */}
+           <img src="/trip_logo.png" alt="여정 로고" className="logo-img" />
+           
            <span className="logo-text">여정</span>
         </Link>
 
