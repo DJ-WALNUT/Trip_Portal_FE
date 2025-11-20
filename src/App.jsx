@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import TeaserPage from './pages/TeaserPage';
 import AdminTeaserPage from './pages/admin/AdminTeaserPage';
@@ -28,7 +28,7 @@ function App() {
       <div className="wrapper">
         <Routes>
            <Route path="/" element={<TeaserPage />} />
-           {/*<Route path="/" element={<><Header /><HomePage /></>} />*/}
+           <Route path="/main" element={<><Header /><HomePage /></>} />
            <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
            <Route path="/check" element={<><Header /><CheckPage /></>} />
            <Route path="/success" element={<><Header /><SuccessPage /></>} />
@@ -40,6 +40,9 @@ function App() {
            <Route path="/admin/return" element={<AdminReturnPage />} />
            <Route path="/admin/stock" element={<AdminStockPage />} />
            <Route path="/admin/log" element={<AdminLogPage />} />
+
+           {/* 그 외 모든 경로는 티저로 리다이렉트 */}
+           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
         <Footer />

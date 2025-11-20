@@ -55,30 +55,41 @@ function TeaserPage() {
   };
 
   return (
-    <div className="teaser-wrapper">
-      {/* 배경 효과 */}
-      <div className="teaser-bg"></div>
+    <div className="teaser-page">
+        <div className="circle-container">
+            <div className="circle"></div>
+            <div className="circle"></div>
+            <div className="circle"></div>
+            <div className="circle"></div>
+        </div>
       
       {/* 1. 인트로 (이스터에그) */}
       {step === 'intro' && (
-        <div className="teaser-content intro fade-in">
-          <h1 className="teaser-title">Trip Begins.</h1>
-          <p className="teaser-subtitle">변화를 새길, 우리의 여정이 시작됩니다.</p>
+        <div className="teaser-content intro fade-in" style={{zIndex: 10, textAlign: 'center', color: 'white'}}>
+          <h1 style={{fontSize: '3rem', fontWeight: '800', marginBottom: '1rem', background: 'linear-gradient(to right, #fff, #87ceeb)', WebkitBackgroundClip: 'text', color: 'transparent'}}>Trip Begins.</h1>
+          <p style={{color: '#b0e0e6', marginBottom: '4rem', fontWeight: '300'}}>변화를 새길, 우리의 여정이 시작됩니다.</p>
           
-          <div className="orb-container" onClick={handleEasterEgg}>
-            <div className="mystic-orb"></div>
-            <p className="orb-hint">Click the Light</p>
+          <div class="orb-container" style={{width: '100px', height: '100px', margin: '0 auto', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} onClick={handleEasterEgg}>
+            <div class="mystic-orb" style={{
+                width: '50px', height: '50px', borderRadius: '50%',
+                background: 'radial-gradient(circle at 30% 30%, #fff, #00bfff)',
+                boxShadow: '0 0 30px #00bfff',
+                animation: 'pulse 3s infinite'
+            }}></div>
+            <p class="orb-hint" style={{marginTop: '15px', fontSize: '0.8rem', color: '#00bfff'}}>Click the Light</p>
           </div>
 
-          <p className="teaser-date">2025 Coming Soon</p>
+          <p style={{marginTop: '4rem', color: '#87ceeb', letterSpacing: '3px', fontSize: '0.8rem'}}>2025 Coming Soon</p>
         </div>
       )}
 
       {/* 2. 신청 폼 */}
       {step === 'form' && (
-        <div className="teaser-content form-mode slide-up">
-          <h2>🎉 Hidden Event Found!</h2>
-          <p className="desc">가장 먼저 여정에 합류하세요.</p>
+        <div className="form-mode slide-up">
+            <div className="form-header">
+                <h2>🎉 Hidden Event Found!</h2>
+                <p>가장 먼저 여정에 합류하세요.</p>
+            </div>
 
           <form onSubmit={handleSubmit}>
             <input type="text" name="name" placeholder="이름" value={formData.name} onChange={handleChange} required />
@@ -90,7 +101,14 @@ function TeaserPage() {
             <input type="tel" name="phone" placeholder="전화번호 (01012345678)" value={formData.phone} onChange={handleChange} required pattern="\d{11}" maxLength="11" />
 
             <div className="agreement-box">
-              <p><strong>[개인정보 수집·이용 동의]</strong><br/>1. 목적: 이벤트 응모 및 경품 지급<br/>2. 항목: 이름, 학번, 학과, 전화번호<br/>3. 보유기간: 이벤트 종료 후 1개월 이내 파기</p>
+              <h4>[개인정보 수집·이용 동의]</h4>
+              <div className="agreement-text">
+                1. 수집 목적: 이벤트 응모 및 경품 지급
+                2. 수집 항목: 이름, 학번, 학과, 전화번호
+                3. 보유 기간: 이벤트 종료 후 1개월 이내 파기
+
+                귀하는 개인정보 수집에 거부할 권리가 있으며, 동의 거부 시 이벤트 참여가 제한될 수 있습니다.
+              </div>
             </div>
             <label className="checkbox-label">
               <input type="checkbox" name="agreed" checked={formData.agreed} onChange={handleChange} />
