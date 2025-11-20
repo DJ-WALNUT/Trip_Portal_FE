@@ -96,3 +96,37 @@
     padding: 10px 20px;
     white-space: nowrap;
 }
+
+/* --- [신규] 날짜 정보 카드 스타일 --- */
+.date-info-card {
+    background-color: #f1f3f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;            /* Flexbox 사용 */
+    justify-content: space-around; /* PC에서는 간격 띄우기 */
+    align-items: center;
+    font-weight: bold;
+    color: #495057;
+    flex-wrap: wrap;          /* 화면이 좁으면 자연스럽게 줄바꿈 */
+    gap: 15px;                /* 요소 사이 간격 */
+}
+
+/* 각각의 날짜 정보 아이템 */
+.date-item {
+    white-space: nowrap;      /* 텍스트 줄바꿈 방지 */
+    font-size: 1rem;
+}
+
+/* --- 모바일 반응형 (화면 폭 768px 이하) --- */
+@media (max-width: 768px) {
+    .date-info-card {
+        flex-direction: column; /* 세로 방향으로 배치 */
+        align-items: flex-start; /* 왼쪽 정렬 (또는 center로 변경 가능) */
+        padding: 15px 20px;      /* 패딩 약간 조정 */
+    }
+    
+    .date-item {
+        font-size: 0.95rem;      /* 모바일에서 글자 크기 살짝 줄임 */
+    }
+}

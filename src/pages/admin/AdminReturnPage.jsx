@@ -12,6 +12,16 @@ function AdminReturnPage() {
   const [handlerName, setHandlerName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // [추가] 날짜 계산 로직
+  const today = new Date();
+  const oneWeekAgo = new Date(today);
+  oneWeekAgo.setDate(today.getDate() - 7);
+
+  // 날짜 포맷 함수 (YYYY-MM-DD)
+  const formatDate = (date) => {
+    return date.toISOString().split('T')[0];
+  };
+
   const fetchRentals = () => {
     axios.get('/api/admin/ongoing')
       .then(res => setRentals(res.data.data))
@@ -30,7 +40,9 @@ function AdminReturnPage() {
 
   // ▼▼▼ 검색 필터링 로직 ▼▼▼
   const filteredRentals = rentals.filter(item => 
-    item.name.includes(searchTerm) || item.student_id.includes(searchTerm)
+    item.name.includes(searchTerm) || 
+    item.student_id.includes(searchTerm) ||
+    (item.phone && item.phone.includes(searchTerm))
   );
 
   const openReturnModal = (id) => {
@@ -57,12 +69,21 @@ function AdminReturnPage() {
       <div className="container">
         <h1>반납 현황 관리</h1>
         <p>아직 반납되지 않은 대여 건 목록입니다.</p>
+        
+        {/* [추가] 날짜 정보 표시 카드 */}
+        <div className="date-info-card">
+          <div className="date-item">
+            📅 오늘 날짜: <span style={{color: '#2c3e50'}}>{formatDate(today)}</span>
+          </div>
+          <div className="date-item">
+            ⚠️ 반납 기한 만료일 (7일 전): <span style={{color: '#c0392b'}}>{formatDate(oneWeekAgo)}</span>
+          </div>
+        </div>
 
-        {/* ▼▼▼ 검색창 추가 ▼▼▼ */}
-        <div style={{ display: 'flex', gap: '10px', margin: '1.5rem 0' }}>
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '1rem' }}>
           <input 
             type="text" 
-            placeholder="이름 또는 학번으로 검색" 
+            placeholder="이름, 학번, 연락처로 검색" 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
@@ -82,24 +103,33 @@ function AdminReturnPage() {
                 <th>대여일</th>
                 <th>이름</th>
                 <th>학번</th>
+                <th>연락처</th>
                 <th>대여물품</th>
                 <th>처리</th>
               </tr>
             </thead>
             <tbody>
               {filteredRentals.length === 0 ? (
-                <tr><td colSpan="5">검색 결과가 없거나 미반납 건이 없습니다.</td></tr>
-              ) : filteredRentals.map((item, idx) => (
-                <tr key={idx}>
-                  <td>{item.date}</td>
-                  <td>{item.name}</td>
-                  <td>{item.student_id}</td>
-                  <td>{item.items}</td>
-                  <td>
-                    <button className="btn-return" onClick={() => openReturnModal(item.id)}>반납 확인</button>
-                  </td>
-                </tr>
-              ))}
+                <tr><td colSpan="6">검색 결과가 없거나 미반납 건이 없습니다.</td></tr>
+              ) : filteredRentals.map((item, idx) => {
+                // 대여일이 일주일 지난 경우 날짜를 빨간색으로 표시하는 시각적 힌트 추가
+                const isOverdue = item.date.split(' ')[0] <= formatDate(oneWeekAgo);
+                
+                return (
+                  <tr key={idx} style={isOverdue ? {backgroundColor: '#fff5f5'} : {}}>
+                    <td style={isOverdue ? {color: 'red', fontWeight: 'bold'} : {}}>
+                      {item.date}
+                    </td>
+                    <td>{item.name}</td>
+                    <td>{item.student_id}</td>
+                    <td>{item.phone}</td>
+                    <td>{item.items}</td>
+                    <td>
+                      <button className="btn-return" onClick={() => openReturnModal(item.id)}>반납 확인</button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

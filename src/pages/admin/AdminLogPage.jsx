@@ -20,7 +20,7 @@ function AdminLogPage() {
 
   const downloadExcel = () => {
     // 백엔드에서 파일 다운로드 처리
-    window.location.href = 'http://192.168.0.50:5050/api/admin/download_log'; // 시놀로지 IP 확인 필요
+    window.location.href = 'https://trip-api.cukeng.kr/api/admin/download_log'; // 시놀로지 IP 확인 필요
   };
 
   return (
