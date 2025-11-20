@@ -20,7 +20,7 @@ function Header() {
       <div className="header-content">
         <Link to="/" className="logo" onClick={closeMenu}>
            {/* ▼▼▼ 로고 이미지 추가 (글자 왼쪽에 배치) ▼▼▼ */}
-           <img src="/trip_logo.png" alt="여정 로고" className="logo-img" />
+           <img src="/images/trip_logo.png" alt="여정 로고" className="logo-img" />
            
            <span className="logo-text">여정</span>
         </Link>
