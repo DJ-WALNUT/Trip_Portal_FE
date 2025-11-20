@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // axios 추가
 import './Header.css'; 
 
 function AdminHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태 추가
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -13,19 +14,26 @@ function AdminHeader() {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
-    setIsDropdownOpen(false); // 메뉴 닫을 때 드롭다운도 닫기
+    setIsDropdownOpen(false); 
   };
 
-  // 드롭다운 토글 함수
   const toggleDropdown = (e) => {
-    e.preventDefault(); // 링크 이동 방지
+    e.preventDefault(); 
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if(window.confirm('로그아웃 하시겠습니까?')) {
-        localStorage.removeItem('isAdmin'); 
-        navigate('/admin'); 
+        try {
+            // [수정] 서버에 로그아웃 요청 전송
+            await axios.post('/api/admin/logout');
+        } catch(err) {
+            console.error("로그아웃 오류", err);
+        } finally {
+            // 성공 여부와 상관없이 클라이언트 상태 초기화 및 이동
+            localStorage.removeItem('isAdmin'); 
+            navigate('/admin'); 
+        }
     }
   };
 
@@ -40,22 +48,21 @@ function AdminHeader() {
           <ul>
             <li><Link to="/" onClick={closeMenu}>사용자 홈</Link></li>
             <li><Link to="/admin/dashboard" onClick={closeMenu}>대시보드</Link></li>
-            <li><Link to="/admin/teaser" onClick={closeMenu}>티저 이벤트</Link></li>
             
-            {/* ▼▼▼ 드롭다운 메뉴 시작 ▼▼▼ */}
             <li className="dropdown-container">
               <a href="#" onClick={toggleDropdown} className="dropdown-btn">
                 대여 사업 <span className="arrow">▼</span>
               </a>
-              {/* 드롭다운 내용 */}
+              
               <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
+                <li><Link to="/admin/teaser" onClick={closeMenu}>티저 이벤트</Link></li>
+                <hr style={{margin:'5px 0', border:'0', borderTop:'1px solid #555'}}/>
                 <li><Link to="/admin/approve" onClick={closeMenu}>대여 수락</Link></li>
                 <li><Link to="/admin/return" onClick={closeMenu}>반납 관리</Link></li>
                 <li><Link to="/admin/stock" onClick={closeMenu}>재고 관리</Link></li>
                 <li><Link to="/admin/log" onClick={closeMenu}>전체 기록</Link></li>
               </ul>
             </li>
-            {/* ▲▲▲ 드롭다운 메뉴 끝 ▲▲▲ */}
 
             <li>
                 <button 
