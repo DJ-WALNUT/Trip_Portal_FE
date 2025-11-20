@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import AdminHeader from '../../components/AdminHeader';
 import './AdminCommon.css';
 
 function AdminStockPage() {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   
   // 신규 추가 폼 상태
   const [newItem, setNewItem] = useState({ name: '', count: 0, category: '' });
 
   useEffect(() => {
+    // 1. 권한 체크 (로그인 안 했으면 튕겨내기)
+    if (!localStorage.getItem('isAdmin')) {
+      alert("관리자 로그인이 필요합니다.");
+      navigate('/admin');
+      return;
+    }
+
     axios.get('/api/items').then(res => setItems(res.data.data));
-  }, []);
+  }, [navigate]);
 
   // 재고 수량 변경 (입력하는 순간 상태 반영)
   const handleStockChange = (index, val) => {

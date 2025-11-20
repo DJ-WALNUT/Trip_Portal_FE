@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import AdminHeader from '../../components/AdminHeader';
 import './AdminCommon.css';
 
 function AdminLogPage() {
+  const navigate = useNavigate();
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
+    // 1. 권한 체크 (로그인 안 했으면 튕겨내기)
+    if (!localStorage.getItem('isAdmin')) {
+      alert("관리자 로그인이 필요합니다.");
+      navigate('/admin');
+      return;
+    }
     axios.get('/api/admin/logs').then(res => setLogs(res.data.data));
-  }, []);
+  }, [navigate]);
 
   const downloadExcel = () => {
     // 백엔드에서 파일 다운로드 처리

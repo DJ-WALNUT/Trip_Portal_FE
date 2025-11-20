@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import AdminHeader from '../../components/AdminHeader';
 import './AdminCommon.css';
 
 function AdminReturnPage() {
+  const navigate = useNavigate();
   const [rentals, setRentals] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
   const [selectedId, setSelectedId] = useState(null);
@@ -16,7 +18,15 @@ function AdminReturnPage() {
       .catch(err => console.error(err));
   };
 
-  useEffect(() => { fetchRentals(); }, []);
+  useEffect(() => {
+    // 1. 권한 체크 (로그인 안 했으면 튕겨내기)
+    if (!localStorage.getItem('isAdmin')) {
+      alert("관리자 로그인이 필요합니다.");
+      navigate('/admin');
+      return;
+    } 
+    fetchRentals(); 
+  }, [navigate]);
 
   // ▼▼▼ 검색 필터링 로직 ▼▼▼
   const filteredRentals = rentals.filter(item => 

@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import AdminHeader from '../../components/AdminHeader';
 import './AdminCommon.css';
 
 function AdminTeaserPage() {
+  const navigate = useNavigate();
   const [entries, setEntries] = useState([]);
 
   useEffect(() => {
+    // 1. 권한 체크 (로그인 안 했으면 튕겨내기)
+    if (!localStorage.getItem('isAdmin')) {
+      alert("관리자 로그인이 필요합니다.");
+      navigate('/admin');
+      return;
+    }
+
     // 데이터 불러오기
     axios.get('/api/admin/teaser')
       .then(res => {
@@ -15,7 +24,7 @@ function AdminTeaserPage() {
         }
       })
       .catch(err => console.error(err));
-  }, []);
+  }, [navigate]);
 
   return (
     <>
