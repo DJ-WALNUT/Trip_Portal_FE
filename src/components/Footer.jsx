@@ -6,7 +6,8 @@ function Footer() {
       <div style={contentStyle}>
         <p>
           &copy; 2025 Catholic University of Korea<br/>
-          CUK Engineering Student Council <strong>Trip</strong>. All Rights Reserved.
+          CUK Engineering Student Council <strong>Trip</strong>. (최원서)<br/>
+          All Rights Reserved.
         </p>
       </div>
     </footer>

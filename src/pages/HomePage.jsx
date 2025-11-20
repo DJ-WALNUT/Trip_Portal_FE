@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import FloatingSNS from '../components/FloatingSNS'; 
 import './HomePage.css'; // 스타일 파일 (바로 아래에서 만듦)
 
 function HomePage() {
@@ -46,8 +47,12 @@ function HomePage() {
           <a href="https://e-cyber.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">
             사이버캠퍼스
           </a>
+          <a href="https://www.catholic.ac.kr/ko/support/absence_notification.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">
+            공결허가원
+          </a>
         </div>
       </section>
+      <FloatingSNS />
     </div>
   );
 }

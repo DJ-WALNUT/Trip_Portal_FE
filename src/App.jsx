@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import TeaserPage from './pages/TeaserPage';
+import AdminTeaserPage from './pages/admin/AdminTeaserPage';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -24,12 +27,14 @@ function App() {
     <Router>
       <div className="wrapper">
         <Routes>
-           <Route path="/" element={<><Header /><HomePage /></>} />
+           <Route path="/" element={<TeaserPage />} />
+           {/*<Route path="/" element={<><Header /><HomePage /></>} />*/}
            <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
            <Route path="/check" element={<><Header /><CheckPage /></>} />
            <Route path="/success" element={<><Header /><SuccessPage /></>} />
 
            <Route path="/admin" element={<AdminLoginPage />} />
+           <Route path="/admin/teaser" element={<AdminTeaserPage />} />
            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
            <Route path="/admin/approve" element={<AdminApprovePage />} />
            <Route path="/admin/return" element={<AdminReturnPage />} />

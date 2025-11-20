@@ -40,13 +40,13 @@ function AdminHeader() {
           <ul>
             <li><Link to="/" onClick={closeMenu}>사용자 홈</Link></li>
             <li><Link to="/admin/dashboard" onClick={closeMenu}>대시보드</Link></li>
+            <li><Link to="/admin/teaser" onClick={closeMenu}>티저 이벤트</Link></li>
             
             {/* ▼▼▼ 드롭다운 메뉴 시작 ▼▼▼ */}
             <li className="dropdown-container">
               <a href="#" onClick={toggleDropdown} className="dropdown-btn">
                 대여 사업 <span className="arrow">▼</span>
               </a>
-              
               {/* 드롭다운 내용 */}
               <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
                 <li><Link to="/admin/approve" onClick={closeMenu}>대여 수락</Link></li>
