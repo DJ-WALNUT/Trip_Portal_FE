@@ -1,4 +1,22 @@
 /* src/index.css */
+/* ▼▼▼ 1. 폰트 파일 연결 (파일 이름 확인 필수!) ▼▼▼ */
+/* Regular (일반 굵기) */
+@font-face {
+    font-family: 'Pretendard';
+    /* public 폴더 기준 절대 경로로 적습니다 (/fonts/...) */
+    src: url('/fonts/PretendardJP-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Bold (굵은 글씨) */
+@font-face {
+    font-family: 'Pretendard';
+    src: url('/fonts/PretendardJP-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
 :root {
     --main-navy: #001f3f;
     --light-sky-blue: #A9D0F5;
