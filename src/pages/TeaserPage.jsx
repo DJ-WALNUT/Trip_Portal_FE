@@ -74,20 +74,20 @@ function TeaserPage() {
       {/* 1. 인트로 (이스터에그) */}
       {step === 'intro' && (
         <div className="teaser-content intro fade-in" style={{zIndex: 10, textAlign: 'center', color: 'white'}}>
-          <h1 style={{fontSize: '3rem', fontWeight: '800', marginBottom: '1rem', background: 'linear-gradient(to right, #fff, #87ceeb)', WebkitBackgroundClip: 'text', color: 'transparent'}}>Trip Begins.</h1>
-          <p style={{color: '#b0e0e6', marginBottom: '4rem', fontWeight: '300'}}>변화를 새길, 우리의 여정이 시작됩니다.</p>
+          <h1 style={{fontSize: '3rem', fontWeight: '800', marginBottom: '1rem', background: 'linear-gradient(to right, #fff, #87ceeb)', WebkitBackgroundClip: 'text', color: 'transparent'}}>Trip Begins</h1>
+          <p style={{color: '#b0e0e6', marginBottom: '4rem', fontWeight: '300'}}>변화를 새길, 우리의 여정</p>
           
-          <div class="orb-container" style={{width: '100px', height: '100px', margin: '0 auto', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} onClick={handleEasterEgg}>
-            <div class="mystic-orb" style={{
+          <div className="orb-container" style={{width: '100px', height: '100px', margin: '0 auto', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} onClick={handleEasterEgg}>
+            <div className="mystic-orb" style={{
                 width: '50px', height: '50px', borderRadius: '50%',
                 background: 'radial-gradient(circle at 30% 30%, #fff, #00bfff)',
                 boxShadow: '0 0 30px #00bfff',
                 animation: 'pulse 3s infinite'
             }}></div>
-            <p class="orb-hint" style={{marginTop: '15px', fontSize: '0.8rem', color: '#00bfff'}}>Click the Light</p>
+            <p className="orb-hint" style={{marginTop: '15px', fontSize: '0.8rem', color: '#00bfff'}}>Click the Light</p>
           </div>
 
-          <p style={{marginTop: '4rem', color: '#87ceeb', letterSpacing: '3px', fontSize: '0.8rem'}}>2025 Coming Soon</p>
+          <p style={{marginTop: '4rem', color: '#87ceeb', letterSpacing: '3px', fontSize: '0.8rem'}}>Welcome to Trip!</p>
         </div>
       )}
 
@@ -95,8 +95,8 @@ function TeaserPage() {
       {step === 'form' && (
         <div className="form-mode slide-up">
             <div className="form-header">
-                <h2>🎉 Hidden Event Found!</h2>
-                <p>가장 먼저 여정에 합류하세요.</p>
+                <h2>🎉 Come Join Us!</h2>
+                <p>이 여정의 시작을 함께해요!</p>
             </div>
 
           <form onSubmit={handleSubmit}>
@@ -111,11 +111,20 @@ function TeaserPage() {
             <div className="agreement-box">
               <h4>[개인정보 수집·이용 동의]</h4>
               <div className="agreement-text">
-{`1. 수집 목적: 이벤트 응모 및 경품 지급
-2. 수집 항목: 이름, 학번, 학과, 전화번호
-3. 보유 기간: 이벤트 종료 후 1개월 이내 파기
+{`[여정]은 '공과대학 출범 티저페이지 사전응모 추첨행사' 진행을 위하여 『개인정보보호법』 제15조에 의거하여 아래와 같이 개인정보를 수집·이용하고자 합니다. 내용을 자세히 읽으신 후 동의 여부를 결정하여 주십시오.
 
-귀하는 개인정보 수집에 거부할 권리가 있으며, 동의 거부 시 이벤트 참여가 제한될 수 있습니다.`}
+1. 개인정보의 수집 및 이용 목적
+· 이벤트 참여 확인, 추첨 및 당첨자 선정
+· 경품(기프티콘 등) 발송 및 교내 예산 집행 증빙자료(수령 확인) 활용
+
+2. 수집하는 개인정보의 항목
+· 필수항목: 성명, 학번, 학과, 전화번호(휴대전화)
+
+3. 개인정보의 보유 및 이용 기간
+· 낙첨자: 이벤트 종료 및 추첨 완료 후 즉시 파기
+· 당첨자: 관련 법령 및 교내 예산 회계 규정에 따른 증빙서류 보존 기간(5년)까지 보관 후 파기
+
+귀하는 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다. 단, 동의를 거부할 경우 이벤트 참여 및 경품 추첨 대상에서 제외될 수 있습니다.`}
               </div>
             </div>
             <label className="checkbox-label">
