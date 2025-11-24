@@ -23,6 +23,15 @@ function TeaserPage() {
       .catch(err => console.error(err));
   }, []);
 
+  // 추가 함수: 배경 클릭 시 닫기
+  const handleBackdropClick = (e) => {
+    // 클릭된 요소(e.target)가 배경(e.currentTarget)과 같을 때만 닫음
+    // (폼 내부를 클릭했을 때는 닫히지 않도록 함)
+    if (e.target === e.currentTarget) {
+      setStep('intro');
+    }
+  };
+
   // 이스터에그 클릭
   const handleEasterEgg = () => {
     setStep('form');
@@ -93,6 +102,22 @@ function TeaserPage() {
 
       {/* 2. 신청 폼 */}
       {step === 'form' && (
+        <div 
+            className="form-backdrop fade-in" 
+            onClick={handleBackdropClick}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 검은 배경
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 50 // 인트로보다 높게
+            }}
+        >
         <div className="form-mode slide-up">
             <div className="form-header">
                 <h2>🎉 Come Join Us!</h2>
@@ -136,6 +161,7 @@ function TeaserPage() {
             <button type="button" className="btn-back" onClick={() => setStep('intro')}>돌아가기</button>
           </form>
         </div>
+      </div>
       )}
     </div>
     </ClickSpark>

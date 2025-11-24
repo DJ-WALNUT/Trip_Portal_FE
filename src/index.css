@@ -1,8 +1,8 @@
 /* src/index.css */
 /* ▼▼▼ 1. 폰트 파일 연결 (파일 이름 확인 필수!) ▼▼▼ */
 /* Regular (일반 굵기) */
-@import "tailwindcss";
-@import "tw-animate-css";
+/* @import "tailwindcss"; */
+/* @import "tw-animate-css"; */
 
 @custom-variant dark (&:is(.dark *));
 
