@@ -1,9 +1,15 @@
+import path from "path"
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: { // <-- 2. 이 부분 전체 추가
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
   server: {
     proxy: {
       // /api 로 시작하는 요청이 오면 시놀로지 백엔드로 토스!

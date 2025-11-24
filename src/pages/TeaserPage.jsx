@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TeaserPage.css';
+import ClickSpark from '@/bits/ClickSpark';
 
 function TeaserPage() {
   const [step, setStep] = useState('intro'); // intro -> form -> done
@@ -55,6 +56,13 @@ function TeaserPage() {
   };
 
   return (
+    <ClickSpark
+      sparkColor='#fff'
+      sparkSize={10}
+      sparkRadius={15}
+      sparkCount={8}
+      duration={400}
+    >
     <div className="teaser-page">
         <div className="circle-container">
             <div className="circle"></div>
@@ -121,6 +129,7 @@ function TeaserPage() {
         </div>
       )}
     </div>
+    </ClickSpark>
   );
 }
 

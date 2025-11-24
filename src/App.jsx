@@ -6,6 +6,7 @@ import AdminTeaserPage from './pages/admin/AdminTeaserPage';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ClickSpark from './bits/ClickSpark';
 
 import HomePage from './pages/HomePage';
 import BorrowPage from './pages/BorrowPage';
@@ -28,6 +29,7 @@ function App() {
       <div className="wrapper">
         <Routes>
            <Route path="/" element={<TeaserPage />} />
+           
            <Route path="/main" element={<><Header /><HomePage /></>} />
            <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
            <Route path="/check" element={<><Header /><CheckPage /></>} />
