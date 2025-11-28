@@ -1,0 +1,187 @@
+/* src/pages/NoticePage.css */
+
+.page-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--light-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.page-header h2 {
+    font-size: 2rem;
+    color: var(--main-navy);
+    font-weight: 700;
+}
+
+/* 검색창 영역 */
+.search-bar {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-select {
+    padding: 0.5rem;
+    border: 1px solid var(--light-gray);
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.search-input {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--light-gray);
+    border-radius: 6px;
+    width: 250px;
+    font-family: inherit;
+}
+
+.search-btn {
+    background-color: var(--main-navy);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.search-btn:hover {
+    background-color: var(--accent-blue);
+}
+
+/* 게시판 테이블 스타일 */
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.board-table thead th {
+    background-color: #f8f9fa;
+    color: var(--main-navy);
+    font-weight: 700;
+    padding: 1.2rem 0.5rem;
+    border-top: 2px solid var(--main-navy);
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.board-table tbody td {
+    padding: 1.2rem 0.5rem;
+    border-bottom: 1px solid #eee;
+    color: #555;
+    text-align: center;
+}
+
+/* 제목 컬럼은 왼쪽 정렬 */
+.board-table td.title-col {
+    text-align: left;
+    padding-left: 1.5rem;
+    /* [핵심] 테이블 셀이 무한정 늘어나지 않도록 최대 너비를 줍니다. */
+    /* 화면 크기에 따라 적절히 조절됩니다. */
+    max-width: 340px;
+}
+
+.board-table tbody tr {
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.board-table tbody tr:hover {
+    background-color: #f1f8ff; /* 마우스 올렸을 때 연한 파란색 */
+}
+
+.board-link {
+    text-decoration: none;
+    color: inherit;
+    display: block; 
+    /* 링크가 셀 전체를 채우지는 않지만, 텍스트 클릭 시 이동 */
+    white-space: nowrap;      /* 줄바꿈 금지 (한 줄로 표시) */
+    overflow: hidden;         /* 넘치는 글자 숨김 */
+    text-overflow: ellipsis;  /* 잘린 부분을 ... 으로 표시 */
+}
+
+/* 고정 공지 (상단) 스타일 */
+.notice-fixed {
+    background-color: #fffbfb;
+}
+
+.notice-fixed td {
+    font-weight: 600;
+    color: var(--main-navy);
+}
+
+.badge-fixed {
+    background-color: var(--accent-blue);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.page-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--light-gray);
+    background-color: white;
+    border-radius: 4px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.page-btn:hover {
+    border-color: var(--main-navy);
+    color: var(--main-navy);
+}
+
+.page-btn.active {
+    background-color: var(--main-navy);
+    color: white;
+    border-color: var(--main-navy);
+    font-weight: 700;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .search-bar {
+        width: 100%;
+    }
+    
+    .search-input {
+        flex: 1;
+    }
+
+    /* 모바일에서 덜 중요한 컬럼 숨기기 */
+    .th-author, .td-author{
+        display: none;
+    }
+    
+    .board-table thead th {
+        padding: 0.8rem 0.2rem;
+    }
+    
+    .board-table td.title-col {
+        /* 모바일에서는 제목 칸을 더 좁게 잡아야 ...이 잘 나옵니다 */
+        max-width: 180px;
+        padding-left: 0.5rem;
+    }
+}

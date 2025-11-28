@@ -40,6 +40,7 @@ function AdminHeader() {
           <ul>
             <li><Link to="/" onClick={closeMenu}>사용자 홈</Link></li>
             <li><Link to="/admin/dashboard" onClick={closeMenu}>대시보드</Link></li>
+            <li><Link to="/admin/notices" onClick={closeMenu}>공지사항 관리</Link></li>
             <li><Link to="/admin/teaser" onClick={closeMenu}>티저 이벤트</Link></li>
             
             {/* ▼▼▼ 드롭다운 메뉴 시작 ▼▼▼ */}

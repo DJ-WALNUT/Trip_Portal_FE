@@ -10,6 +10,9 @@ if (import.meta.env.PROD) {
   axios.defaults.baseURL = 'https://trip-api.cukeng.kr';
 }
 
+// [필수] 개발/배포 환경 모두 쿠키(세션) 허용
+axios.defaults.withCredentials = true;
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />

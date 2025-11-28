@@ -28,6 +28,7 @@ function Header() {
         {/* 네비게이션 메뉴 */}
         <nav className={`main-nav ${isMenuOpen ? 'active' : ''}`}>
           <ul>
+            <li><Link to="/notices" onClick={closeMenu}>공지사항</Link></li>
             <li><Link to="/borrow" onClick={closeMenu}>물품대여</Link></li>
             <li><Link to="/check" onClick={closeMenu}>신청/대여 확인</Link></li>
             <li>

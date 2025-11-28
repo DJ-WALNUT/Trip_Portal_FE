@@ -1,15 +1,190 @@
 /* src/pages/HomePage.css */
+
+/* --- 1. 상단 배너 섹션 --- */
 .hero-section {
     background: linear-gradient(135deg, var(--main-navy), var(--accent-blue));
     color: white;
     padding: 4rem 2rem;
     text-align: center;
-    margin-bottom: -2rem; /* 컨테이너와 겹치게 하기 위함 */
 }
 
 .catch-phrase p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 0.5rem; }
 .catch-phrase h1 { font-size: 2.5rem; font-weight: 700; }
 
+
+/* --- 2. 공지사항 섹션 스타일 (NEW) --- */
+.notice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--light-gray);
+}
+
+.notice-header h2 {
+    font-size: 1.8rem;
+    color: var(--main-navy);
+    font-weight: 700;
+    margin: 0;
+}
+
+.more-link {
+    font-size: 0.9rem;
+    color: #888;
+    transition: color 0.2s;
+}
+
+.more-link:hover {
+    color: var(--accent-blue);
+}
+
+/* 좌우 2분할 레이아웃 */
+.notice-content {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr; /* 텍스트 영역을 조금 더 넓게 */
+    gap: 2rem;
+}
+
+/* 왼쪽: 공지 리스트 + D-day */
+.notice-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem; /* 리스트와 D-day 사이 간격 */
+}
+
+.notice-list {
+    margin: 0;
+    padding: 0;
+}
+
+.notice-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+    transition: padding-left 0.2s;
+}
+
+.notice-item:hover {
+    padding-left: 0.5rem;
+    color: var(--accent-blue);
+}
+
+.notice-item::before {
+    content: '•';
+    color: var(--main-navy);
+    font-weight: bold;
+    margin-right: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.notice-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* D-Day 박스 스타일 */
+.d-day-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid var(--main-navy); /* 사진의 검은/진한 테두리 반영 */
+    border-radius: var(--border-radius);
+    padding: 1.2rem;
+    background-color: white;
+}
+
+.d-day-item {
+    text-align: center;
+}
+
+.d-day-badge {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    color: white;
+    font-weight: 700;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.d-day-badge.start { background-color: #6c8dbf; } /* 개강 (보라/파랑) */
+.d-day-badge.end { background-color: #8cc63f; }   /* 종강 (연두) */
+
+.d-day-count {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-color);
+}
+
+/* 오른쪽: SNS 슬라이더 카드 */
+.notice-right {
+    position: relative;
+    border-radius: var(--border-radius);
+    min-height: 320px; /* 높이 확보 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    
+    text-decoration: none; 
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: #ddd; /* 이미지 로딩 전 배경색 */
+}
+
+.notice-right:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.sns-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* text-shadow: 0 2px 4px rgba(0,0,0,0.6); */
+}
+
+.sns-icon { font-size: 1.5rem; }
+.sns-id { font-weight: 700; font-size: 1.1rem; }
+
+/* 하단 페이지네이션 컨트롤러 */
+.sns-pagination-control {
+    align-self: flex-end;
+    background: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+    backdrop-filter: blur(4px);
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.arrow-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 0;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.arrow-btn:hover { color: var(--accent-blue); }
+.page-indicator { min-width: 40px; text-align: center; }
+
+
+/* --- 3. 바로가기 섹션 (기존 유지) --- */
 .shortcut-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -45,4 +220,15 @@
     font-weight: 600; 
     padding: 1.5rem;
     color: var(--text-color);
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .notice-content {
+        grid-template-columns: 1fr; /* 세로 배치 */
+    }
+    
+    .notice-right {
+        min-height: 250px;
+    }
 }

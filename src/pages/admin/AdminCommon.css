@@ -1,6 +1,6 @@
 /* src/pages/admin/AdminCommon.css */
 
-/* --- 테이블 반응형 래퍼 (스크롤 기능의 핵심) --- */
+/* --- 1. 테이블 반응형 래퍼 (스크롤 기능의 핵심) --- */
 .table-responsive {
     display: block;       /* [중요] 블록 요소로 만들어 너비 통제 */
     width: 100%;          /* 부모 크기만큼만 차지 */
@@ -10,9 +10,10 @@
     border: 1px solid #eee;
     border-radius: 8px;
     background-color: #fff; /* 배경색 지정 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* 기존 그림자 효과 유지 */
 }
 
-/* --- 테이블 스타일 --- */
+/* --- 2. 테이블 스타일 --- */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -23,8 +24,9 @@
 
 .admin-table th {
     background-color: #f8f9fa;
+    color: var(--main-navy); /* 기존 변수 활용 */
     padding: 12px;
-    text-align: left;
+    text-align: center; /* 헤더 가운데 정렬 */
     font-weight: bold;
     border-bottom: 2px solid #dee2e6;
     /* 헤더 고정 */
@@ -37,45 +39,358 @@
     padding: 12px;
     border-bottom: 1px solid #eee;
     vertical-align: middle;
+    text-align: center; /* 내용 가운데 정렬 */
     color: #555;
 }
 
-/* 버튼 스타일 */
-.btn-approve { background-color: var(--accent-blue); color: white; border: none; padding: 6px 12px; border-radius: 6px; margin-right: 5px; font-size: 0.9rem; font-weight: 600; transition: 0.2s; }
-.btn-approve:hover { background-color: #2980b9; }
+.admin-table tbody tr:hover {
+    background-color: #f8faff;
+}
 
-.btn-return { background-color: #27ae60; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; transition: 0.2s; }
-.btn-return:hover { background-color: #219150; }
+/* --- 3. 버튼 스타일 --- */
+/* (1) 승인/수정/확인 등 긍정적 액션 */
+.btn-approve, .btn-modify, .btn-confirm {
+    background-color: var(--accent-blue);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-right: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
 
-.btn-delete { background-color: var(--danger); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; transition: 0.2s; }
-.btn-delete:hover { background-color: #c0392b; }
+.btn-approve:hover, .btn-modify:hover, .btn-confirm:hover {
+    background-color: #2980b9;
+}
 
-.btn-delete-sm { background-color: #e9ecef; color: #999; border: none; padding: 4px 8px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: 0.2s; }
-.btn-delete-sm:hover { background-color: #e74c3c; color: white; }
+/* (2) 반납 완료 버튼 (초록색) */
+.btn-return {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
 
-.btn-excel { background-color: #217346; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px;}
+.btn-return:hover {
+    background-color: #219150;
+}
 
-/* 모달 스타일 */
+/* (3) 삭제/거절/취소 등 부정적 액션 */
+.btn-delete, .btn-reject, .btn-cancel {
+    background-color: #ff6b6b; /* 기존 변수 --danger 대신 직접 색상 지정하거나 변수 사용 */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-delete:hover, .btn-reject:hover, .btn-cancel:hover {
+    background-color: #c0392b; /* 더 진한 빨강 */
+}
+
+/* (4) 작은 삭제 버튼 (원형) */
+.btn-delete-sm {
+    background-color: #e9ecef;
+    color: #999;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.btn-delete-sm:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* (5) 엑셀 다운로드 버튼 */
+.btn-excel {
+    background-color: #217346;
+    color: white;
+    border: none;
+    padding: 8px 16px; /* 패딩 조정 */
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.btn-excel:hover {
+    background-color: #1e6b40;
+}
+
+/* (6) 글쓰기 버튼 (목록 페이지 우측 상단) */
+.btn-write {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background-color: var(--main-navy);
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: background-color 0.2s;
+}
+
+.btn-write:hover {
+    background-color: var(--accent-blue);
+}
+
+
+/* --- 4. 글쓰기/수정 폼(Form) 스타일 --- */
+.notice-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin-top: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 700;
+    color: var(--main-navy);
+    font-size: 1rem;
+}
+
+.form-input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    border-color: var(--main-navy);
+    outline: none;
+}
+
+.form-textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    min-height: 300px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.form-textarea:focus {
+    border-color: var(--main-navy);
+    outline: none;
+}
+
+/* 상단 고정 체크박스 그룹 */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #f1f3f5;
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: fit-content;
+    border: 1px solid #e9ecef;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--main-navy);
+}
+
+.checkbox-group label {
+    cursor: pointer;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 하단 버튼 그룹 (저장/취소) */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.form-actions .btn-cancel {
+    background-color: #95a5a6;
+    padding: 12px 24px;
+    /* btn-cancel 공통 스타일 오버라이드 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.form-actions .btn-save {
+    background-color: var(--main-navy);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    flex: 1;
+    font-size: 1rem;
+}
+
+.form-actions .btn-save:hover {
+    background-color: var(--accent-blue);
+}
+
+
+/* --- 5. 파일 업로드 관련 스타일 --- */
+
+/* (1) 파일이 없을 때 (업로드 박스) */
+.file-upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 15px;
+    border: 2px dashed #ced4da;
+    border-radius: 8px;
+    background-color: #fafafa;
+    transition: border-color 0.2s;
+}
+
+.file-upload-wrapper:hover {
+    border-color: var(--accent-blue);
+    background-color: #f8faff;
+}
+
+.file-input-hidden {
+    display: none; 
+}
+
+.file-upload-btn {
+    background-color: white;
+    border: 1px solid #ccc;
+    color: var(--text-color);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.file-upload-btn:hover {
+    background-color: #f1f1f1;
+    border-color: #888;
+}
+
+.file-help-text {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* (2) 파일이 있을 때 (현재 파일 박스) */
+.current-file-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background-color: #e3f2fd; /* 연한 파랑 배경 */
+    border: 1px solid #90caf9;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.file-icon {
+    font-size: 1.2rem;
+}
+
+.file-name {
+    font-weight: 600;
+    color: #1565c0;
+    margin-right: 5px;
+    text-decoration: none;
+}
+
+.file-badge {
+    font-size: 0.75rem;
+    background-color: white;
+    color: #1565c0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    border: 1px solid #bbdefb;
+}
+
+.btn-file-delete {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn-file-delete:hover {
+    background-color: rgba(211, 47, 47, 0.1);
+}
+
+
+/* --- 6. 모달 (승인/거절 팝업) 스타일 --- */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.5);
     display: flex; justify-content: center; align-items: center; z-index: 1000;
 }
+
 .modal-content {
     background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px;
     text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
+
 .modal-content h3 { margin-bottom: 0.5rem; color: var(--main-navy); }
 .modal-content p { margin-bottom: 1.5rem; color: #666; font-size: 0.95rem; }
 
-.modal-input { width: 100%; padding: 12px; margin-bottom: 1.5rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none; }
+.modal-input { 
+    width: 100%; padding: 12px; margin-bottom: 1.5rem; 
+    border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none; 
+}
 .modal-input:focus { border-color: var(--main-navy); }
 
 .modal-actions { display: flex; gap: 10px; justify-content: center; }
-.btn-confirm { flex: 1; background: var(--main-navy); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
-.btn-cancel { flex: 1; background: #f1f3f5; color: #555; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
 
-/* 추가 폼 스타일 */
+.btn-confirm { flex: 1; background: var(--main-navy); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+/* .btn-cancel은 위에서 정의된 스타일(회색 배경)을 따름 */
+
+
+/* --- 7. [추가] 재고 추가 폼 스타일 --- */
 .add-item-form { 
     display: flex; 
     gap: 10px; 
@@ -84,7 +399,9 @@
     background-color: #f8f9fa;
     padding: 1rem;
     border-radius: 8px;
+    align-items: center;
 }
+
 .add-item-form input { 
     padding: 10px; 
     border: 1px solid #ddd; 
@@ -92,29 +409,41 @@
     flex: 1; 
     min-width: 120px; /* 너무 작아지지 않게 */
 }
+
 .add-item-form button {
     padding: 10px 20px;
     white-space: nowrap;
+    background-color: var(--main-navy);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-/* --- [신규] 날짜 정보 카드 스타일 --- */
+.add-item-form button:hover {
+    background-color: var(--accent-blue);
+}
+
+
+/* --- 8. [신규] 날짜 정보 카드 스타일 (학사일정 등) --- */
 .date-info-card {
     background-color: #f1f3f5;
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
-    display: flex;            /* Flexbox 사용 */
+    display: flex;             /* Flexbox 사용 */
     justify-content: space-around; /* PC에서는 간격 띄우기 */
     align-items: center;
     font-weight: bold;
     color: #495057;
-    flex-wrap: wrap;          /* 화면이 좁으면 자연스럽게 줄바꿈 */
-    gap: 15px;                /* 요소 사이 간격 */
+    flex-wrap: wrap;           /* 화면이 좁으면 자연스럽게 줄바꿈 */
+    gap: 15px;                 /* 요소 사이 간격 */
 }
 
 /* 각각의 날짜 정보 아이템 */
 .date-item {
-    white-space: nowrap;      /* 텍스트 줄바꿈 방지 */
+    white-space: nowrap;       /* 텍스트 줄바꿈 방지 */
     font-size: 1rem;
 }
 
@@ -122,8 +451,8 @@
 @media (max-width: 768px) {
     .date-info-card {
         flex-direction: column; /* 세로 방향으로 배치 */
-        align-items: flex-start; /* 왼쪽 정렬 (또는 center로 변경 가능) */
-        padding: 15px 20px;      /* 패딩 약간 조정 */
+        align-items: flex-start; /* 왼쪽 정렬 */
+        padding: 15px 20px;
     }
     
     .date-item {

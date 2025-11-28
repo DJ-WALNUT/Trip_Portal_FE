@@ -6,15 +6,18 @@ import AdminTeaserPage from './pages/admin/AdminTeaserPage';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
-import ClickSpark from './bits/ClickSpark';
 
 import HomePage from './pages/HomePage';
+import NoticePage from './pages/NoticePage';
+import NoticeDetailPage from './pages/NoticeDetailPage';
 import BorrowPage from './pages/BorrowPage';
 import CheckPage from './pages/CheckPage';
 import SuccessPage from './pages/SuccessPage';
 
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import AdminNoticeListPage from './pages/admin/AdminNoticeListPage';
+import AdminNoticeWritePage from './pages/admin/AdminNoticeWritePage';
 import AdminApprovePage from './pages/admin/AdminApprovePage';
 import AdminReturnPage from './pages/admin/AdminReturnPage';
 import AdminStockPage from './pages/admin/AdminStockPage';
@@ -31,6 +34,8 @@ function App() {
            <Route path="/" element={<TeaserPage />} />
            
            <Route path="/main" element={<><Header /><HomePage /></>} />
+           <Route path="/notices" element={<><Header /><NoticePage /></>} />
+           <Route path="/notices/:id" element={<><Header /><NoticeDetailPage /></>} />
            <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
            <Route path="/check" element={<><Header /><CheckPage /></>} />
            <Route path="/success" element={<><Header /><SuccessPage /></>} />
@@ -38,6 +43,9 @@ function App() {
            <Route path="/admin" element={<AdminLoginPage />} />
            <Route path="/admin/teaser" element={<AdminTeaserPage />} />
            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+           <Route path="/admin/notices" element={<AdminNoticeListPage />} />
+           <Route path="/admin/notices/write" element={<AdminNoticeWritePage />} />
+           <Route path="/admin/notices/edit/:id" element={<AdminNoticeWritePage />} />
            <Route path="/admin/approve" element={<AdminApprovePage />} />
            <Route path="/admin/return" element={<AdminReturnPage />} />
            <Route path="/admin/stock" element={<AdminStockPage />} />

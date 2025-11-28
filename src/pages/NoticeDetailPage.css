@@ -1,0 +1,143 @@
+/* src/pages/NoticeDetailPage.css */
+
+.notice-detail-container {
+    max-width: 1000px; /* 상세 페이지는 너무 넓으면 읽기 힘드므로 적절히 제한 */
+    margin: 2rem auto;
+}
+
+/* 게시글 헤더 (제목 + 정보) */
+.post-header {
+    border-top: 2px solid var(--main-navy);
+    border-bottom: 1px solid var(--light-gray);
+    padding: 1.5rem 1rem;
+    background-color: #fff;
+}
+
+.post-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.post-info {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.info-item span {
+    font-weight: 600;
+    color: var(--main-navy);
+    margin-right: 0.5rem;
+}
+
+/* 게시글 본문 */
+.post-content {
+    min-height: 400px; /* 내용이 짧아도 기본 높이 확보 */
+    padding: 2rem 1rem;
+    border-bottom: 1px solid var(--light-gray);
+    line-height: 1.8;
+    font-size: 1.05rem;
+    white-space: pre-wrap; /* 줄바꿈 문자(\n) 반영 */
+}
+
+/* 첨부파일 영역 (예시) */
+.post-attachments {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid var(--light-gray);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.attach-label {
+    font-weight: 700;
+    color: var(--main-navy);
+}
+
+.attach-link {
+    color: #555;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.attach-link:hover {
+    color: var(--accent-blue);
+}
+
+/* 하단 네비게이션 (이전글/다음글/목록) */
+.post-navigation {
+    margin-top: 2rem;
+    border-top: 1px solid var(--main-navy);
+}
+
+.nav-item {
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-label {
+    width: 100px;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-color);
+    flex-shrink: 0; /* 너비 고정 */
+}
+
+.nav-link {
+    flex: 1;
+    padding: 1rem;
+    color: #555;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: var(--accent-blue);
+}
+
+/* 목록 버튼 영역 */
+.btn-area {
+    margin-top: 2rem;
+    text-align: right;
+}
+
+.list-btn {
+    background-color: var(--main-navy);
+    color: white;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    border: none;
+}
+
+.list-btn:hover {
+    background-color: var(--accent-blue);
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .post-info {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .nav-item {
+        font-size: 0.9rem;
+    }
+    
+    .nav-label {
+        width: 80px;
+        padding: 0.8rem 0.5rem;
+    }
+}
