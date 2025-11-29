@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import AdminHeader from '../../components/AdminHeader';
-import './AdminCommon.css';
+import AdminHeader from '../../../components/AdminHeader';
+import '../AdminCommon.css';
 
 function AdminReturnPage() {
   const navigate = useNavigate();

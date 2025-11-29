@@ -36,7 +36,7 @@ function Header() {
                 2025 새길
               </a>
             </li>
-            <li><Link to="/admin" onClick={closeMenu}>관리자 페이지</Link></li>
+            <li><Link to="/admin/dashboard" onClick={closeMenu}>관리자 페이지</Link></li>
           </ul>
         </nav>
 

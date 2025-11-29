@@ -37,6 +37,34 @@ function NoticeDetailPage() {
       // 언마운트 시(페이지 나갈 때) ref 초기화는 굳이 필요 없음(새 컴포넌트 마운트되므로)
   }, [id, navigate]); // 의존성 배열 유지
 
+  // [NEW] 본문 내 URL을 찾아 하이퍼링크로 변환하는 함수
+  const renderContent = (content) => {
+    if (!content) return null;
+
+    // URL을 찾는 정규식 (http 또는 https로 시작하고 공백 전까지의 문자열)
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    // 정규식으로 텍스트를 쪼갭니다.
+    return content.split(urlRegex).map((part, index) => {
+      if (part.match(urlRegex)) {
+        // URL이면 <a> 태그로 감싸서 반환
+        return (
+          <a 
+            key={index} 
+            href={part} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ color: '#3498db', textDecoration: 'underline', fontWeight: '500' }}
+          >
+            {part}
+          </a>
+        );
+      }
+      // 일반 텍스트면 그냥 반환
+      return part;
+    });
+  };
+
   if (loading) return <div style={{ padding: '3rem', textAlign: 'center' }}>로딩 중...</div>;
   if (!notice) return null;
 
@@ -82,7 +110,9 @@ function NoticeDetailPage() {
 
         {/* 3. 게시글 본문 */}
         <div className="post-content">
-            {notice.content}
+            {/* 기존: {notice.content} */}
+            {/* 변경: 함수를 통해 렌더링 */}
+            {renderContent(notice.content)}
         </div>
 
         {/* 4. 하단 버튼 */}

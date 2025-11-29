@@ -149,7 +149,7 @@
 }
 
 /* 모바일 반응형 (768px 이하) */
-@media (max-width: 768px) {
+@media (max-width: 920px) {
     .header-content {
         padding: 0 1.5rem;
     }

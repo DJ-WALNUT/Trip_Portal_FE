@@ -4,7 +4,7 @@ import './FloatingSNS.css';
 function FloatingSNS() {
   return (
     <div className="floating-sns">
-      <div className="sns-header">
+      <div className="sns-header" style={{textShadow: '0 0 0'}}>
         {/* 로고 이미지 경로 확인 필수! */}
         <img src="/images/trip_logo.png" alt="여정 로고" className="fond-logo" />
         <div className="fond-title">

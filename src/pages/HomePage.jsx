@@ -106,9 +106,15 @@ function HomePage() {
     setCurrentIdx((prev) => (prev === instaPosts.length - 1 ? 0 : prev + 1));
   };
 
+  const BASE_URL = import.meta.env.PROD ? 'https://trip-api.cukeng.kr' : '';
+  const getFullImgUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url; // 더미데이터 등
+    return `${BASE_URL}${url}`; // 우리 백엔드 이미지
+  }
   // 현재 보여줄 인스타 이미지 (데이터 없으면 기본 회색)
   const currentPost = instaPosts.length > 0 ? instaPosts[currentIdx] : null;
-  const currentImgUrl = currentPost ? currentPost.imgUrl : '';
+  const currentImgUrl = currentPost ? getFullImgUrl(currentPost.imgUrl) : '';
 
   return (
     <div className="main-page-container">
@@ -163,14 +169,14 @@ function HomePage() {
               rel="noreferrer" 
               className="notice-right"
               style={{ 
-                backgroundImage: currentImgUrl ? `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url(${currentImgUrl})` : 'none',
+                backgroundImage: currentImgUrl ? `linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0)), url(${currentImgUrl})` : 'none',
                 backgroundColor: '#999',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
               }}
             >
                 <div className="sns-header">
-                    <span className="sns-icon">📷</span>
+                    {/* <span className="sns-icon">📷</span> */}
                     <span className="sns-id">@cuk_engineering</span>
                 </div>
                 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import TeaserPage from './pages/TeaserPage';
+import TeaserPage from './pages/client/TeaserPage';
 import AdminTeaserPage from './pages/admin/AdminTeaserPage';
 
 import Header from './components/Header';
@@ -10,18 +10,19 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import NoticePage from './pages/NoticePage';
 import NoticeDetailPage from './pages/NoticeDetailPage';
-import BorrowPage from './pages/BorrowPage';
-import CheckPage from './pages/CheckPage';
-import SuccessPage from './pages/SuccessPage';
+import BorrowPage from './pages/client/borrow/BorrowPage';
+import CheckPage from './pages/client/borrow/CheckPage';
+import SuccessPage from './pages/client/borrow/SuccessPage';
 
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminNoticeListPage from './pages/admin/AdminNoticeListPage';
 import AdminNoticeWritePage from './pages/admin/AdminNoticeWritePage';
-import AdminApprovePage from './pages/admin/AdminApprovePage';
-import AdminReturnPage from './pages/admin/AdminReturnPage';
-import AdminStockPage from './pages/admin/AdminStockPage';
-import AdminLogPage from './pages/admin/AdminLogPage';
+import AdminInstagramPage from './pages/admin/AdminInstagramPage';
+import AdminApprovePage from './pages/admin/borrow/AdminApprovePage';
+import AdminReturnPage from './pages/admin/borrow/AdminReturnPage';
+import AdminStockPage from './pages/admin/borrow/AdminStockPage';
+import AdminLogPage from './pages/admin/borrow/AdminLogPage';
 
 // 관리자 페이지는 아직 임시
 const AdminPage = () => <div className="container"><h2>관리자 페이지 (곧 만듭니다!)</h2></div>;
@@ -46,12 +47,13 @@ function App() {
            <Route path="/admin/notices" element={<AdminNoticeListPage />} />
            <Route path="/admin/notices/write" element={<AdminNoticeWritePage />} />
            <Route path="/admin/notices/edit/:id" element={<AdminNoticeWritePage />} />
-           <Route path="/admin/approve" element={<AdminApprovePage />} />
-           <Route path="/admin/return" element={<AdminReturnPage />} />
-           <Route path="/admin/stock" element={<AdminStockPage />} />
-           <Route path="/admin/log" element={<AdminLogPage />} />
+           <Route path="/admin/instagram" element={<AdminInstagramPage />} />
+           <Route path="/admin/borrow/approve" element={<AdminApprovePage />} />
+           <Route path="/admin/borrow/return" element={<AdminReturnPage />} />
+           <Route path="/admin/borrow/stock" element={<AdminStockPage />} />
+           <Route path="/admin/borrow/log" element={<AdminLogPage />} />
 
-           {/* 그 외 모든 경로는 티저로 리다이렉트 */}
+           {/* 그 외 모든 경로는 메인으로 리다이렉트 */}
            <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
