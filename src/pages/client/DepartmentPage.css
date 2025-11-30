@@ -15,8 +15,7 @@
 
 /* --- Container & Header --- */
 .dept-page-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 5%;
     padding: 2rem 1rem;
     font-family: 'Pretendard', sans-serif;
     color: var(--text-primary);
@@ -88,12 +87,15 @@
     padding: 0.5rem 0.2rem 1rem 0.2rem; /* 하단 패딩은 스크롤바 공간 */
     margin-bottom: 2rem;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox 스크롤바 숨김 */
+    /* 파이어폭스용 설정 (얇게, 색상 지정) */
+    scrollbar-width: thin; 
+    scrollbar-color: #d1d5db transparent;
 }
-
-.category-filter::-webkit-scrollbar {
-    display: none; /* Chrome/Safari 스크롤바 숨김 */
-}
+/* 크롬, 사파리, 엣지용 스크롤바 커스텀 */
+.category-filter::-webkit-scrollbar { height: 6px; /* 가로 스크롤바 두께 */ }
+.category-filter::-webkit-scrollbar-track { background: transparent; /* 트랙 배경 투명 */ }
+.category-filter::-webkit-scrollbar-thumb { background-color: #d1d5db; /* 스크롤바 색상 (회색) */ border-radius: 10px; /* 둥근 모서리 */ transition: background-color 0.2s; }
+.category-filter::-webkit-scrollbar-thumb:hover { background-color: #9ca3af; /* 호버 시 진한 회색 */ }
 
 .filter-chip {
     flex: 0 0 auto;
@@ -246,7 +248,7 @@
 /* --- Special: Featured Cards (Central Org) --- */
 .featured-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1rem;
     margin-bottom: 2rem;
 }
@@ -292,13 +294,8 @@
 }
 
 /* --- Responsive Mobile --- */
-@media (max-width: 1080px) {
-    .dept-page-container {
-        margin: 0;
-    }
-}
-
 @media (max-width: 768px) {
+    .dept-page-container { margin: 0; }
     .page-title h2 { font-size: 1.5rem; }
     .grid-container { grid-template-columns: 1fr; }
     .category-filter { padding-bottom: 0.5rem; }
