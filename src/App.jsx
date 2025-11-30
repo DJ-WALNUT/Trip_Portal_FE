@@ -14,6 +14,7 @@ import NoticeDetailPage from './pages/NoticeDetailPage';
 import BorrowPage from './pages/client/borrow/BorrowPage';
 import CheckPage from './pages/client/borrow/CheckPage';
 import SuccessPage from './pages/client/borrow/SuccessPage';
+import DepartmentPage from './pages/client/DepartmentPage';
 
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
@@ -38,6 +39,7 @@ function App() {
           <Route path="/main" element={<><Header /><HomePage /></>} />
           <Route path="/notices" element={<><Header /><NoticePage /></>} />
           <Route path="/notices/:id" element={<><Header /><NoticeDetailPage /></>} />
+          <Route path="/departments" element={<><Header /><DepartmentPage /></>} />
           <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
           <Route path="/check" element={<><Header /><CheckPage /></>} />
           <Route path="/success" element={<><Header /><SuccessPage /></>} />

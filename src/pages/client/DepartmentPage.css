@@ -1,0 +1,306 @@
+/* src/pages/DepartmentPage.css */
+
+/* --- Layout Variables --- */
+:root {
+    --cuk-blue: #002958; /* 가톨릭대 메인 컬러 예시 */
+    --cuk-light-blue: #eef4fb;
+    --text-primary: #333;
+    --text-secondary: #666;
+    --border-color: #e0e0e0;
+    --white: #ffffff;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --radius: 12px;
+}
+
+/* --- Container & Header --- */
+.dept-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: 'Pretendard', sans-serif;
+    color: var(--text-primary);
+}
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-title {
+    align-self: center;
+
+}
+
+.page-title h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--cuk-blue);
+    margin-bottom: 0.5rem;
+}
+
+.page-title p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* --- Search Bar --- */
+.search-container {
+    position: relative;
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    padding-right: 3rem;
+    border: 2px solid var(--border-color);
+    border-radius: 50px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: var(--white);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--cuk-blue);
+    box-shadow: 0 0 0 4px rgba(0, 41, 88, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+/* --- Category Filter Tabs (Scrollable) --- */
+.category-filter {
+    display: flex;
+    gap: 0.8rem;
+    overflow-x: auto;
+    padding: 0.5rem 0.2rem 1rem 0.2rem; /* 하단 패딩은 스크롤바 공간 */
+    margin-bottom: 2rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox 스크롤바 숨김 */
+}
+
+.category-filter::-webkit-scrollbar {
+    display: none; /* Chrome/Safari 스크롤바 숨김 */
+}
+
+.filter-chip {
+    flex: 0 0 auto;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-chip:hover {
+    background-color: var(--cuk-light-blue);
+    color: var(--cuk-blue);
+}
+
+.filter-chip.active {
+    background-color: var(--cuk-blue);
+    color: var(--white);
+    border-color: var(--cuk-blue);
+    box-shadow: 0 4px 10px rgba(0, 41, 88, 0.2);
+}
+
+/* --- Grid Layouts --- */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+}
+
+/* --- Section Dividers --- */
+.section-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cuk-blue);
+    margin: 2rem 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--border-color);
+    margin-left: 1rem;
+}
+
+/* --- Card Styles --- */
+.org-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.org-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: #b0c4de;
+}
+
+/* Card Header */
+.card-header {
+    background-color: #f8fafc;
+    padding: 1.2rem;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-title {
+    display: flex;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--cuk-blue);
+    align-items: center;
+}
+.card-title svg {
+    margin: 0 7px;
+}
+
+.college-insta-link {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+    color: #E1306C;
+    background: #fff0f5;
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.college-insta-link:hover {
+    background: #ffe4ef;
+}
+
+/* Card List */
+.dept-list {
+    padding: 0.5rem;
+    flex: 1;
+}
+
+.dept-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    margin: 0.2rem 0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: background-color 0.2s;
+}
+
+.dept-item:hover {
+    background-color: var(--cuk-light-blue);
+}
+
+.dept-name {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.dept-id {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dept-item:hover .dept-id {
+    color: var(--cuk-blue);
+}
+
+/* --- Special: Featured Cards (Central Org) --- */
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.featured-card {
+    background: linear-gradient(135deg, var(--cuk-blue), #004085);
+    color: white;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
+}
+
+.featured-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.featured-info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 0.3rem 0;
+}
+
+.featured-info span {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.featured-icon {
+    opacity: 0.8;
+}
+
+/* --- Empty State --- */
+.empty-state {
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--text-secondary);
+}
+
+/* --- Responsive Mobile --- */
+@media (max-width: 1080px) {
+    .dept-page-container {
+        margin: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-title h2 { font-size: 1.5rem; }
+    .grid-container { grid-template-columns: 1fr; }
+    .category-filter { padding-bottom: 0.5rem; }
+    .search-input { font-size: 0.9rem; }
+}
