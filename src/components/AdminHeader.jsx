@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Header.css'; 
 
 function AdminHeader() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태 
   // 1. 외부 클릭 감지를 위한 Ref 생성
@@ -24,10 +26,22 @@ function AdminHeader() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleLogout = () => {
+  // [수정] 로그아웃 핸들러 (axios + 상대 경로 사용)
+  const handleLogout = async () => {
     if(window.confirm('로그아웃 하시겠습니까?')) {
+        try {
+            // 도메인 없이 경로만 적으면 Proxy나 현재 도메인을 따라갑니다.
+            await axios.post('/api/admin/logout'); 
+        } catch (error) {
+            console.error("로그아웃 요청 실패:", error);
+            // 서버 에러가 나더라도 클라이언트단 로그아웃은 진행하도록 함
+        }
+
+        // 클라이언트 세션 정리 및 이동
         localStorage.removeItem('isAdmin'); 
-        navigate('/admin'); 
+        alert("로그아웃 되었습니다.");
+        navigate('/'); // 메인 페이지로 이동
+        closeMenu();
     }
   };
   
@@ -73,7 +87,7 @@ function AdminHeader() {
             <li><Link to="/admin/instagram" onClick={closeMenu}>인스타 관리</Link></li>
             
             {/* ▼▼▼ 드롭다운 메뉴 시작 ▼▼▼ */}
-            <li className="dropdown-container" style={{backgroundColor: '#444'}}>
+            <li className="dropdown-container">
               <a href="#" onClick={toggleDropdown} className="dropdown-btn">
                 대여 사업 <span className="arrow">▼</span>
               </a>
@@ -89,7 +103,7 @@ function AdminHeader() {
 
             <li>
                 <button 
-                    onClick={() => { closeMenu(); handleLogout(); }} 
+                    onClick={handleLogout}
                     style={{background:'none', border:'none', color:'#ff6b6b', fontSize:'1rem', cursor:'pointer', fontWeight:'bold', padding: '0'}}
                 >
                     로그아웃
