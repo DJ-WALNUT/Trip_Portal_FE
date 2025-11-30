@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AdminLoginPage.css'; // 스타일 파일
@@ -6,6 +6,25 @@ import './AdminLoginPage.css'; // 스타일 파일
 function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  // [NEW] 페이지 로드 시 이미 로그인되어 있는지 체크
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      // 1. 로컬스토리지 체크
+      if (localStorage.getItem('isAdmin')) {
+        try {
+          // 2. 백엔드 세션 체크 (더 확실하게)
+          await axios.get('/api/admin/check-session');
+          // 둘 다 통과하면 바로 대시보드로 이동
+          navigate('/admin/dashboard'); 
+        } catch (e) {
+          // 백엔드 세션이 만료되었으면 로컬스토리지도 청소
+          localStorage.removeItem('isAdmin');
+        }
+      }
+    };
+    checkLoginStatus();
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
