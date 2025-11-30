@@ -73,7 +73,7 @@ function AdminHeader() {
             <li><Link to="/admin/instagram" onClick={closeMenu}>인스타 관리</Link></li>
             
             {/* ▼▼▼ 드롭다운 메뉴 시작 ▼▼▼ */}
-            <li className="dropdown-container">
+            <li className="dropdown-container" style={{backgroundColor: '#444'}}>
               <a href="#" onClick={toggleDropdown} className="dropdown-btn">
                 대여 사업 <span className="arrow">▼</span>
               </a>

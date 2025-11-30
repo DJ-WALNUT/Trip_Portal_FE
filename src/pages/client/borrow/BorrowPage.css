@@ -94,3 +94,4 @@
     cursor: pointer;
 }
 .submit-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+.container h1{ color: var(--main-navy);}

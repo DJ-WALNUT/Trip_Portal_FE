@@ -191,7 +191,7 @@ const DepartmentPage = () => {
     <div className="dept-page-container">
       
       {/* Header Area */}
-      <header className="page-header">
+      <div className="page-header">
         <div className="page-title">
           <h2>학과/조직도</h2>
           <p>가톨릭대학교의 단과대별 모든 학과를 한 곳에서 모아보세요.</p>
@@ -207,7 +207,7 @@ const DepartmentPage = () => {
           />
           <Search className="search-icon" size={20} />
         </div>
-      </header>
+      </div>
 
       {/* Category Tabs (Hide when searching) */}
       {!searchTerm && (

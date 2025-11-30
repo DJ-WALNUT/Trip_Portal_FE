@@ -1,24 +1,18 @@
 /* src/pages/DepartmentPage.css */
 
-/* --- Layout Variables --- */
-:root {
-    --cuk-blue: #002958; /* 가톨릭대 메인 컬러 예시 */
-    --cuk-light-blue: #eef4fb;
-    --text-primary: #333;
-    --text-secondary: #666;
-    --border-color: #e0e0e0;
-    --white: #ffffff;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --radius: 12px;
-}
-
-/* --- Container & Header --- */
+/* --- Container & Header (공통 디자인 적용) --- */
 .dept-page-container {
-    margin: 0 5%;
-    padding: 2rem 1rem;
-    font-family: 'Pretendard', sans-serif;
-    color: var(--text-primary);
+    /* NoticePage의 .container와 동일한 스타일 적용 */
+    width: auto;
+    margin: 2rem; /* 중앙 정렬 */
+    padding: 2rem;
+    background-color: var(--white); /* 흰색 배경 추가 */
+    border-radius: var(--border-radius); /* 둥근 모서리 */
+    box-shadow: var(--box-shadow); /* 그림자 효과 */
+    
+    font-family: var(--font-family);
+    color: var(--text-color);
+    box-sizing: border-box;
 }
 
 .page-header {
@@ -26,49 +20,45 @@
     flex-direction: column;
     gap: 1.5rem;
     margin-bottom: 2rem;
-    text-align: center;
-}
-
-.page-title {
-    align-self: center;
-
+    align-items: flex-start;
 }
 
 .page-title h2 {
     font-size: 2rem;
     font-weight: 800;
-    color: var(--cuk-blue);
+    color: var(--main-navy); /* 글로벌 변수 사용 */
     margin-bottom: 0.5rem;
 }
 
 .page-title p {
-    color: var(--text-secondary);
+    color: #666; 
     font-size: 1rem;
 }
 
 /* --- Search Bar --- */
 .search-container {
+    display: flex;
     position: relative;
     max-width: 500px;
     width: 100%;
-    margin: 0 auto;
 }
 
 .search-input {
     width: 100%;
     padding: 1rem 1.2rem;
     padding-right: 3rem;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--light-gray);
     border-radius: 50px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background-color: var(--white);
+    background-color: var(--white); /* 입력창 배경 명시 */
+    color: var(--text-color);
 }
 
 .search-input:focus {
     outline: none;
-    border-color: var(--cuk-blue);
-    box-shadow: 0 0 0 4px rgba(0, 41, 88, 0.1);
+    border-color: var(--main-navy);
+    box-shadow: 0 0 0 4px rgba(0, 31, 63, 0.1); 
 }
 
 .search-icon {
@@ -76,7 +66,7 @@
     right: 1.2rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--text-secondary);
+    color: #999;
 }
 
 /* --- Category Filter Tabs (Scrollable) --- */
@@ -84,26 +74,24 @@
     display: flex;
     gap: 0.8rem;
     overflow-x: auto;
-    padding: 0.5rem 0.2rem 1rem 0.2rem; /* 하단 패딩은 스크롤바 공간 */
+    padding: 0.5rem 0.2rem 1rem 0.2rem;
     margin-bottom: 2rem;
     -webkit-overflow-scrolling: touch;
-    /* 파이어폭스용 설정 (얇게, 색상 지정) */
     scrollbar-width: thin; 
     scrollbar-color: #d1d5db transparent;
 }
-/* 크롬, 사파리, 엣지용 스크롤바 커스텀 */
-.category-filter::-webkit-scrollbar { height: 6px; /* 가로 스크롤바 두께 */ }
-.category-filter::-webkit-scrollbar-track { background: transparent; /* 트랙 배경 투명 */ }
-.category-filter::-webkit-scrollbar-thumb { background-color: #d1d5db; /* 스크롤바 색상 (회색) */ border-radius: 10px; /* 둥근 모서리 */ transition: background-color 0.2s; }
-.category-filter::-webkit-scrollbar-thumb:hover { background-color: #9ca3af; /* 호버 시 진한 회색 */ }
+.category-filter::-webkit-scrollbar { height: 6px; }
+.category-filter::-webkit-scrollbar-track { background: transparent; }
+.category-filter::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 10px; transition: background-color 0.2s; }
+.category-filter::-webkit-scrollbar-thumb:hover { background-color: #9ca3af; }
 
 .filter-chip {
     flex: 0 0 auto;
     padding: 0.6rem 1.2rem;
     border-radius: 50px;
-    background-color: var(--white);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
+    background-color: var(--background-color); /* 칩 배경을 약간 회색으로 변경하여 흰 바탕과 구분 */
+    border: 1px solid var(--light-gray);
+    color: #666;
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
@@ -111,18 +99,19 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-family: var(--font-family);
 }
 
 .filter-chip:hover {
-    background-color: var(--cuk-light-blue);
-    color: var(--cuk-blue);
+    background-color: var(--light-gray);
+    color: var(--main-navy);
 }
 
 .filter-chip.active {
-    background-color: var(--cuk-blue);
+    background-color: var(--main-navy);
     color: var(--white);
-    border-color: var(--cuk-blue);
-    box-shadow: 0 4px 10px rgba(0, 41, 88, 0.2);
+    border-color: var(--main-navy);
+    box-shadow: 0 4px 10px rgba(0, 31, 63, 0.2);
 }
 
 /* --- Grid Layouts --- */
@@ -136,7 +125,7 @@
 .section-label {
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--cuk-blue);
+    color: var(--main-navy);
     margin: 2rem 0 1rem 0;
     display: flex;
     align-items: center;
@@ -146,15 +135,15 @@
     content: '';
     flex: 1;
     height: 1px;
-    background-color: var(--border-color);
+    background-color: var(--light-gray);
     margin-left: 1rem;
 }
 
 /* --- Card Styles --- */
 .org-card {
     background: var(--white);
-    border-radius: var(--radius);
-    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--light-gray);
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
@@ -163,15 +152,15 @@
 
 .org-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
-    border-color: #b0c4de;
+    box-shadow: var(--box-shadow);
+    border-color: var(--accent-blue);
 }
 
 /* Card Header */
 .card-header {
-    background-color: #f8fafc;
+    background-color: var(--background-color); /* 흰색 컨테이너 위에서 구분되도록 회색 유지 */
     padding: 1.2rem;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--light-gray);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -181,7 +170,7 @@
     display: flex;
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--cuk-blue);
+    color: var(--main-navy);
     align-items: center;
 }
 .card-title svg {
@@ -220,12 +209,12 @@
     margin: 0.2rem 0;
     border-radius: 8px;
     text-decoration: none;
-    color: var(--text-primary);
+    color: var(--text-color);
     transition: background-color 0.2s;
 }
 
 .dept-item:hover {
-    background-color: var(--cuk-light-blue);
+    background-color: var(--light-gray);
 }
 
 .dept-name {
@@ -235,14 +224,14 @@
 
 .dept-id {
     font-size: 0.85rem;
-    color: var(--text-secondary);
+    color: #666;
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
 .dept-item:hover .dept-id {
-    color: var(--cuk-blue);
+    color: var(--main-navy);
 }
 
 /* --- Special: Featured Cards (Central Org) --- */
@@ -254,21 +243,21 @@
 }
 
 .featured-card {
-    background: linear-gradient(135deg, var(--cuk-blue), #004085);
-    color: white;
+    background: linear-gradient(135deg, var(--main-navy), #004085);
+    color: var(--white);
     padding: 1.5rem;
-    border-radius: var(--radius);
+    border-radius: var(--border-radius);
     display: flex;
     justify-content: space-between;
     align-items: center;
     text-decoration: none;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
 }
 
 .featured-card:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--box-shadow);
 }
 
 .featured-info h3 {
@@ -279,23 +268,29 @@
 
 .featured-info span {
     font-size: 0.85rem;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .featured-icon {
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 /* --- Empty State --- */
 .empty-state {
     text-align: center;
     padding: 4rem 0;
-    color: var(--text-secondary);
+    color: #999;
 }
 
 /* --- Responsive Mobile --- */
 @media (max-width: 768px) {
-    .dept-page-container { margin: 0; }
+    /* 모바일에서는 여백을 줄여 화면을 넓게 사용 */
+    .dept-page-container {
+        margin: 1rem 0;
+        padding: 1.5rem 1rem;
+        border-radius: 0; /* 모바일에서는 꽉 차게 보이도록 (선택사항) */
+    }
+    
     .page-title h2 { font-size: 1.5rem; }
     .grid-container { grid-template-columns: 1fr; }
     .category-filter { padding-bottom: 0.5rem; }
