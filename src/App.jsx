@@ -9,8 +9,8 @@ import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import HomePage from './pages/HomePage';
-import NoticePage from './pages/NoticePage';
-import NoticeDetailPage from './pages/NoticeDetailPage';
+import NoticePage from './pages/client/notice/NoticePage';
+import NoticeDetailPage from './pages/client/notice/NoticeDetailPage';
 import BorrowPage from './pages/client/borrow/BorrowPage';
 import CheckPage from './pages/client/borrow/CheckPage';
 import SuccessPage from './pages/client/borrow/SuccessPage';
