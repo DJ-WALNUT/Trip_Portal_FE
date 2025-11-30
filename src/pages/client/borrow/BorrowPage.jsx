@@ -185,7 +185,7 @@ function BorrowPage() {
             onChange={handleInputChange} 
           />
           <input 
-            type="text" name="student_id" placeholder="학번 (예: 202312345)" required 
+            type="number" name="student_id" placeholder="학번 (예: 202312345)" min="200000000" max="209909099" required 
             onChange={handleInputChange}
           />
           <select name="department" required onChange={handleInputChange} defaultValue="">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './TeaserPage.css';
 import ClickSpark from '@/bits/ClickSpark';
@@ -13,6 +14,9 @@ function TeaserPage() {
     phone: '',
     agreed: false
   });
+
+  // 학과 소개 페이지로 이동하기 위한 훅 (만약 a태그 쓸거면 필요 없음)
+  const navigate = useNavigate();
 
   // 학과 목록 가져오기 (기존 API 재활용)
   useEffect(() => {
@@ -53,8 +57,8 @@ function TeaserPage() {
     try {
       const res = await axios.post('/api/teaser/entry', formData);
       if (res.data.status === 'success') {
-        alert('🎉 응모가 완료되었습니다! 확인을 누르면 메인 화면으로 돌아갑니다.');
-        setStep('intro'); // 초기화
+        {/* alert('🎉 응모가 완료되었습니다! 확인을 누르면 메인 화면으로 돌아갑니다.'); */}
+        setStep('done'); // 초기화
         setFormData({ name: '', student_id: '', department: '', phone: '', agreed: false });
       } else {
         alert(res.data.message);
@@ -62,6 +66,14 @@ function TeaserPage() {
     } catch (err) {
       alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
+  };
+
+  // 학과 소개 페이지로 이동 함수
+  const goToDepartmentInfo = () => {
+    // 1. 리액트 라우터 사용 시:
+    navigate('/teaser/departments'); 
+    // 2. 혹은 일반 링크 이동 시:
+    // window.location.href = '/department-info';
   };
 
   return (
@@ -97,6 +109,7 @@ function TeaserPage() {
           </div>
 
           <p style={{marginTop: '4rem', color: '#87ceeb', letterSpacing: '3px', fontSize: '0.8rem'}}>Welcome to Trip!</p>
+          <p onClick={goToDepartmentInfo} style={{color: '#87ceeb', marginTop: '3rem', fontWeight: '450'}}>단과대별 학과 인스타 미리보기</p>
         </div>
       )}
 
@@ -126,7 +139,7 @@ function TeaserPage() {
 
           <form onSubmit={handleSubmit}>
             <input type="text" name="name" placeholder="이름" value={formData.name} onChange={handleChange} required />
-            <input type="text" name="student_id" placeholder="학번 (숫자만)" value={formData.student_id} onChange={handleChange} required pattern="\d*" />
+            <input type="number" name="student_id" placeholder="학번 (9자리 숫자)" min="200000000" max="209909099" value={formData.student_id} onChange={handleChange} required pattern="\d*" />
             <select name="department" value={formData.department} onChange={handleChange} required>
               <option value="" disabled>학과 선택</option>
               {departments.map(d => <option key={d} value={d}>{d}</option>)}
@@ -144,6 +157,7 @@ function TeaserPage() {
 
 2. 수집하는 개인정보의 항목
 · 필수항목: 성명, 학번, 학과, 전화번호(휴대전화)
+· 기입한 정보가 일치하지 않거나 누락된 경우 이벤트 참여 및 경품 수령이 불가할 수 있습니다
 
 3. 개인정보의 보유 및 이용 기간
 · 낙첨자: 이벤트 종료 및 추첨 완료 후 즉시 파기
@@ -162,6 +176,58 @@ function TeaserPage() {
           </form>
         </div>
       </div>
+      )}
+
+      {/* [추가] 3. 완료 및 유도 (done) */}
+      {step === 'done' && (
+        <div 
+            className="form-backdrop fade-in" 
+            onClick={handleBackdropClick}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 검은 배경
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 50 // 인트로보다 높게
+            }}
+        >
+          <div className="form-mode slide-up" style={{textAlign: 'center'}}>
+            <div style={{fontSize: '4rem', marginBottom: '1rem'}}>🎫</div>
+            <h2 style={{fontSize: '1.8rem', color: '#e0f2f7', marginBottom: '0.5rem'}}>응모가 완료되었습니다!</h2>
+            <p style={{color: '#b0e0e6', marginBottom: '2rem', lineHeight: '1.6'}}>
+              런칭 이벤트에 참여해 주셔서 감사합니다.<br/>
+              추첨 결과는 개별 문자로 안내드릴 예정입니다.
+            </p>
+
+            <div style={{background: 'rgba(255,255,255,0.1)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem'}}>
+              <p style={{color: '#fff', fontWeight: 'bold', marginBottom: '10px'}}>잠깐! 우리 학과 소식은 어디서 보지?</p>
+              <p style={{fontSize: '0.9rem', color: '#ccc', marginBottom: '0'}}>
+                단과대별 학과 인스타그램을 한곳에 모았습니다.<br/>
+                미리 확인하고 팔로우 해보세요!
+              </p>
+            </div>
+
+            <button 
+              onClick={goToDepartmentInfo} 
+              className="btn-submit" 
+              style={{background: 'linear-gradient(135deg, #ffd700, #d8a200ff)', color: '#000'}}
+            >
+              학과 인스타 모아보기 👉
+            </button>
+                
+            <p 
+              onClick={() => setStep('intro')} 
+              style={{marginTop: '20px', cursor: 'pointer', color: '#aaa', fontSize: '0.8rem', textDecoration: 'underline'}}
+            >
+              처음 화면으로
+            </p>
+          </div>
+        </div>
       )}
     </div>
     </ClickSpark>

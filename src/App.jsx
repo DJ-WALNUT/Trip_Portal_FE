@@ -35,7 +35,9 @@ function App() {
       <div className="wrapper">
         <Routes>
           <Route path="/" element={<TeaserPage />} />
+          <Route path="/teaser/departments" element={<DepartmentPage />} />
            
+           {/* 티저페이지 오픈 시 아래 통상페이지 주석처리 필 */}
           <Route path="/main" element={<><Header /><HomePage /></>} />
           <Route path="/notices" element={<><Header /><NoticePage /></>} />
           <Route path="/notices/:id" element={<><Header /><NoticeDetailPage /></>} />

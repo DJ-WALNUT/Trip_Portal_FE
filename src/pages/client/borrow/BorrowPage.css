@@ -81,6 +81,11 @@
     border: 1px solid #ccc;
     border-radius: 8px;
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+/* Firefox  */
+input[type='number'] { -moz-appearance: textfield; }
 
 .submit-btn {
     width: 100%;

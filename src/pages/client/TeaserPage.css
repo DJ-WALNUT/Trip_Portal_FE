@@ -125,6 +125,7 @@
 
 /* 입력 필드 */
 .form-mode input[type="text"],
+.form-mode input[type="number"],
 .form-mode input[type="tel"],
 .form-mode select {
     width: calc(100% - 24px); /* 패딩 고려 */
@@ -141,11 +142,18 @@
 }
 
 .form-mode input[type="text"]:focus,
+.form-mode input[type="number"]:focus,
 .form-mode input[type="tel"]:focus,
 .form-mode select:focus {
     border-color: #00c6ff;
     box-shadow: 0 0 8px rgba(0, 198, 255, 0.5);
 }
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+/* Firefox  */
+input[type='number'] { -moz-appearance: textfield; }
 
 /* [수정] 개인정보 동의 박스 */
 .agreement-box {
