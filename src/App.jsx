@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import TeaserPage from './pages/client/TeaserPage';
 import AdminTeaserPage from './pages/admin/AdminTeaserPage';
 
+import MainLayout from './layouts/MainLayout';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -36,28 +37,31 @@ function App() {
         <Routes>
           <Route path="/" element={<TeaserPage />} />
           <Route path="/teaser/departments" element={<DepartmentPage />} />
-           
-           {/* 티저페이지 오픈 시 아래 통상페이지 주석처리 필 */}
-          <Route path="/main" element={<><Header /><HomePage /></>} />
-          <Route path="/notices" element={<><Header /><NoticePage /></>} />
-          <Route path="/notices/:id" element={<><Header /><NoticeDetailPage /></>} />
-          <Route path="/departments" element={<><Header /><DepartmentPage /></>} />
-          <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
-          <Route path="/check" element={<><Header /><CheckPage /></>} />
-          <Route path="/success" element={<><Header /><SuccessPage /></>} />
+          
+          <Route element={<MainLayout />}>
+            {/* 티저페이지 오픈 시 아래 통상페이지 주석처리
+                혹은 <ProtectedRoute>에 포함할 것 */}
+            <Route path="/main" element={<><Header /><HomePage /></>} />
+            <Route path="/notices" element={<><Header /><NoticePage /></>} />
+            <Route path="/notices/:id" element={<><Header /><NoticeDetailPage /></>} />
+            <Route path="/departments" element={<><Header /><DepartmentPage /></>} />
+            <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
+            <Route path="/check" element={<><Header /><CheckPage /></>} />
+            <Route path="/success" element={<><Header /><SuccessPage /></>} />
 
-          <Route path="/admin" element={<><Header /><AdminLoginPage /></>} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/admin/teaser" element={<AdminTeaserPage />} />
-            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-            <Route path="/admin/notices" element={<AdminNoticeListPage />} />
-            <Route path="/admin/notices/write" element={<AdminNoticeWritePage />} />
-            <Route path="/admin/notices/edit/:id" element={<AdminNoticeWritePage />} />
-            <Route path="/admin/instagram" element={<AdminInstagramPage />} />
-            <Route path="/admin/borrow/approve" element={<AdminApprovePage />} />
-            <Route path="/admin/borrow/return" element={<AdminReturnPage />} />
-            <Route path="/admin/borrow/stock" element={<AdminStockPage />} />
-            <Route path="/admin/borrow/log" element={<AdminLogPage />} />
+            <Route path="/admin" element={<><Header /><AdminLoginPage /></>} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/admin/teaser" element={<AdminTeaserPage />} />
+              <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+              <Route path="/admin/notices" element={<AdminNoticeListPage />} />
+              <Route path="/admin/notices/write" element={<AdminNoticeWritePage />} />
+              <Route path="/admin/notices/edit/:id" element={<AdminNoticeWritePage />} />
+              <Route path="/admin/instagram" element={<AdminInstagramPage />} />
+              <Route path="/admin/borrow/approve" element={<AdminApprovePage />} />
+              <Route path="/admin/borrow/return" element={<AdminReturnPage />} />
+              <Route path="/admin/borrow/stock" element={<AdminStockPage />} />
+              <Route path="/admin/borrow/log" element={<AdminLogPage />} />
+            </Route>
           </Route>
 
           {/* 그 외 모든 경로는 메인으로 리다이렉트 */}

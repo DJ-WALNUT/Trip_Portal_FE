@@ -60,9 +60,10 @@
     font-weight: bold;
 }
 
-.tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;}
-.tag {
-    background-color: var(--main-navy);
+.none{ display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+.tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.tag{
+    background-color: var(--second-navy);
     color: white;
     padding: 0.3rem 0.8rem;
     border-radius: 15px;
@@ -90,7 +91,7 @@ input[type='number'] { -moz-appearance: textfield; }
 .submit-btn {
     width: 100%;
     padding: 1rem;
-    background-color: var(--success);
+    background: var(--success);
     color: white;
     border: none;
     border-radius: 8px;
@@ -98,5 +99,9 @@ input[type='number'] { -moz-appearance: textfield; }
     font-weight: bold;
     cursor: pointer;
 }
-.submit-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+.submit-btn.borrow {
+    background: linear-gradient(135deg, var(--main-navy), var(--saegil-blue));
+}
+
+.submit-btn:disabled { background: #ccc; cursor: not-allowed; }
 .container h1{ color: var(--main-navy);}

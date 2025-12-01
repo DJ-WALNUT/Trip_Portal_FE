@@ -48,7 +48,7 @@
 }
 
 .search-btn:hover {
-    background-color: var(--accent-blue);
+    background-color: var(--second-navy);
 }
 
 /* 게시판 테이블 스타일 */

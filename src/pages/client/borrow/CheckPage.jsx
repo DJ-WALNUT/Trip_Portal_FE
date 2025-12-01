@@ -66,7 +66,7 @@ function CheckPage() {
           onChange={handleChange} 
           required 
         />
-        <button type="submit" class="submit-btn">확인하기</button>
+        <button type="submit" className="submit-btn borrow">확인하기</button>
       </form>
 
       <hr className="divider" />

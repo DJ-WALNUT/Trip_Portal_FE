@@ -127,7 +127,7 @@ function BorrowPage() {
   return (
     <div className="container">
       <h1>물품 대여</h1>
-      <p>원하는 물품을 선택(클릭)한 후 아래 정보를 입력해주세요.</p>
+      <p style={{marginBottom:'0.5rem'}}>원하는 물품을 선택(클릭)한 후 아래 정보를 입력해주세요.</p>
 
       {/* 카테고리 탭 */}
       <div className="category-tabs">
@@ -166,7 +166,7 @@ function BorrowPage() {
       <div className="cart-summary">
         <h3>선택된 물품:</h3>
         {cart.size === 0 ? (
-          <span style={{color:'#999'}}>선택된 물품이 없습니다.</span>
+          <span style={{color:'#999'}} className='none'>선택된 물품이 없습니다.</span>
         ) : (
           <div className="tags">
             {Array.from(cart).map(name => <span key={name} className="tag">{name}</span>)}
@@ -174,11 +174,11 @@ function BorrowPage() {
         )}
       </div>
 
-      <hr className="divider"/>
+      <hr className="divider" />
 
       {/* 신청 폼 */}
       <form onSubmit={handleSubmit} className="borrow-form">
-        <h3>신청자 정보</h3>
+        <h3 style={{marginBottom:'0.5rem'}}>신청자 정보</h3>
         <div className="form-group">
           <input 
             type="text" name="name" placeholder="이름" required 
@@ -197,7 +197,7 @@ function BorrowPage() {
             onChange={handleInputChange}
           />
         </div>
-        <button type="submit" className="submit-btn" disabled={cart.size === 0}>
+        <button type="submit" className="submit-btn borrow" disabled={cart.size === 0} >
           대여 신청하기
         </button>
       </form>

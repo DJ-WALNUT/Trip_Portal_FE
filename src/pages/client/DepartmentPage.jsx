@@ -193,7 +193,7 @@ const DepartmentPage = () => {
       {/* Header Area */}
       <div className="page-header">
         <div className="page-title">
-          <h2>학과/조직도</h2>
+          <h2>단과대 및 학과</h2>
           <p>가톨릭대학교의 단과대별 모든 학과를 한 곳에서 모아보세요.</p>
           <p>계열별 분류는 <a href='https://www.catholic.ac.kr/ko/academics/edu_undergraduate1.do' style={{color: 'var(--saegil-blue)'}}>가톨릭대학교 공식 홈페이지 학과소개 페이지</a>를 참고해주세요.</p>
         </div>

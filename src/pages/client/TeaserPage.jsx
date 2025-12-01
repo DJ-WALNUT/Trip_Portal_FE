@@ -109,7 +109,7 @@ function TeaserPage() {
           </div>
 
           <p style={{marginTop: '4rem', color: '#87ceeb', letterSpacing: '3px', fontSize: '0.8rem'}}>Welcome to Trip!</p>
-          <p onClick={goToDepartmentInfo} style={{color: '#87ceeb', marginTop: '3rem', fontWeight: '450'}}>단과대별 학과 인스타 미리보기</p>
+          <p style={{color: '#87ceeb', marginTop: '3rem', fontWeight: '450'}}><a href='/teaser/departments'>단과대별 학과 인스타 미리보기</a></p>
         </div>
       )}
 

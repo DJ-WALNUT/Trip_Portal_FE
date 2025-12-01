@@ -71,7 +71,7 @@ function AdminHeader() {
   }, [isMenuOpen, isDropdownOpen]); // 상태가 변할 때마다 이펙트 재실행
 
   return (
-    <header className="header admin-header" style={{backgroundColor: '#333'}}>
+    <header className="header admin-header" style={{background: '#333'}}>
       <div className="header-content">
         <Link to="/admin/dashboard" className="logo" onClick={closeMenu}>
            <span className="logo-text">Trip (관리자)</span>
