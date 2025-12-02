@@ -7,6 +7,7 @@ import AdminTeaserPage from './pages/admin/AdminTeaserPage';
 import MainLayout from './layouts/MainLayout';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import HomePage from './pages/HomePage';
@@ -33,6 +34,7 @@ const AdminPage = () => <div className="container"><h2>관리자 페이지 (곧 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="wrapper">
         <Routes>
           <Route path="/" element={<TeaserPage />} />
