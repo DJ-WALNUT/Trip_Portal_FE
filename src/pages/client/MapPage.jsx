@@ -1,154 +1,45 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, MapPin, Building, ArrowRight } from 'lucide-react';
-import CampusMap from '../../components/CampusMap'; // 위에서 만든 컴포넌트
+import axios from 'axios'; // axios 임포트
+import CampusMap from '../../components/CampusMap'; 
+import FacilityModal from '../../components/FacilityModal';
 import './MapPage.css';
-
-// --- 데이터 정의 (건물 ID와 매칭) ---
-const buildingsData = {
-  "kim": {
-    name: "김수환관 (K관)",
-    description: "정문에서 가장 가까우며 교내 상권의 중심입니다.",
-    facilities: [
-    ]
-  },
-  "stephano": {
-    name: "김수환관 (K관, 스테파노 기숙사)",
-    description: "4~15층까지 기숙사이며 그 아래층에는 일반 강의실과 식당, 편의점 등이 있습니다.",
-    facilities: [
-    ]
-  },
-  "andrea": {
-    name: "안드레아관 (A관)",
-    description: "안드레아 기숙사로 불리기도 하며, 세 추기경의 이름을 딴 김수환관, 약학관(정진석 추기경 약학관)에 이어 세번째로 대한민국 추기경의 이름(세례명)을 따왔습니다.",
-    facilities: [
-    ]
-  },
-  "maria": {
-    name: "마리아관 (M관)",
-    description: "인문계열, 사회계열의 과사무실 및 강의실들이 입주해 있습니다.",
-    facilities: [
-      { name: "대강당", loc: "M101" },
-      { name: "우체국", loc: "M1F" },
-      { name: "보건실", loc: "M203" }
-    ]
-  },
-  "nicols": {
-    name: "니콜스관 (N관)",
-    description: "건물 이름은 성심여대의 초대 학장이었던 바바라 니콜스 수녀의 이름에서 유래했습니다.",
-    facilities: [
-      { name: "교무처", loc: "N201" },
-      { name: "입학처", loc: "N205" },
-      { name: "총장실", loc: "N301" }
-    ]
-  },
-  "bambino": {
-    name: "밤비노관 (BA관)",
-    description: "건물 이름은 '작은 예수'의 의미입니다. 2007년 사이언스관이 국제관 공사로 인해 철거되면서 강의 공간이 부족해지자 주차장을 없애고 그 자리에 급하게 세워졌습니다.",
-    facilities: [
-    ]
-  },
-  "dasol": {
-    name: "다솔관 (D관)",
-    description: "다윗의 용기와 솔로몬의 지혜를 줄여 '다솔'로 부릅니다.",
-    facilities: [
-    ]
-  },
-  "virtus": {
-    name: "비르투스관 (V관)",
-    description: "건물 이름은 라틴어로 덕성을 뜻합니다.",
-    facilities: [
-    ]
-  },
-  "sophie_barat": {
-    name: "소피이바라관 (학생미래인재관 B관)",
-    description: "어느 학교 학생회관이 그렇듯이 각종 편의 시설과 동아리방, 총학, 학생회가 입주해 있습니다.",
-    facilities: [
-    ]
-  },
-  "smurf_garden": {
-    name: "하늘동산 (스머프동산)",
-    description: "정식 명칭은 하늘동산이지만 재학생들은 주로 스머프동산이라고 부릅니다.",
-    facilities: [
-    ]
-  },
-  "michael1": {
-    name: "미카엘관 (행정동, HB관)",
-    description: "2004년에 지어진 본관건물로 행정동은 4층, 교수연구동은 9층입니다.",
-    facilities: [
-    ]
-  },
-  "michael2": {
-    name: "미카엘관 (교수연구동, T관)",
-    description: "2004년에 지어진 본관건물로 행정동은 4층, 교수연구동은 9층입니다.",
-    facilities: [
-    ]
-  },
-  "veritas": {
-    name: "베리타스관 (중앙도서관, L관)",
-    description: "정식 이름은 진리를 뜻하는 라틴어인 베리타스관이지만 학생들은 중도(중앙도서관)라 부릅니다.",
-    facilities: [
-    ]
-  },
-  "sungsim": {
-    name: "성심관 (SH관)",
-    description: "성심교정 최북단 건물",
-    facilities: [
-      { name: "메이커스페이스", loc: "SH201" },
-    ]
-  },
-  "pharmacy": {
-    name: "약학관 (NP관)",
-    description: "정식이름은 정진석 추기경 약학관 입니다.",
-    facilities: [
-      { name: "사감실", loc: "S101" },
-      { name: "식당", loc: "B1" }
-    ]
-  },
-  "concert_hall": {
-    name: "콘서트홀 (CH관)",
-    description: "1,500석 규모의 공연장과 강의실이 있는 건물입니다.",
-    facilities: [
-    ]
-  },
-  "main-stadium": {
-    name: "대운동장",
-    description: "아우름제, 체육대회 등 주요 행사가 열리는 운동장입니다.",
-    facilities: [
-    ]
-  },
-  "paulus": {
-    name: "바오로관 (P관)",
-    description: "학교 신부님들의 숙소. 그 외 구성원들은 출입 할 일이 없는 곳 입니다.",
-    facilities: [
-    ]
-  },
-  "international": {
-    name: "국제교류관 (I관)",
-    description: "외국인 교수들을 위한 숙소. 이름 탓에 국제관과 혼동하기 쉽습니다.",
-    facilities: [
-    ]
-  },
-  "church": {
-    name: "예수성심성당 (C관)",
-    description: "성심당이 아닙니다. 성심성당 입니다. 학교 구성원 누구나 이용할 수 있는 교내 성당입니다.",
-    facilities: [
-    ]
-  },
-};
 
 const MapPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBuildingId, setSelectedBuildingId] = useState(null);
+  
+  // 백엔드 데이터 상태
+  const [buildingsData, setBuildingsData] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  // 지도에서 건물 클릭 핸들러
-  const handleBuildingClick = (id) => {
-    // 이미 선택된 걸 다시 누르면 해제, 아니면 선택
-    setSelectedBuildingId(prev => prev === id ? null : id);
-  };
+  // 선택된 시설 (팝업용)
+  const [selectedFacility, setSelectedFacility] = useState(null);
 
-  // 렌더링할 정보 결정
+  // 1. API 데이터 호출 (axios 사용 + 상대 경로)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // [수정] 도메인 제거 (/api/...) 및 axios 사용으로 코드 단축
+        const response = await axios.get('/api/campus/info');
+        
+        if (response.data.status === 'success') {
+          setBuildingsData(response.data.data);
+        }
+      } catch (error) {
+        console.error("캠퍼스 정보 로딩 실패:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // 2. 화면에 표시할 콘텐츠 필터링 로직
   const displayContent = useMemo(() => {
-    // 1. 건물이 선택되었을 때
+    if (loading) return { type: 'loading' };
+
+    // Case A: 건물이 선택된 경우
     if (selectedBuildingId && buildingsData[selectedBuildingId]) {
       return {
         type: 'building',
@@ -156,19 +47,35 @@ const MapPage = () => {
       };
     }
     
-    // 2. 검색어가 있을 때 (건물명 or 시설명 검색)
+    // Case B: 검색어가 있는 경우
     if (searchTerm) {
-      // 간단한 검색 로직 구현
+      // [수정] 대소문자 구분 없이 검색하기 위해 검색어를 소문자로 변환
+      const lowerTerm = searchTerm.toLowerCase();
+
       const results = Object.entries(buildingsData).filter(([key, bldg]) => {
-        return bldg.name.includes(searchTerm) || 
-               bldg.facilities.some(f => f.name.includes(searchTerm));
+        // 1. 건물 이름 매칭 (예: "니콜스")
+        const isBuildingMatch = bldg.name.toLowerCase().includes(lowerTerm);
+
+        // 2. 시설 이름 또는 **위치(주소)** 매칭 (예: "입학처" or "N201")
+        const isFacilityMatch = bldg.facilities.some(f => 
+          f.name.toLowerCase().includes(lowerTerm) || 
+          (f.loc && f.loc.toLowerCase().includes(lowerTerm)) // [추가됨] 여기서 주소(loc)를 검사합니다.
+        );
+
+        return isBuildingMatch || isFacilityMatch;
       });
       return { type: 'search', data: results };
     }
 
-    // 3. 기본 상태
+    // Case C: 기본 상태
     return { type: 'default', data: null };
-  }, [selectedBuildingId, searchTerm]);
+  }, [selectedBuildingId, searchTerm, buildingsData, loading]);
+
+
+  // 3. 시설 항목 클릭 핸들러 (팝업 오픈)
+  const handleFacilityClick = (facility) => {
+    setSelectedFacility(facility);
+  };
 
   return (
     <div className="map-page-container">
@@ -187,7 +94,7 @@ const MapPage = () => {
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
-              setSelectedBuildingId(null); // 검색 시 선택 해제
+              setSelectedBuildingId(null);
             }}
           />
           <Search className="search-icon" size={20} />
@@ -198,27 +105,60 @@ const MapPage = () => {
       <section className="map-section">
         <CampusMap 
           selectedBuilding={selectedBuildingId} 
-          onBuildingClick={handleBuildingClick} 
+          onBuildingClick={(id) => setSelectedBuildingId(prev => prev === id ? null : id)} 
         />
       </section>
 
       {/* Info List Section */}
       <section className="info-section">
         
-        {/* Case 1: 건물 선택됨 */}
+        {displayContent.type === 'loading' && (
+          <div className="empty-state">정보를 불러오는 중입니다...</div>
+        )}
+
+        {/* Case 1: 건물 상세 정보 (여기가 수정됨) */}
         {displayContent.type === 'building' && (
           <div className="building-detail-card animate-fade-in">
             <div className="detail-header">
               <h3>{displayContent.data.name}</h3>
               <p>{displayContent.data.description}</p>
             </div>
+            
             <div className="facility-grid">
-              {displayContent.data.facilities.map((fac, idx) => (
-                <div key={idx} className="facility-item">
-                  <span className="fac-name">{fac.name}</span>
-                  <span className="fac-loc"><MapPin size={14}/> {fac.loc}</span>
-                </div>
-              ))}
+              {(() => {
+                // [수정] 렌더링 시 검색어를 기준으로 시설을 한 번 더 필터링합니다.
+                const filteredFacilities = displayContent.data.facilities.filter(fac => {
+                  // 1. 검색어가 없으면 전부 보여줌
+                  if (!searchTerm) return true;
+                  
+                  const lowerTerm = searchTerm.toLowerCase();
+                  
+                  // 2. 검색어가 '건물 이름' 자체에 포함되어 있다면 -> 건물 전체를 보려는 의도이므로 전부 보여줌
+                  if (displayContent.data.name.toLowerCase().includes(lowerTerm)) return true;
+
+                  // 3. 그게 아니라면, 시설 이름이나 주소가 검색어를 포함하는 것만 남김
+                  return (
+                    fac.name.toLowerCase().includes(lowerTerm) || 
+                    (fac.loc && fac.loc.toLowerCase().includes(lowerTerm))
+                  );
+                });
+
+                if (filteredFacilities.length > 0) {
+                  return filteredFacilities.map((fac, idx) => (
+                    <div 
+                      key={idx} 
+                      className="facility-item"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleFacilityClick(fac)}
+                    >
+                      <span className="fac-name">{fac.name}</span>
+                      <span className="fac-loc"><MapPin size={14}/> {fac.loc}</span>
+                    </div>
+                  ));
+                } else {
+                  return <div className="no-facility-msg">검색 조건에 맞는 시설이 없습니다.</div>;
+                }
+              })()}
             </div>
           </div>
         )}
@@ -236,7 +176,7 @@ const MapPage = () => {
           </div>
         )}
 
-        {/* Case 3: 기본 안내 */}
+        {/* Case 3: 기본 상태 (안내 문구) */}
         {displayContent.type === 'default' && (
           <div className="empty-state">
             <Building size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
@@ -245,6 +185,13 @@ const MapPage = () => {
           </div>
         )}
       </section>
+
+      {/* 팝업 컴포넌트 */}
+      <FacilityModal 
+        isOpen={!!selectedFacility} 
+        onClose={() => setSelectedFacility(null)} 
+        facility={selectedFacility}
+      />
     </div>
   );
 };

@@ -296,11 +296,11 @@
     /* 모바일에서는 여백을 줄여 화면을 넓게 사용 */
     .dept-page-container {
         margin: 1rem 0;
-        padding: 1.5rem 1rem;
+        padding: 1rem;
         border-radius: 0; /* 모바일에서는 꽉 차게 보이도록 (선택사항) */
     }
     
-    .page-title h2 { font-size: 1.5rem; }
+    .page-title h2 { font-size: 2rem; }
     .grid-container { grid-template-columns: 1fr; }
     .category-filter { padding-bottom: 0.5rem; }
     .search-input { font-size: 0.9rem; }
