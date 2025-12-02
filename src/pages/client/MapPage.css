@@ -1,0 +1,125 @@
+/* src/pages/MapPage.css */
+
+.map-page-container {
+    width: auto;
+    margin: 2rem;
+    padding: 2rem;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* --- Map Area --- */
+.map-section {
+    background-color: #f0f4f8; /* 지도 배경색 (바다/땅 느낌) */
+    border-radius: 12px;
+    padding: 1rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    border: 1px solid var(--light-gray);
+    max-height: 600px;
+    align-items: center;
+}
+
+.map-wrapper {
+    width: 100%;
+    max-width: 800px; /* 지도 최대 크기 제한 */
+    height: auto;
+}
+
+.campus-map-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 700px;
+}
+
+/* --- Interactive SVG Styles --- */
+/* 클릭 가능한 건물 Path */
+.building-path {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0px 0px 0px rgba(0,0,0,0));
+}
+
+.building-path:hover {
+    opacity: 0.8;
+    transform: translateY(-2px); /* 살짝 떠오르는 효과 */
+    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.2));
+}
+
+/* 건물이 선택되었을 때 (Active) */
+.selected-building {
+    stroke: var(--white);
+    stroke-width: 5px;
+    filter: drop-shadow(0px 0px 10px rgba(52, 152, 219, 0.6)) !important; /* 빛나는 효과 */
+    opacity: 1 !important;
+    z-index: 10; /* 앞으로 가져오기 (SVG에선 순서가 중요하긴 함) */
+}
+
+/* --- Info Section --- */
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.detail-header {
+    border-bottom: 2px solid var(--main-navy);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.detail-header h3 {
+    font-size: 1.5rem;
+    color: var(--main-navy);
+    margin-bottom: 0.5rem;
+}
+
+.facility-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.facility-item {
+    background: var(--background-color);
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fac-name { font-weight: 600; }
+.fac-loc { 
+    font-size: 0.9rem; 
+    color: #666; 
+    display: flex; 
+    align-items: center; 
+    gap: 4px; 
+}
+
+/* 검색 결과 리스트 */
+.result-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.result-item:hover { background-color: var(--light-gray); }
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .map-page-container { margin: 0; padding: 1rem; border-radius: 0; }
+    .page-title h2 { font-size: 1.5rem; }
+}

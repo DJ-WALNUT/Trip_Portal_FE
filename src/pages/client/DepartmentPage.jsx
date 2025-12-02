@@ -3,6 +3,7 @@ import {
   Search, Instagram, ExternalLink, School, 
   BookOpen, Microscope, Users, Music, Pill, LibraryBig,
   GraduationCap, Cog, Landmark, House, Vote, Compass,
+  SquareSigma,
   Cpu, Globe, HeartPulse, Palette, CheckCircle,
 } from 'lucide-react';
 import './DepartmentPage.css';
@@ -80,7 +81,7 @@ const DepartmentPage = () => {
     {
       category: "자연",
       name: "이과대학",
-      icon: <Microscope size={18} />,
+      icon: <SquareSigma size={18} />,
       instas: ["cuk_ns"],
       departments: [
         { name: "이과대학 선거관리위원회", id: "cukns_vote" },
@@ -120,9 +121,9 @@ const DepartmentPage = () => {
       category: "약학",
       name: "약학대학",
       icon: <Pill size={18} />,
-      instas: [],
+      instas: ["catholicpharmacy"],
       departments: [
-        { name: "약학과", id: "catholicpharmacy" },
+        { name: "약학과", id: "" },
       ]
     },
     {
@@ -268,7 +269,7 @@ const DepartmentPage = () => {
                 {/* Card Header */}
                 <div className="card-header">
                   <span className="card-title flex items-center gap-2">
-                    {college.icon} {college.name}
+                    {college.icon} <span>{college.name}</span>
                   </span>
                   {/* College Rep Instas */}
                   <div className="flex flex-col gap-1 items-end">

@@ -13,6 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
 import NoticePage from './pages/client/notice/NoticePage';
 import NoticeDetailPage from './pages/client/notice/NoticeDetailPage';
+import MapPage from './pages/client/MapPage';
 import BorrowPage from './pages/client/borrow/BorrowPage';
 import CheckPage from './pages/client/borrow/CheckPage';
 import SuccessPage from './pages/client/borrow/SuccessPage';
@@ -46,6 +47,7 @@ function App() {
             <Route path="/main" element={<><Header /><HomePage /></>} />
             <Route path="/notices" element={<><Header /><NoticePage /></>} />
             <Route path="/notices/:id" element={<><Header /><NoticeDetailPage /></>} />
+            <Route path="/campusmap" element={<><Header /><MapPage /></>} />
             <Route path="/departments" element={<><Header /><DepartmentPage /></>} />
             <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
             <Route path="/check" element={<><Header /><CheckPage /></>} />

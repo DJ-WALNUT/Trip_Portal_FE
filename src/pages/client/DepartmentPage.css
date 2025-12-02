@@ -173,8 +173,17 @@
     color: var(--main-navy);
     align-items: center;
 }
-.card-title svg {
-    margin: 0 7px;
+.card-title svg { margin: 0 0.5rem; }
+.card-title span {
+    margin: 0;        /* 마진 강제 제거 */
+    padding: 0;       /* 패딩 제거 */
+    line-height: 1;   /* 글자 높이를 폰트 크기에 딱 맞춤 (중요) */
+    /* 폰트 특성상 그래도 위로 쏠려 보인다면 
+       아래 속성 중 하나를 주석 해제하여 미세 조정하세요.
+       보통 1px~2px 정도 내리면 시각적으로 맞습니다.
+    */
+    /* padding-top: 2px; */
+    /* transform: translateY(1px); */
 }
 
 .college-insta-link {

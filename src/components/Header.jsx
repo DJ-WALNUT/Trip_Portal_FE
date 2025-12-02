@@ -75,7 +75,7 @@ function Header() {
                 <li><Link to="/check" onClick={closeMenu}>신청/대여 확인</Link></li>
               </ul>
             </li>
-            <li><Link to="/" onClick={closeMenu}>성심지도</Link></li>
+            <li><Link to="/campusmap" onClick={closeMenu}>성심지도</Link></li>
             <li><Link to="/departments" onClick={closeMenu}>단과대 및 학과</Link></li>
             <li>
               <a href="https://2025saegil.cukeng.kr" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
