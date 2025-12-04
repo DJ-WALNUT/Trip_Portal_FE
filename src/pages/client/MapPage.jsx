@@ -59,7 +59,8 @@ const MapPage = () => {
         // 2. 시설 이름 또는 **위치(주소)** 매칭 (예: "입학처" or "N201")
         const isFacilityMatch = bldg.facilities.some(f => 
           f.name.toLowerCase().includes(lowerTerm) || 
-          (f.loc && f.loc.toLowerCase().includes(lowerTerm)) // [추가됨] 여기서 주소(loc)를 검사합니다.
+          (f.loc && f.loc.toLowerCase().includes(lowerTerm)) ||// [추가됨] 여기서 주소(loc)를 검사합니다.
+          (f.desc && f.desc.toLowerCase().includes(lowerTerm))
         );
 
         return isBuildingMatch || isFacilityMatch;
@@ -139,7 +140,8 @@ const MapPage = () => {
                   // 3. 그게 아니라면, 시설 이름이나 주소가 검색어를 포함하는 것만 남김
                   return (
                     fac.name.toLowerCase().includes(lowerTerm) || 
-                    (fac.loc && fac.loc.toLowerCase().includes(lowerTerm))
+                    (fac.loc && fac.loc.toLowerCase().includes(lowerTerm)) ||
+                    (fac.desc && fac.desc.toLowerCase().includes(lowerTerm))
                   );
                 });
 

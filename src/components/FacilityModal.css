@@ -20,6 +20,10 @@
   animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.modal-content p{
+  text-align: left;
+}
+
 .modal-close-btn {
   position: absolute;
   top: 12px; right: 12px;
@@ -99,6 +103,8 @@
   color: #495057;
   font-size: 0.95rem;
   line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .desc-icon {
