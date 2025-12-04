@@ -27,25 +27,6 @@ const CampusMap = ({ selectedBuilding, onBuildingClick }) => {
               .cls-12{fill:#8c558c;}.cls-13{fill:#52883e;}.cls-14{fill:#187286;}
               .cls-15{fill:#d68734;}.cls-16{fill:#268970;}.cls-17{fill:#7796b0;}
               .cls-18{fill:#bf4a40;}
-              
-              .building-path { 
-                cursor: pointer; 
-                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-                transform-box: fill-box;
-                transform-origin: center;
-              }
-              .building-path:hover { 
-                opacity: 0.9; 
-                filter: brightness(1.1);
-                transform: translateY(-5px); 
-              }
-              .selected-building { 
-                stroke: #fff; 
-                stroke-width: 4px; 
-                filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); 
-                opacity: 1 !important;
-                z-index: 999; 
-              }
             `}
           </style>
         </defs>
