@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './TeaserPage.css';
 import ClickSpark from '@/bits/ClickSpark';
+import Snowfall from 'react-snowfall';
+
+const snowflakeImg = document.createElement('img');
+snowflakeImg.src = '/images/snowflake.png';
+const snowflakeImages = [snowflakeImg];
 
 function TeaserPage() {
   const [step, setStep] = useState('intro'); // intro -> form -> done
@@ -14,6 +19,8 @@ function TeaserPage() {
     phone: '',
     agreed: false
   });
+  const [isSystemSnowOn, setIsSystemSnowOn] = useState(false); // 관리자가 켰는지
+  const [isUserSnowOn, setIsUserSnowOn] = useState(true); // 사용자가 켰는지
 
   // 학과 소개 페이지로 이동하기 위한 훅 (만약 a태그 쓸거면 필요 없음)
   const navigate = useNavigate();
@@ -23,6 +30,13 @@ function TeaserPage() {
     axios.get('/api/departments')
       .then(res => {
         if (res.data.status === 'success') setDepartments(res.data.data);
+      })
+    // [신규] 시스템 눈송이 설정 확인
+    axios.get('/api/system/snowfall')
+      .then(res => {
+        if (res.data.status === 'success') {
+          setIsSystemSnowOn(res.data.enabled);
+        }
       })
       .catch(err => console.error(err));
   }, []);
@@ -85,6 +99,34 @@ function TeaserPage() {
       duration={400}
     >
     <div className="teaser-page">
+      {/* [신규] 눈송이 컴포넌트 & 사용자 제어 UI */}
+      {isSystemSnowOn && (
+        <>
+          {/* 사용자가 켰을 때만 눈이 내림 */}
+          {isUserSnowOn && (
+            <Snowfall 
+              style={{ position: 'absolute', zIndex: 1 }} 
+              snowflakeCount={70}
+              images={snowflakeImages} 
+              // [팁] 이미지는 기본 원형 눈보다 작게 보일 수 있으니 크기를 조금 키워주면 좋습니다.
+              radius={[5, 20]}
+            />
+          )}
+
+          {/* 우측 하단 고정 체크박스 */}
+          <div className="snow-control-box fade-in">
+            <label style={{cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)'}}>
+              <input 
+                type="checkbox" 
+                checked={isUserSnowOn} 
+                onChange={(e) => setIsUserSnowOn(e.target.checked)}
+                style={{ accentColor: '#87ceeb', width: '16px', height: '16px', cursor: 'pointer' }}
+              />
+              <span style={{fontSize: '0.9rem', fontWeight: 'bold'}}>❄️ 눈 내리기</span>
+            </label>
+          </div>
+        </>
+      )}
         <div className="circle-container">
             <div className="circle"></div>
             <div className="circle"></div>

@@ -7,6 +7,7 @@ function AdminDashboardPage() {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ today_count: 0, recent_logs: [] });
   const [loading, setLoading] = useState(true);
+  const [isSnowfallOn, setIsSnowfallOn] = useState(false);
 
   useEffect(() => {
     // 1. 권한 체크 (로그인 안 했으면 튕겨내기)
@@ -19,16 +20,35 @@ function AdminDashboardPage() {
     // 2. 데이터 가져오기
     axios.get('/api/admin/dashboard')
       .then(res => {
-        if(res.data.status === 'success') {
-            setStats(res.data);
-        }
+        if(res.data.status === 'success') setStats(res.data);
         setLoading(false);
       })
       .catch(err => {
         console.error(err);
         setLoading(false);
       });
+
+    // 눈송이 설정 상태 로드
+    axios.get('/api/system/snowfall')
+      .then(res => {
+        if (res.data.status === 'success') {
+          setIsSnowfallOn(res.data.enabled);
+        }
+      });
   }, [navigate]);
+
+  // 눈송이 토글 핸들러
+  const toggleSnowfall = () => {
+    const newState = !isSnowfallOn;
+    axios.post('/api/admin/system/snowfall', { enabled: newState })
+      .then(res => {
+        if (res.data.status === 'success') {
+          setIsSnowfallOn(res.data.enabled);
+          alert(`눈송이 효과를 ${res.data.enabled ? '켰습니다' : '껐습니다'}.`);
+        }
+      })
+      .catch(err => alert('설정 변경 실패'));
+  };
 
   if (loading) return <div className="container">로딩 중...</div>;
 
@@ -37,6 +57,34 @@ function AdminDashboardPage() {
       <AdminHeader />
       <div className="container">
         <h1>관리자 대시보드</h1>
+
+        <div style={{
+          background: isSnowfallOn ? '#e3f2fd' : '#f1f3f5',
+          padding: '10px 20px',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          border: isSnowfallOn ? '1px solid #2196f3' : '1px solid #ddd'
+        }}>
+          <span style={{fontWeight: 'bold', color: isSnowfallOn ? '#1565c0' : '#666'}}>
+              ❄️ 눈송이 효과: {isSnowfallOn ? 'ON' : 'OFF'}
+          </span>
+          <button 
+              onClick={toggleSnowfall}
+              style={{
+                  padding: '6px 12px',
+                  background: isSnowfallOn ? '#ef5350' : '#2196f3',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold'
+              }}
+          >
+              {isSnowfallOn ? '끄기' : '켜기'}
+          </button>
+        </div>
 
         {/* 통계 카드 */}
         <div style={{ display: 'grid', gap: '1rem', marginBottom: '2rem' }}>
