@@ -1,0 +1,200 @@
+/* DinoGame.css */
+
+/* 모달 오버레이 */
+.dino-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 */
+    backdrop-filter: blur(4px); /* 배경 블러 효과 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* 최상단 */
+    padding: 1rem;
+}
+
+/* 게임 카드 (컨테이너) */
+.dino-card {
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 헤더 영역 */
+.dino-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.dino-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dino-title h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--main-navy);
+    font-weight: 700;
+}
+
+.badge {
+    background-color: var(--saegil-blue);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    padding: 4px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+.close-btn:hover {
+    background-color: var(--light-gray);
+}
+
+/* 실제 게임 스크린 */
+.dino-screen {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    background-color: #f7f9fc; /* 약간 밝은 하늘색 톤 배경 */
+    border-bottom: 4px solid var(--main-navy); /* 바닥 선 */
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 점수판 */
+.score-board {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-family: 'Pretendard', monospace; /* 숫자 가독성 */
+    font-weight: 700;
+    color: var(--main-navy);
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
+}
+.high-score { color: #888; display: flex; align-items: center; gap: 4px; }
+
+/* 안내 메시지 및 게임오버 */
+.game-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 20;
+    color: var(--main-navy);
+}
+.game-message p { margin-top: 10px; font-size: 0.9rem; color: #666; }
+.game-message.game-over h2 { color: var(--danger); font-size: 2rem; margin-bottom: 1rem;}
+
+.restart-btn {
+    background-color: var(--main-navy);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 auto;
+    transition: transform 0.2s;
+}
+.restart-btn:hover { transform: scale(1.05); background-color: var(--second-navy); }
+
+.blink { animation: blink 1.5s infinite; }
+@keyframes blink { 50% { opacity: 0.5; } }
+
+/* --- 게임 요소 (스프라이트) --- */
+.dino-char {
+    position: absolute;
+    bottom: 0; /* JS가 이 값을 계속 바꿈 */
+    left: 40px;
+    width: 60px;
+    height: 70px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom center;
+    z-index: 5;
+    image-rendering: pixelated; 
+    /* [중요] transition 제거: JS가 매 프레임 위치를 찍어주므로 부드러움 */
+    transition: none; 
+    will-change: bottom; /* 성능 최적화 힌트 */
+}
+
+/* 점프 애니메이션 */
+.dino-char.jumping {
+    animation: dino-jump 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dino-jump {
+    0% { bottom: 0; }
+    50% { bottom: 90px; } /* 점프 높이 */
+    100% { bottom: 0; }
+}
+
+.obstacle {
+    position: absolute;
+    bottom: 0;
+    left: 100%; /* 초기값, JS가 바꿈 */
+    width: 40px; 
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 5px;
+    
+    /* [중요] transition 제거 */
+    transition: none;
+    will-change: left; /* 성능 최적화 힌트 */
+}
+
+/* 장애물 이동 */
+.obstacle.animate-move {
+    animation: obstacle-slide 1.8s linear infinite; /* 속도 조절 (작을수록 빠름) */
+}
+
+@keyframes obstacle-slide {
+    0% { left: 100%; }
+    100% { left: -50px; }
+}
+
+.paused { animation-play-state: paused !important; }
+
+/* 푸터 */
+.dino-footer {
+    padding: 0.8rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #888;
+    background-color: #fafafa;
+}
+
+@media (max-width: 768px) {
+    .dino-screen { height: 200px; }
+    .dino-jump { animation-duration: 0.6s; }
+}

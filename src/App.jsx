@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import TeaserPage from './pages/client/TeaserPage';
 import AdminTeaserPage from './pages/admin/AdminTeaserPage';
+import DinoGame from './components/z_dino(easter)/DinoGame';
 
 import MainLayout from './layouts/MainLayout';
 import Header from './components/Header';
@@ -33,9 +34,57 @@ import AdminLogPage from './pages/admin/borrow/AdminLogPage';
 const AdminPage = () => <div className="container"><h2>관리자 페이지 (곧 만듭니다!)</h2></div>;
 
 function App() {
+  const [showGame, setShowGame] = useState(false);
+  // === [1] PC용 이스터에그: 코나미 커맨드 ===
+  useEffect(() => {
+    const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let cursor = 0;
+
+    const handleKeyDown = (e) => {
+      if (e.key === konamiCode[cursor]) {
+        cursor++;
+        if (cursor === konamiCode.length) {
+          setShowGame(true);
+          cursor = 0;
+        }
+      } else {
+        cursor = 0;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // === [2] 모바일용 이스터에그: 푸터 5회 연속 터치 ===
+  const lastTapTimeRef = useRef(0);
+  const tapCountRef = useRef(0);
+
+  const handleMobileEasterEgg = () => {
+    const now = Date.now();
+    const timeDiff = now - lastTapTimeRef.current;
+
+    // 0.5초(500ms) 이내에 다시 터치했는지 확인
+    if (timeDiff < 500 && timeDiff > 0) {
+      tapCountRef.current += 1;
+    } else {
+      // 시간이 너무 지났으면 카운트 리셋
+      tapCountRef.current = 1;
+    }
+
+    lastTapTimeRef.current = now;
+
+    // 5번 연속 터치 시 게임 실행
+    if (tapCountRef.current === 5) {
+      setShowGame(true);
+      tapCountRef.current = 0; // 카운트 초기화
+    }
+  };
+
   return (
     <Router>
       <ScrollToTop />
+      <DinoGame isOpen={showGame} onClose={() => setShowGame(false)} />
       <div className="wrapper">
         <Routes>
           <Route path="/" element={<TeaserPage />} />
@@ -72,7 +121,9 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
-        <Footer />
+        <div onClick={handleMobileEasterEgg} style={{ width: '100%' }}>
+          <Footer />
+        </div>
       </div>
     </Router>
   );
