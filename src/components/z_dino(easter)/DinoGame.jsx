@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Trophy, RotateCcw, Play, Bug } from 'lucide-react';
 import './DinoGame.css';
 
-// 이미지 import
-import dinoRun1 from '../../assets/images/easter/engini-run-1.png';
-import dinoRun2 from '../../assets/images/easter/engini-run-2.png';
+const DINO_RUN_1 = '/images/easter/engini-run-1.png';
+const DINO_RUN_2 = '/images/easter/engini-run-2.png';
 
 // --- [보안] 점수 암호화 (이전과 동일) ---
 const SECRET_SALT = "engini_physics_v1_";
@@ -34,7 +33,7 @@ const DinoGame = ({ isOpen, onClose }) => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [dinoSprite, setDinoSprite] = useState(dinoRun1);
+  const [dinoSprite, setDinoSprite] = useState(DINO_RUN_1);
 
   // === Refs (게임 루프 내부 변수 - 렌더링 유발 X) ===
   const requestRef = useRef(null);
@@ -65,7 +64,7 @@ const DinoGame = ({ isOpen, onClose }) => {
     setIsPlaying(true);
     setIsGameOver(false);
     setScore(0);
-    setDinoSprite(dinoRun1);
+    setDinoSprite(DINO_RUN_1);
 
     // 상태 초기화
     gameState.current = {
@@ -138,11 +137,11 @@ const DinoGame = ({ isOpen, onClose }) => {
     // 점수와 상관없이 tick을 기준으로 일정하게 교체합니다.
     if (state.dinoY > 0) {
       // 점프 중일 때는 달리는 모션 멈춤 (첫 번째 이미지 고정)
-      setDinoSprite(dinoRun1);
+      setDinoSprite(DINO_RUN_1);
     } else {
       // 바닥에 있을 때: 15프레임마다 발을 구릅니다 (숫자를 줄이면 더 빨리 뜀)
       if (state.tick % 15 === 0) {
-        setDinoSprite(prev => prev === dinoRun1 ? dinoRun2 : dinoRun1);
+        setDinoSprite(prev => prev === DINO_RUN_1 ? DINO_RUN_2 : DINO_RUN_1);
       }
     }
 
