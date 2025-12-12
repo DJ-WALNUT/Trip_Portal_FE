@@ -3,6 +3,8 @@ import { X, MapPin, Info } from 'lucide-react';
 import './FacilityModal.css';
 
 const FacilityModal = ({ isOpen, onClose, facility }) => {
+  // 배포 환경 도메인
+  const BASE_URL = import.meta.env.PROD ? 'https://trip-api.cukeng.kr' : '';
   if (!isOpen || !facility) return null;
 
   return (
@@ -16,7 +18,7 @@ const FacilityModal = ({ isOpen, onClose, facility }) => {
         {/* 이미지 영역 (이미지가 없으면 플레이스홀더) */}
         <div className="modal-image-container">
           {facility.imgUrl ? (
-            <img src={facility.imgUrl} alt={facility.name} className="modal-image" />
+            <img src={facility.imgUrl.startsWith('http') ? facility.imgUrl : `${BASE_URL}${facility.imgUrl}`}  alt={facility.name} className="modal-image" />
           ) : (
             <div className="modal-no-image">
               <span>이미지가 없습니다</span>
