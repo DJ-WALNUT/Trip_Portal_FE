@@ -8,13 +8,13 @@
     font-size: 0.9rem;
     text-align: center;
     line-height: 1.6;
-};
+}
 
 .footer-container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 1rem;
-};
+}
 
 .footer-law{
     list-style-type: none;
