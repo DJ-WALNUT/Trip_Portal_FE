@@ -9,7 +9,6 @@
     align-items: center;
     background: linear-gradient(135deg, #0f1f40, #2a477b); /* 짙은 남색 -> 중남색 그라데이션 */
     color: #fff;
-    font-family: 'Noto Sans KR', sans-serif;
     animation: backgroundShift 20s ease-in-out infinite alternate;
 }
 

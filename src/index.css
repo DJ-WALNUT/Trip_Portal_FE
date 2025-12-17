@@ -7,19 +7,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-    font-family: 'Pretendard';
-    /* public 폴더 기준 절대 경로로 적습니다 (/fonts/...) */
-    src: url('/fonts/PretendardJP-Regular.ttf') format('truetype');
-    font-weight: 400;
+    font-family: 'Pretendard GOV Variable';
+    /* 업로드하신 파일명과 정확히 일치시켰습니다 */
+    src: url('/fonts/PretendardGOVVariable.woff2') format('woff2-variations');
+    font-weight: 100 900;
     font-style: normal;
-}
-
-/* Bold (굵은 글씨) */
-@font-face {
-    font-family: 'Pretendard';
-    src: url('/fonts/PretendardJP-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
+    font-display: swap;
 }
 
 :root {
@@ -34,7 +27,7 @@
     --white: #ffffff;
     --danger: #e74c3c;
     --success: #2ecc71;
-    --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    --font-family: 'Pretendard GOV Variable', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
     --border-radius: 12px;
     --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     --radius: 0.625rem;

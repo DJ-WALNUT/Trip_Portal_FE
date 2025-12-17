@@ -151,8 +151,8 @@ function TeaserPage() {
           </div>
 
           <p style={{marginTop: '4rem', color: '#87ceeb', letterSpacing: '3px', fontSize: '0.8rem'}}>Welcome to Trip!</p>
-          <p style={{color: '#87ceeb', marginTop: '4rem', fontWeight: '450'}}><a href='/teaser/departments'>단과대별 학과 및 인스타 미리보기</a></p>
-          <p style={{color: '#87ceeb', marginTop: '1rem', fontWeight: '450'}}><a href='/teaser/campusmap'>학교 지도 및 시설정보 미리보기</a></p>
+          <p style={{color: '#87ceeb', marginTop: '4rem', fontWeight: 'bold'}}><a href='/teaser/departments'>단과대별 학과 및 인스타 미리보기</a></p>
+          <p style={{color: '#87ceeb', marginTop: '1rem', fontWeight: 'bold'}}><a href='/teaser/campusmap'>학교 지도 및 시설정보 미리보기</a></p>
         </div>
       )}
 
@@ -250,7 +250,7 @@ function TeaserPage() {
             <div style={{background: 'rgba(255,255,255,0.1)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem'}}>
               <p style={{color: '#fff', fontWeight: 'bold', marginBottom: '10px'}}>잠깐! 우리 학과 소식은 어디서 보지?</p>
               <p style={{fontSize: '0.9rem', color: '#ccc', marginBottom: '0'}}>
-                단과대별 학과 인스타그램을 한곳에 모았습니다.<br/>
+                단과대별 학과 인스타그램을 한 곳에 모았습니다.<br/>
                 미리 확인하고 팔로우 해보세요!
               </p>
             </div>
