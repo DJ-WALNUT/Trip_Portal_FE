@@ -89,6 +89,7 @@ function App() {
         <Routes>
           <Route path="/" element={<TeaserPage />} />
           <Route path="/teaser/departments" element={<DepartmentPage />} />
+          <Route path="/teaser/campusmap" element={<MapPage />} />
           
           <Route element={<MainLayout />}>
             {/* 티저페이지 오픈 시 아래 통상페이지 주석처리
