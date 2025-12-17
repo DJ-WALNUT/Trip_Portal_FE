@@ -1,0 +1,39 @@
+/* 간단한 스타일은 파일 안에 변수로 넣었습니다 (CSS 파일 따로 만들기 귀찮을 때 유용)*/
+.footer {
+    background-color: #f1f3f5;
+    padding: 2rem 0;
+    margin-top: auto; /*화면 내용이 적어도 푸터는 바닥에 붙게 함*/
+    border-top: 1px solid #e9ecef;
+    color: #868e96;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.6;
+};
+
+.footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+};
+
+.footer-law{
+    list-style-type: none;
+}
+
+.footer-law > li {
+    display: inline-block;
+    position: relative;
+    padding: 0 12px 0 0;
+}
+.footer-law > li:after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 6px;
+    right: 5px;
+    width: 1px;
+    height: 12px;
+    background-color: #909090;
+}
+.footer-law > li:last-of-type {  padding: 0; }
+.footer-law > li:last-of-type:after {  display: none; }
