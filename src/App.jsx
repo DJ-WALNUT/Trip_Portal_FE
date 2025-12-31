@@ -95,25 +95,25 @@ function App() {
           <Route path="/" element={<TeaserPage />} />
           <Route path="/teaser/departments" element={<DepartmentPage />} />
           <Route path="/teaser/campusmap" element={<MapPage />} />
+
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/terms/privacy" element={<PrivacyPage />} />
+          <Route path="/terms/emailrefusal" element={<EmailRefusalPage />} />
+          <Route path="/credits" element={<CreditsPage />} />
           
           <Route element={<MainLayout />}>
             {/* 티저페이지 오픈 시 아래 통상페이지 주석처리
                 혹은 <ProtectedRoute>에 포함할 것 */}
-            <Route path="/main" element={<><Header /><HomePage /></>} />
-            <Route path="/notices" element={<><Header /><NoticePage /></>} />
-            <Route path="/notices/:id" element={<><Header /><NoticeDetailPage /></>} />
-            <Route path="/campusmap" element={<><Header /><MapPage /></>} />
-            <Route path="/departments" element={<><Header /><DepartmentPage /></>} />
-            <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
-            <Route path="/check" element={<><Header /><CheckPage /></>} />
-            <Route path="/success" element={<><Header /><SuccessPage /></>} />
+            <Route path="/main" element={<HomePage />} />
+            <Route path="/notices" element={<NoticePage />} />
+            <Route path="/notices/:id" element={<NoticeDetailPage />} />
+            <Route path="/campusmap" element={<MapPage />} />
+            <Route path="/departments" element={<DepartmentPage />} />
+            <Route path="/borrow" element={<BorrowPage />} />
+            <Route path="/check" element={<CheckPage />} />
+            <Route path="/success" element={<SuccessPage />} />
 
-            <Route path="/terms" element={<><Header /><TermsPage /></>} />
-            <Route path="/terms/privacy" element={<><Header /><PrivacyPage /></>} />
-            <Route path="/terms/emailrefusal" element={<><Header /><EmailRefusalPage /></>} />
-            <Route path="/credits" element={<><Header /><CreditsPage /></>} />
-
-            <Route path="/admin" element={<><Header /><AdminLoginPage /></>} />
+            <Route path="/admin" element={<AdminLoginPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/admin/teaser" element={<AdminTeaserPage />} />
               <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
