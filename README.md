@@ -1,7 +1,7 @@
 ## ✈️ 가톨릭대 4대 공과대학 학생회 [여정] 포털 (Frontend)
 
 가톨릭대학교 공과대학 학생회 **여정**의 통합 포털 웹 서비스 프론트엔드 레포지토리입니다.
-학우들이 간편하게 비품을 대여하고 공지사항을 확인할 수 있으며, 관리자가 효율적으로 재고 및 대여 현황을 관리할 수 있도록 **React 기반의 SPA(Single Page Application)**로 구축되었습니다.
+학우들이 간편하게 비품을 대여하고 공지사항을 확인할 수 있으며, 관리자가 효율적으로 재고 및 대여 현황을 관리할 수 있도록 React 기반의 SPA(Single Page Application)로 구축되었습니다.
 
 [![React](https://img.shields.io/badge/React-18.2.0-20232A?style=flat-square&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.0.0-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)

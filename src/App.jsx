@@ -20,6 +20,11 @@ import CheckPage from './pages/client/borrow/CheckPage';
 import SuccessPage from './pages/client/borrow/SuccessPage';
 import DepartmentPage from './pages/client/DepartmentPage';
 
+import TermsPage from './pages/client/terms/TermsPage';
+import PrivacyPage from './pages/client/terms/PrivacyPage';
+import EmailRefusalPage from './pages/client/terms/EmailRefusalPage';
+import CreditsPage from './pages/client/terms/CreditsPage';
+
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminNoticeListPage from './pages/admin/AdminNoticeListPage';
@@ -102,6 +107,11 @@ function App() {
             <Route path="/borrow" element={<><Header /><BorrowPage /></>} />
             <Route path="/check" element={<><Header /><CheckPage /></>} />
             <Route path="/success" element={<><Header /><SuccessPage /></>} />
+
+            <Route path="/terms" element={<><Header /><TermsPage /></>} />
+            <Route path="/terms/privacy" element={<><Header /><PrivacyPage /></>} />
+            <Route path="/terms/emailrefusal" element={<><Header /><EmailRefusalPage /></>} />
+            <Route path="/credits" element={<><Header /><CreditsPage /></>} />
 
             <Route path="/admin" element={<><Header /><AdminLoginPage /></>} />
             <Route element={<ProtectedRoute />}>
