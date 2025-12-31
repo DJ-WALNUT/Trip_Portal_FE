@@ -20,7 +20,7 @@ function CreditsPage() {
     {
       role: "Lead Developer",
       name: "최원서", 
-      desc: "프로젝트 기획 및 제안\n풀 스택 및 서버 관리\n컴퓨터공학부 21학번",
+      desc: "프로젝트 기획 및 제안\n풀 스택 및 서버 관리\n컴퓨터정보공학부 21학번",
       icon: <Code size={24} color="var(--accent-blue)" />
     },
     {
