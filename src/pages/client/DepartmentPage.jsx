@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { 
-  Search, Instagram, ExternalLink, School, 
+  Search, Instagram, ExternalLink, School, Smile,
   BookOpen, Microscope, Users, Music, Pill, LibraryBig,
   GraduationCap, Cog, Landmark, House, Vote, Compass,
   SquareSigma,
@@ -17,6 +17,7 @@ const DepartmentPage = () => {
     { name: "가톨릭대 공식 인스타", id: "lovecuk", icon: <GraduationCap size={20} /> },
     { name: "가톨릭대 총학생회", id: "cuk_student", icon: <Users size={20} /> },
     { name: "중앙선거관리위원회", id: "cuk_vote", icon: <Vote size={20} /> },
+    { name: "총동아리연합회", id: "cukclubassemble", icon: <Smile size={20} /> },
     { name: "도서관자치위원회", id: "cuk_library", icon: <LibraryBig size={20} /> },
     { name: "중앙축제기획단", id: "festival_cuk", icon: <Music size={20} /> },
   ];
@@ -46,7 +47,7 @@ const DepartmentPage = () => {
       category: "정경",
       name: "정경대학",
       icon: <Landmark size={18} />,
-      instas: ["cuk_newspring"],
+      instas: ["cuk_political_economics"],
       departments: [
         { name: "정경대학 선거관리위원회", id: "" },
         { name: "경영학과", id: "cuk_business20" },
@@ -101,6 +102,7 @@ const DepartmentPage = () => {
         { name: "사회학과", id: "cuk_socio" },
         { name: "사회복지학과", id: "socialwelfare_cuk" },
         { name: "심리학과", id: "cuk_psychology" },
+        { name: "아동학과", id: "cuk_children" },
         { name: "특수교육과", id: "cuk__vrse" },
       ]
     },
@@ -113,7 +115,6 @@ const DepartmentPage = () => {
         { name: "생활과학대학 선거관리위원회", id: "" },
         { name: "공간디자인·소비자학과", id: "cuk_gongso" },
         { name: "식품영양학과", id: "cuk_foodnutrition" },
-        { name: "아동학과", id: "cuk_children" },
         { name: "의류학과", id: "cukcnt" },
       ]
     },
