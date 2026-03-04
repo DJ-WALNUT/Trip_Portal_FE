@@ -3,6 +3,7 @@
     position: relative;
     width: 100vw;
     height: 100vh;
+    min-height: 850px;
     overflow: hidden; /* 오버플로우 숨김 */
     display: flex;
     justify-content: center;

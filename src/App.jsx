@@ -109,9 +109,10 @@ function App() {
             <Route path="/notices/:id" element={<NoticeDetailPage />} />
             <Route path="/campusmap" element={<MapPage />} />
             <Route path="/departments" element={<DepartmentPage />} />
+            {/* 대여사업 전 비공개
             <Route path="/borrow" element={<BorrowPage />} />
             <Route path="/check" element={<CheckPage />} />
-            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/success" element={<SuccessPage />} />*/}
 
             <Route path="/admin" element={<AdminLoginPage />} />
             <Route element={<ProtectedRoute />}>

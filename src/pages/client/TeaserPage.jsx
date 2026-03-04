@@ -137,20 +137,35 @@ function TeaserPage() {
       {/* 1. 인트로 (이스터에그) */}
       {step === 'intro' && (
         <div className="teaser-content intro fade-in" style={{zIndex: 10, textAlign: 'center', color: 'white'}}>
-          <h1 style={{fontSize: '3rem', fontWeight: '800', marginBottom: '1rem', background: 'linear-gradient(to right, #fff, #87ceeb)', WebkitBackgroundClip: 'text', color: 'transparent'}}>Trip Begins</h1>
-          <p style={{color: '#b0e0e6', marginBottom: '4rem', fontWeight: '300'}}>변화를 새길, 우리의 여정</p>
+          <h1 style={{fontSize: '4rem', fontWeight: '900', marginBottom: '0.5rem', background: 'linear-gradient(to right, #fff, #87ceeb)', WebkitBackgroundClip: 'text', color: 'transparent', textShadow: '0 0 20px rgba(135, 206, 235, 0.7)'}}>Trip Begins</h1>
+          <p style={{color: '#b0e0e6', marginBottom: '2.5rem', fontWeight: '300', fontSize: '1.2rem'}}>변화를 새길, 우리의 여정</p>
           
-          <div className="orb-container" style={{width: '100px', height: '100px', margin: '0 auto', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} onClick={handleEasterEgg}>
+          <div className="orb-container" style={{width: '120px', height: '120px', margin: '0 auto', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative'}} onClick={handleEasterEgg}>
             <div className="mystic-orb" style={{
-                width: '50px', height: '50px', borderRadius: '50%',
+                width: '60px', height: '60px', borderRadius: '50%',
                 background: 'radial-gradient(circle at 30% 30%, #fff, #00bfff)',
-                boxShadow: '0 0 30px #00bfff',
-                animation: 'pulse 3s infinite'
+                boxShadow: '0 0 40px #00bfff, 0 0 80px #00bfff',
+                animation: 'pulse 2.5s infinite',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#0f1f40',
+                fontWeight: 'bold',
+                fontSize: '0.8rem',
+                textShadow: 'none',
+                letterSpacing: '1px'
             }}></div>
-            <p className="orb-hint" style={{marginTop: '15px', fontSize: '0.8rem', color: '#00bfff'}}>Click the Light</p>
+            <p className="orb-hint" style={{marginTop: '15px', fontSize: '0.9rem', color: '#00bfff', opacity: 1, fontWeight: '500'}}>↑ CLICK ME!! ↑</p>
           </div>
 
-          <p style={{marginTop: '4rem', color: '#87ceeb', letterSpacing: '3px', fontSize: '0.8rem'}}>Welcome to Trip!</p>
+          <div className="open-notice" style={{marginTop: '3rem', marginBottom: '4rem'}}>
+              <p style={{color: '#fff', fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem', textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'}}>🚀 드디어 내일!</p>
+              <p style={{fontSize: '1.8rem', fontWeight: '900', background: 'linear-gradient(to right, #ffd700, #ffec8b)', WebkitBackgroundClip: 'text', color: 'transparent', textShadow: '0 0 15px rgba(255, 215, 0, 0.6)'}}>03/05(목) 07:00 정식 오픈</p>
+              <p style={{color: '#b0e0e6', fontSize: '1rem', marginTop: '0.5rem'}}>마지막 티저 이벤트 응모 기회를 놓치지 마세요!</p>
+          </div>
+
+          <p style={{marginTop: '1rem', color: '#87ceeb', letterSpacing: '3px', fontSize: '0.8rem'}}>Welcome to Trip!</p>
+          {/* 홍보물 활용을 위해 아래 링크는 잠시 주석 처리하거나 디자인을 변경할 수 있습니다. */}
           <p style={{color: '#87ceeb', marginTop: '4rem', fontWeight: 'bold'}}><a href='/teaser/departments'>단과대별 학과 및 인스타 미리보기</a></p>
           <p style={{color: '#87ceeb', marginTop: '1rem', fontWeight: 'bold'}}><a href='/teaser/campusmap'>학교 지도 및 시설정보 미리보기</a></p>
         </div>

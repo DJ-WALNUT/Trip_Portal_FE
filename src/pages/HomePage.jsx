@@ -79,8 +79,14 @@ function HomePage() {
 
     const getDDayString = (targetDate) => {
         if (!targetDate) return '-';
-        const diffTime = targetDate - new Date().setHours(0,0,0,0);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        // use the same `today` date from above so we don't re-evaluate mid-day
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+
+        const diffTime = targetDate - todayStart;
+        // round toward -infinity so that once the day has passed we get -1, -2, etc
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
         if (diffDays === 0) return "D-Day";
         return diffDays > 0 ? `D-${diffDays}` : `D+${Math.abs(diffDays)}`;
     };
@@ -193,6 +199,7 @@ function HomePage() {
 
       {/* 바로가기 섹션 (기존 유지) */}
       <section className="shortcut-section container">
+        {/* --사업시작 전 비공개
         <h2>물품 대여 사업</h2>
         <div className="shortcut-grid">
           <Link to="/borrow" className="shortcut-card main-card">
@@ -209,8 +216,8 @@ function HomePage() {
               <p>신청/대여 기록을 확인하세요</p>
             </div>
           </Link>
-        </div>
-        <h2 style={{ marginTop: '3rem' }}>학교 바로가기</h2>
+        </div>*/}
+        <h2>학교 바로가기</h2>
         <div className="shortcut-grid small-grid">
             <a href="https://www.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">학교 홈페이지</a>
             <a href="https://uportal.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">트리니티</a>
