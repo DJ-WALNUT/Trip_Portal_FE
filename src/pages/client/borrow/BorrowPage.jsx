@@ -99,7 +99,7 @@ function BorrowPage() {
         // --- 날짜 계산 로직 추가 ---
         const today = new Date();
         const returnDay = new Date();
-        returnDay.setDate(today.getDate() + 7); // 7일 뒤
+        returnDay.setDate(today.getDate() + 4); // 4일 뒤
 
         // 날짜 포맷 (YYYY-MM-DD)
         const formatDate = (d) => d.toISOString().split('T')[0];

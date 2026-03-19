@@ -65,7 +65,6 @@ function Header() {
         <nav className={`main-nav ${isMenuOpen ? 'active' : ''}`} ref={navRef}>
           <ul>
             <li><Link to="/notices" onClick={closeMenu}>공지사항</Link></li>
-            {/*
             <li className="dropdown-container">
               <a href="#" onClick={toggleDropdown} className="dropdown-btn">
                 대여 사업 <span className="arrow">▼</span>
@@ -75,7 +74,6 @@ function Header() {
                 <li><Link to="/check" onClick={closeMenu}>신청/대여 확인</Link></li>
               </ul>
             </li>
-            */}
             <li><Link to="/campusmap" onClick={closeMenu}>성심지도</Link></li>
             <li><Link to="/departments" onClick={closeMenu}>단과대 및 학과</Link></li>
             <li>

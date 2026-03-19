@@ -4,20 +4,22 @@ import { Link } from 'react-router-dom';
 import './NoticePage.css';
 
 function NoticePage() {
-  const [notices, setNotices] = useState([]); // 원본 데이터
-  const [filteredNotices, setFilteredNotices] = useState([]); // 검색 필터링된 데이터 (화면 표시용)
+  const [notices, setNotices] = useState([]);
+  const [filteredNotices, setFilteredNotices] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 검색 관련 상태
-  const [searchType, setSearchType] = useState('title'); // 검색 기준 (제목/내용)
-  const [searchKeyword, setSearchKeyword] = useState(''); // 검색어 입력값
+  // --- 1. 페이지네이션 상태 추가 ---
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // 한 페이지에 보여줄 개수
 
-  // 백엔드 API 연동
+  const [searchType, setSearchType] = useState('title');
+  const [searchKeyword, setSearchKeyword] = useState('');
+
   useEffect(() => {
     axios.get('/api/notices')
       .then(res => {
         setNotices(res.data);
-        setFilteredNotices(res.data); // 초기에는 전체 목록 표시
+        setFilteredNotices(res.data);
         setLoading(false);
       })
       .catch(err => {
@@ -26,65 +28,52 @@ function NoticePage() {
       });
   }, []);
 
-  // 검색 기능 핸들러
+  // --- 2. 현재 페이지에 보여줄 데이터 계산 ---
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // 검색된 결과(filteredNotices)에서 현재 페이지 분량만 추출
+  const currentNotices = filteredNotices.slice(indexOfFirstItem, indexOfLastItem);
+  
+  // 전체 페이지 수 계산
+  const totalPages = Math.ceil(filteredNotices.length / itemsPerPage);
+
   const handleSearch = () => {
     const keyword = searchKeyword.trim().toLowerCase();
+    setCurrentPage(1); // 검색 시 1페이지로 리셋
 
     if (keyword === '') {
-      setFilteredNotices(notices); // 검색어 없으면 전체 표시
+      setFilteredNotices(notices);
       return;
     }
 
     const filtered = notices.filter((notice) => {
-      // 제목 검색
-      if (searchType === 'title') {
-        return notice.title.toLowerCase().includes(keyword);
-      }
-      // 내용 검색 (API 데이터에 content가 포함되어 있다고 가정)
-      if (searchType === 'content') {
-        return notice.content && notice.content.toLowerCase().includes(keyword);
-      }
+      if (searchType === 'title') return notice.title.toLowerCase().includes(keyword);
+      if (searchType === 'content') return notice.content && notice.content.toLowerCase().includes(keyword);
       return false;
     });
 
     setFilteredNotices(filtered);
   };
 
-  // 엔터키 입력 시 검색 실행
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
+    if (e.key === 'Enter') handleSearch();
   };
 
   return (
     <div className="wrapper">
       <div className="content container notice-page-container">
-        {/* 페이지 헤더 */}
         <div className="page-header">
             <h2>공지사항</h2>
-            
-            {/* 검색창 UI */}
             <div className="search-bar">
-                <select 
-                    className="search-select"
-                    value={searchType}
-                    onChange={(e) => setSearchType(e.target.value)}
-                >
+                <select className="search-select" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
                     <option value="title">제목</option>
                     <option value="content">내용</option>
                 </select>
                 <input 
-                    type="text" 
-                    className="search-input" 
-                    placeholder="검색어를 입력하세요" 
-                    value={searchKeyword}
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                    onKeyDown={handleKeyDown}
+                    type="text" className="search-input" placeholder="검색어를 입력하세요" 
+                    value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} onKeyDown={handleKeyDown}
                 />
-                <button className="search-btn" onClick={handleSearch}>
-                    검색
-                </button>
+                <button className="search-btn" onClick={handleSearch}>검색</button>
             </div>
         </div>
 
@@ -101,14 +90,12 @@ function NoticePage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* notices 대신 filteredNotices를 맵핑합니다 */}
-                    {filteredNotices.map((notice) => (
+                    {/* --- 3. filteredNotices 대신 currentNotices를 사용 --- */}
+                    {currentNotices.map((notice) => (
                         <tr key={notice.id} className={notice.fixed ? "notice-fixed" : ""}>
                             <td className="td-date">{notice.date}</td>
                             <td className="title-col">
-                                <Link to={`/notices/${notice.id}`} className="board-link">
-                                    {notice.title}
-                                </Link>
+                                <Link to={`/notices/${notice.id}`} className="board-link">{notice.title}</Link>
                             </td>
                             <td className="td-author">{notice.author}</td>
                             <td className="td-views">{notice.views}</td>
@@ -126,11 +113,33 @@ function NoticePage() {
             </table>
         )}
 
-        {/* 페이지네이션 (현재 UI 유지, 추후 기능 구현 필요) */}
+        {/* --- 4. 페이지네이션 UI 및 이벤트 연결 --- */}
         <div className="pagination">
-            <button className="page-btn">&lt;</button>
-            <button className="page-btn active">1</button>
-            <button className="page-btn">&gt;</button>
+            <button 
+              className="page-btn" 
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              &lt;
+            </button>
+            
+            {[...Array(totalPages)].map((_, i) => (
+              <button 
+                key={i + 1} 
+                className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}
+                onClick={() => setCurrentPage(i + 1)}
+              >
+                {i + 1}
+              </button>
+            ))}
+
+            <button 
+              className="page-btn" 
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages || totalPages === 0}
+            >
+              &gt;
+            </button>
         </div>
       </div>
     </div>

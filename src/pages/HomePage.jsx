@@ -145,8 +145,8 @@ function HomePage() {
                         <li className="notice-item">등록된 공지사항이 없습니다.</li>
                     ) : notices.map((notice) => (
                         <li key={notice.id} className="notice-item">
-                            <Link to={`/notices/${notice.id}`} style={{textDecoration:'none', color:'inherit', width:'100%'}}>
-                                <span className="notice-title">{notice.title}</span>
+                            <Link to={`/notices/${notice.id}`} className="notice-link">
+                              <span className="notice-title">{notice.title}</span>
                             </Link>
                         </li>
                     ))}
@@ -199,7 +199,7 @@ function HomePage() {
 
       {/* 바로가기 섹션 (기존 유지) */}
       <section className="shortcut-section container">
-        {/* --사업시작 전 비공개
+        {/* --사업시작 전 비공개*/}
         <h2>물품 대여 사업</h2>
         <div className="shortcut-grid">
           <Link to="/borrow" className="shortcut-card main-card">
@@ -216,10 +216,11 @@ function HomePage() {
               <p>신청/대여 기록을 확인하세요</p>
             </div>
           </Link>
-        </div>*/}
-        <h2>학교 바로가기</h2>
+        </div>
+        <h2 style={{marginTop: '20px'}}>학교 바로가기</h2>
         <div className="shortcut-grid small-grid">
             <a href="https://www.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">학교 홈페이지</a>
+            <a href="https://www.catholic.ac.kr/ko/support/calendar2024_list.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">학사일정</a>
             <a href="https://uportal.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">트리니티</a>
             <a href="https://e-cyber.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">사이버캠퍼스</a>
             <a href="https://www.catholic.ac.kr/ko/support/absence_notification.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">공결허가원</a>

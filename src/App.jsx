@@ -92,27 +92,26 @@ function App() {
       <DinoGame isOpen={showGame} onClose={() => setShowGame(false)} />
       <div className="wrapper">
         <Routes>
-          <Route path="/" element={<TeaserPage />} />
+          <Route path="/teaser" element={<TeaserPage />} />
           <Route path="/teaser/departments" element={<DepartmentPage />} />
           <Route path="/teaser/campusmap" element={<MapPage />} />
 
-          <Route path="/terms" element={<TermsPage />} />
-          <Route path="/terms/privacy" element={<PrivacyPage />} />
-          <Route path="/terms/emailrefusal" element={<EmailRefusalPage />} />
-          <Route path="/credits" element={<CreditsPage />} />
-          
           <Route element={<MainLayout />}>
             {/* 티저페이지 오픈 시 아래 통상페이지 주석처리
                 혹은 <ProtectedRoute>에 포함할 것 */}
-            <Route path="/main" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/notices" element={<NoticePage />} />
             <Route path="/notices/:id" element={<NoticeDetailPage />} />
             <Route path="/campusmap" element={<MapPage />} />
             <Route path="/departments" element={<DepartmentPage />} />
-            {/* 대여사업 전 비공개
             <Route path="/borrow" element={<BorrowPage />} />
             <Route path="/check" element={<CheckPage />} />
-            <Route path="/success" element={<SuccessPage />} />*/}
+            <Route path="/success" element={<SuccessPage />} />
+            
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/terms/privacy" element={<PrivacyPage />} />
+            <Route path="/terms/emailrefusal" element={<EmailRefusalPage />} />
+            <Route path="/credits" element={<CreditsPage />} />
 
             <Route path="/admin" element={<AdminLoginPage />} />
             <Route element={<ProtectedRoute />}>

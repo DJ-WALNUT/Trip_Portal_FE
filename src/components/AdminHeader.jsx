@@ -81,7 +81,6 @@ function AdminHeader() {
           <ul>
             <li><Link to="/" onClick={closeMenu}>사용자 홈</Link></li>
             <li><Link to="/admin/dashboard" onClick={closeMenu}>대시보드</Link></li>
-            <li><Link to="/admin/teaser" onClick={closeMenu}>티저 이벤트</Link></li>
             
             <li><Link to="/admin/notices" onClick={closeMenu}>공지사항</Link></li>
             <li><Link to="/admin/instagram" onClick={closeMenu}>인스타 관리</Link></li>
@@ -100,7 +99,7 @@ function AdminHeader() {
               </ul>
             </li>
             {/* ▲▲▲ 드롭다운 메뉴 끝 ▲▲▲ */}
-
+            <li><Link to="/admin/teaser" onClick={closeMenu}>티저 이벤트</Link></li>
             <li>
                 <button 
                     onClick={handleLogout}

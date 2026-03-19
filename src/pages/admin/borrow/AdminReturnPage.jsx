@@ -15,7 +15,7 @@ function AdminReturnPage() {
   // [추가] 날짜 계산 로직
   const today = new Date();
   const oneWeekAgo = new Date(today);
-  oneWeekAgo.setDate(today.getDate() - 7);
+  oneWeekAgo.setDate(today.getDate() - 4);
 
   // 날짜 포맷 함수 (YYYY-MM-DD)
   const formatDate = (date) => {
@@ -76,7 +76,7 @@ function AdminReturnPage() {
             📅 오늘 날짜: <span style={{color: '#2c3e50'}}>{formatDate(today)}</span>
           </div>
           <div className="date-item">
-            ⚠️ 반납 기한 만료일 (7일 전): <span style={{color: '#c0392b'}}>{formatDate(oneWeekAgo)}</span>
+            ⚠️ 반납 기한 만료일 (4일 전): <span style={{color: '#c0392b'}}>{formatDate(oneWeekAgo)}</span>
           </div>
         </div>
 
@@ -112,7 +112,7 @@ function AdminReturnPage() {
               {filteredRentals.length === 0 ? (
                 <tr><td colSpan="6">검색 결과가 없거나 미반납 건이 없습니다.</td></tr>
               ) : filteredRentals.map((item, idx) => {
-                // 대여일이 일주일 지난 경우 날짜를 빨간색으로 표시하는 시각적 힌트 추가
+                // 대여일이 4일 지난 경우 날짜를 빨간색으로 표시하는 시각적 힌트 추가
                 const isOverdue = item.date.split(' ')[0] <= formatDate(oneWeekAgo);
                 
                 return (

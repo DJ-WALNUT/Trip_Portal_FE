@@ -42,8 +42,9 @@
 /* 좌우 2분할 레이아웃 */
 .notice-content {
     display: grid;
-    grid-template-columns: 1.2fr 1fr; /* 텍스트 영역을 조금 더 넓게 */
+    grid-template-columns: 1.2fr 1fr;
     gap: 2rem;
+    width: 100%;
 }
 
 /* 왼쪽: 공지 리스트 + D-day */
@@ -51,7 +52,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 1.5rem; /* 리스트와 D-day 사이 간격 */
+    gap: 1.5rem;
+    min-width: 0; /* 중요: 그리드 자식이 내용물 때문에 늘어나는 것을 방지 */
 }
 
 .notice-list {
@@ -62,10 +64,21 @@
 .notice-item {
     display: flex;
     align-items: center;
-    padding: 0.8rem 0;
+    width: 100%;
+    min-width: 0; /* 중요 */
+    
+    padding: .8rem 0;
     border-bottom: 1px solid #f1f1f1;
     cursor: pointer;
-    transition: padding-left 0.2s;
+    transition: padding-left .2s;
+}
+
+.notice-item a {
+    display: block;
+    width: 100%;
+    min-width: 0; /* 중요: Link 태그가 글자 길이만큼 커지는 것을 방지 */
+    text-decoration: none;
+    overflow: hidden; /* 안전장치 */
 }
 
 .notice-item:hover {
@@ -82,11 +95,13 @@
 }
 
 .notice-title {
+    display: block;
+    width: 100%;
+    white-space: nowrap;    /* 줄바꿈 금지 */
+    overflow: hidden;       /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis; /* ... 표시 */
     font-size: 1.1rem;
     font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 /* D-Day 박스 스타일 */
