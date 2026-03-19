@@ -88,6 +88,7 @@
 .board-table tbody tr {
     transition: background-color 0.2s;
     cursor: pointer;
+    height: 90px;
 }
 
 .board-table tbody tr:hover {
@@ -186,6 +187,10 @@
     
     .board-table thead th {
         padding: 0.8rem 0.2rem;
+    }
+
+    .board-table tbody tr{
+        height: 60px;
     }
     
     .board-table td.title-col {
