@@ -23,6 +23,7 @@
     border: 1px solid var(--light-gray);
     max-height: 550px;
     align-items: center;
+    aspect-ratio: 4/3;
 }
 
 .map-wrapper {
