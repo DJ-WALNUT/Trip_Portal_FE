@@ -19,6 +19,7 @@ import BorrowPage from './pages/client/borrow/BorrowPage';
 import CheckPage from './pages/client/borrow/CheckPage';
 import SuccessPage from './pages/client/borrow/SuccessPage';
 import DepartmentPage from './pages/client/DepartmentPage';
+import OrganPage from './pages/client/OrganPage';
 
 import TermsPage from './pages/client/terms/TermsPage';
 import PrivacyPage from './pages/client/terms/PrivacyPage';
@@ -104,6 +105,7 @@ function App() {
             <Route path="/notices/:id" element={<NoticeDetailPage />} />
             <Route path="/campusmap" element={<MapPage />} />
             <Route path="/departments" element={<DepartmentPage />} />
+            <Route path="/organ" element={<OrganPage />} />
             <Route path="/borrow" element={<BorrowPage />} />
             <Route path="/check" element={<CheckPage />} />
             <Route path="/success" element={<SuccessPage />} />

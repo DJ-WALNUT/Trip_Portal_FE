@@ -67,7 +67,7 @@ function Header() {
             <li><Link to="/notices" onClick={closeMenu}>공지사항</Link></li>
             <li className="dropdown-container">
               <a href="#" onClick={toggleDropdown} className="dropdown-btn">
-                대여 사업 <span className="arrow">▼</span>
+                대여사업 <span className="arrow">▼</span>
               </a>
               <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
                 <li><Link to="/borrow" onClick={closeMenu}>대여 신청</Link></li>
@@ -75,6 +75,7 @@ function Header() {
               </ul>
             </li>
             <li><Link to="/campusmap" onClick={closeMenu}>성심지도</Link></li>
+            <li><Link to="/organ" onClick={closeMenu}>조직도</Link></li>
             <li><Link to="/departments" onClick={closeMenu}>단과대 및 학과</Link></li>
             <li>
               <a href="https://2025saegil.cukeng.kr" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>

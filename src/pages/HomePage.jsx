@@ -126,7 +126,7 @@ function HomePage() {
     <div className="main-page-container">
       <section className="hero-section">
         <div className="catch-phrase">
-          <p>4대 공과대학 학생회 [여정]</p>
+          <p>제4대 공과대학 학생회 [여정]</p>
           <h1>변화를 새길, 우리의 여정!</h1>
         </div>
       </section>
