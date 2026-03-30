@@ -65,6 +65,10 @@ function NoticeDetailPage() {
     });
   };
 
+  const isImageFile = (filename) => { // 파일 확장자가 이미지인지 확인하는 헬퍼 함수
+    return /\.(jpg|jpeg|png|gif|webp)$/i.test(filename);
+  };
+
   if (loading) return <div style={{ padding: '3rem', textAlign: 'center' }}>로딩 중...</div>;
   if (!notice) return null;
 
@@ -114,6 +118,26 @@ function NoticeDetailPage() {
             {/* 변경: 함수를 통해 렌더링 */}
             {renderContent(notice.content)}
         </div>
+
+        {/* [NEW] 3-1. 이미지 미리보기 영역 (첨부파일 중 이미지인 것만 추출) */}
+        {notice.files && notice.files.filter(f => isImageFile(f.filename)).length > 0 && (
+          <div className="post-image-grid">
+            {notice.files
+              .filter(file => isImageFile(file.filename))
+              .map((file, idx) => (
+                <div key={file.id || idx} className="grid-item">
+                  <img 
+                        src={`${BASE_URL}/api/notices/download/${notice.id}/${file.filename}`} 
+                        alt={`첨부 이미지 ${idx + 1}`} 
+                        loading="lazy"
+                        /*onClick={() => window.open(`${BASE_URL}/api/notices/download/${notice.id}/${file.filename}`, '_blank')}*/
+                        style={{ cursor: 'pointer' }}
+                  />
+                </div>
+              ))
+            }
+          </div>
+        )}
 
         {/* 4. 하단 버튼 */}
         <div className="btn-area">

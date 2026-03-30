@@ -43,6 +43,39 @@
     white-space: pre-wrap; /* 줄바꿈 문자(\n) 반영 */
 }
 
+/* 이미지 그리드 컨테이너 */
+.post-image-grid {
+    display: grid;
+    /* 기본적으로 최소 250px 너비를 보장하며, 남는 공간을 나눠 가짐 */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 2rem 1rem;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+/* 그리드 아이템 */
+.grid-item {
+    width: 100%;
+    /*aspect-ratio: 1 / 1; 정사각형 비율 유지 (선택 사항) */
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 영역에 꽉 차게 (비율 유지) */
+    transition: transform 0.3s ease;
+}
+
+.grid-item img:hover {
+    transform: scale(1.05); /* 마우스 올리면 살짝 확대 */
+}
+
 /* 첨부파일 영역 (예시) */
 .post-attachments {
     padding: 1rem;
@@ -139,5 +172,24 @@
     .nav-label {
         width: 80px;
         padding: 0.8rem 0.5rem;
+    }
+
+    .post-image-previews {
+        padding: 0 0.5rem;
+        gap: 15px;
+    }
+
+    
+    .post-image-grid {
+        grid-template-columns: repeat(2, 1fr); /* 모바일은 2열 */
+        gap: 10px;
+        padding: 1rem 0.5rem;
+    }
+}
+
+/* 태블릿 이상 (3열 위주 유도) */
+@media (min-width: 1024px) {
+    .post-image-grid {
+        grid-template-columns: repeat(3, 1fr); /* 명시적으로 3열 고정하고 싶을 때 */
     }
 }
