@@ -39,7 +39,7 @@
     padding: 2rem 1rem;
     border-bottom: 1px solid var(--light-gray);
     line-height: 1.8;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     white-space: pre-wrap; /* 줄바꿈 문자(\n) 반영 */
 }
 

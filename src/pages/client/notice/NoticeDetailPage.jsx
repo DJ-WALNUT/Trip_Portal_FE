@@ -123,7 +123,7 @@ function NoticeDetailPage() {
             </div>
         ) : (
              <div className="post-attachments no-files">
-                <span className="attach-label">첨부파일</span>
+                <span className="attach-label">첨부파일 </span>
                 <span>없음</span>
              </div>
         )}
