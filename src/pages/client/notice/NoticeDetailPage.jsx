@@ -8,6 +8,7 @@ function NoticeDetailPage() {
   const navigate = useNavigate(); 
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isFilesOpen, setIsFilesOpen] = useState(false);
   const processedId = useRef(null); // [NEW] 중복 요청 방지를 위한 ref (이미 불러온 ID인지 기억)
 
   // [수정] 백엔드 API 연동 (상세 조회)
@@ -89,24 +90,39 @@ function NoticeDetailPage() {
             </div>
         </div>
 
-        {/* 2. 첨부파일 영역 */}
-        {/* notice.files 배열이 있고 길이가 0보다 클 때 */}
+        {/* 2. [수정] 첨부파일 영역 (접이식) */}
         {notice.files && notice.files.length > 0 ? (
-            <div className="post-attachments" style={{flexDirection: 'column', alignItems:'flex-start', gap:'10px'}}>
-                <span className="attach-label">첨부파일 ({notice.files.length}개)</span>
-                {notice.files.map((file) => (
-                    <a 
-                        key={file.id}
-                        href={`${BASE_URL}/api/notices/download/${notice.id}/${file.filename}`} 
-                        className="attach-link"
-                        download 
-                    >
-                        📄 {file.filename} (다운로드)
-                    </a>
-                ))}
+            <div className="post-attachments-wrapper">
+                <button 
+                    className={`attachment-toggle-btn ${isFilesOpen ? 'active' : ''}`}
+                    onClick={() => setIsFilesOpen(!isFilesOpen)}
+                >
+                    <span className="attach-label">
+                        📄 첨부파일 ({notice.files.length}개)
+                    </span>
+                    <span className={`arrow-icon ${isFilesOpen ? 'up' : 'down'}`}>
+                        {isFilesOpen ? '▲' : '▼'}
+                    </span>
+                </button>
+                
+                {/* 열림 상태일 때만 목록 표시 */}
+                {isFilesOpen && (
+                    <div className="attachment-list">
+                        {notice.files.map((file) => (
+                            <a 
+                                key={file.id}
+                                href={`${BASE_URL}/api/notices/download/${notice.id}/${file.filename}`} 
+                                className="attach-link"
+                                download 
+                            >
+                                📄 {file.filename} (다운로드)
+                            </a>
+                        ))}
+                    </div>
+                )}
             </div>
         ) : (
-             <div className="post-attachments" style={{color: '#999'}}>
+             <div className="post-attachments no-files">
                 <span className="attach-label">첨부파일</span>
                 <span>없음</span>
              </div>

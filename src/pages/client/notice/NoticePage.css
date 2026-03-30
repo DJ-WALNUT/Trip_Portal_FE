@@ -180,9 +180,13 @@
         flex: 1;
     }
 
-    /* 모바일에서 덜 중요한 컬럼 숨기기 */
-    .th-author, .td-author{
-        display: none;
+    /* [NEW] 모바일에서 작성일 컬럼 숨기기 */
+    .th-author, .td-author, .th-date, .td-date { display: none; }
+
+    .board-table td.title-col {
+        /* 작성일과 작성자가 빠지므로 제목 칸 너비를 조금 더 넓게 조정해도 좋습니다 */
+        max-width: 220px; 
+        padding-left: 0.5rem;
     }
     
     .board-table thead th {

@@ -86,7 +86,7 @@ function NoticePage() {
                         <th className="th-date" style={{ width: '120px' }}>작성일</th>
                         <th>제목</th>
                         <th className="th-author" style={{ width: '120px' }}>작성자</th>
-                        <th className="th-views" style={{ width: '80px' }}>조회</th>
+                        <th className="th-views" style={{ width: '80px' }}>조회수</th>
                     </tr>
                 </thead>
                 <tbody>
