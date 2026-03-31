@@ -1,250 +1,140 @@
-/* src/pages/HomePage.css */
+/* --- 메인페이지 전용 만우절 스코프 --- */
 
-/* --- 1. 상단 배너 섹션 --- */
-.hero-section {
-    background: linear-gradient(135deg, var(--main-navy), var(--accent-blue));
-    color: white;
-    padding: 4rem 1rem;
-    text-align: center;
-}
-
-.catch-phrase p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 0.5rem; }
-.catch-phrase h1 { font-size: 2.5rem; font-weight: 700; }
-
-/* --- 2. 공지사항 섹션 스타일 (NEW) --- */
-.notice-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--light-gray);
-}
-
-.notice-header h2 {
-    font-size: 1.8rem;
-    color: var(--main-navy);
-    font-weight: 700;
-    margin: 0;
-}
-
-.more-link {
-    font-size: 0.9rem;
-    color: #888;
-    transition: color 0.2s;
-}
-
-.more-link:hover {
-    color: var(--accent-blue);
-}
-
-/* 좌우 2분할 레이아웃 */
-.notice-content {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 2rem;
-    width: 100%;
-}
-
-/* 왼쪽: 공지 리스트 + D-day */
-.notice-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1.5rem;
-    min-width: 0; /* 중요: 그리드 자식이 내용물 때문에 늘어나는 것을 방지 */
-}
-
-.notice-list {
-    margin: 0;
-    padding: 0;
-}
-
-.notice-item {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-width: 0; /* 중요 */
+/* 1. 기본 배경 및 폰트 설정 (메인페이지 루트에만 적용) */
+.april-fools-root {
+    --april-green: #00ff41;
+    --april-bg: #0d0d0d;
+    --april-error: #ff4444;
     
-    padding: .8rem 0;
-    border-bottom: 1px solid #f1f1f1;
-    cursor: pointer;
-    transition: padding-left .2s;
+    background-color: var(--april-bg) !important;
+    color: #e0e0e0 !important;
+    font-family: 'Courier New', monospace !important;
+    min-height: 100vh;
 }
 
-.notice-item a {
-    display: block;
-    width: 100%;
-    min-width: 0; /* 중요: Link 태그가 글자 길이만큼 커지는 것을 방지 */
-    text-decoration: none;
-    overflow: hidden; /* 안전장치 */
+/* 2. 상단 배너 전용 */
+.april-fools-root .hero-section {
+    background: #1a1a1a !important;
+    border-bottom: 2px solid var(--april-green);
+    padding: 5rem 1rem;
 }
 
-.notice-item:hover {
-    padding-left: 0.5rem;
-    color: var(--accent-blue);
+.april-fools-root .catch-phrase h1 {
+    color: var(--april-green);
+    text-shadow: 2px 2px 0px #000;
+    letter-spacing: -2px;
+    animation: terminal-flicker 0.1s infinite;
 }
 
-.notice-item::before {
-    content: '•';
-    color: var(--main-navy);
-    font-weight: bold;
-    margin-right: 0.8rem;
-    font-size: 1.2rem;
-}
-
-.notice-title {
-    display: block;
-    width: 100%;
-    white-space: nowrap;    /* 줄바꿈 금지 */
-    overflow: hidden;       /* 넘치는 부분 숨김 */
-    text-overflow: ellipsis; /* ... 표시 */
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-/* D-Day 박스 스타일 */
-.d-day-wrapper {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border: 2px solid var(--main-navy); /* 사진의 검은/진한 테두리 반영 */
-    border-radius: var(--border-radius);
-    padding: 1.2rem;
-    background-color: white;
-}
-
-.d-day-item {
-    text-align: center;
-}
-
-.d-day-badge {
-    display: inline-block;
-    padding: 0.3rem 1rem;
-    color: white;
-    font-weight: 700;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.d-day-badge.start { background-color: #6c8dbf; } /* 개강 (보라/파랑) */
-.d-day-badge.end { background-color: #8cc63f; }   /* 종강 (연두) */
-
-.d-day-count {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--text-color);
-}
-
-/* 오른쪽: SNS 슬라이더 카드 */
-.notice-right {
-    position: relative;
-    border-radius: var(--border-radius);
-    min-height: 320px; /* 높이 확보 */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1rem;
-    color: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    
-    text-decoration: none; 
-    transition: transform 0.2s, box-shadow 0.2s;
-    background-color: #ddd; /* 이미지 로딩 전 배경색 */
-}
-
-.notice-right:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-.sns-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-}
-
-.sns-icon { font-size: 1.5rem; }
-.sns-id { font-weight: 700; font-size: 1.1rem; }
-
-/* 하단 페이지네이션 컨트롤러 */
-.sns-pagination-control {
-    align-self: flex-end;
-    background: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
-    backdrop-filter: blur(4px);
-    padding: 0.4rem 1rem;
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.arrow-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-weight: bold;
-    font-size: 1.1rem;
-    padding: 0;
-    cursor: pointer;
-    line-height: 1;
-}
-
-.arrow-btn:hover { color: var(--accent-blue); }
-.page-indicator { min-width: 40px; text-align: center; }
-
-
-/* --- 3. 바로가기 섹션 (기존 유지) --- */
-.shortcut-grid {
+/* 3. 공지사항 섹션 (다른 페이지 .container는 보호됨) */
+.april-fools-root .notice-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-.shortcut-card {
-    background: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
     padding: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px solid var(--light-gray);
+    /* 미세하게 기울여서 묘한 불쾌감 조성 */
+    transform: rotate(1deg);
 }
 
-.shortcut-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    border-color: var(--accent-blue);
+.april-fools-root .notice-item {
+    border-bottom: 1px dashed #333 !important;
+    padding: 1.2rem 0;
+    background-color: #808080;
 }
 
-.main-card .icon { font-size: 2.5rem; }
-.main-card h3 { font-size: 1.5rem; color: var(--main-navy); margin-bottom: 0.5rem; }
-.main-card p { color: #666; }
-
-/* 작은 그리드 (외부 링크) */
-.small-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-.small-card { 
-    justify-content: center; 
-    font-weight: 600; 
-    padding: 1.5rem;
-    color: var(--text-color);
+.april-fools-root .notice-item::before {
+    content: '[LOG]';
+    color: var(--april-error);
+    margin-right: 8px;
+    font-weight: bold;
 }
 
-/* 모바일 대응 */
+.april-fools-root .notice-title {
+    color: #fff !important;
+    font-size: 0.95rem;
+}
+
+/* 4. D-Day 구역 */
+.april-fools-root .d-day-wrapper {
+    background: #000 !important;
+    border: 1px solid var(--april-green) !important;
+    border-radius: 0;
+}
+
+.april-fools-root .d-day-count {
+    color: var(--april-green) !important;
+    font-family: 'Digital', sans-serif;
+}
+
+/* 5. 바로가기 카드 (텍스트 반전) */
+.april-fools-root .shortcut-card {
+    background: #1a1a1a !important;
+    border: 1px solid #333 !important;
+}
+
+.april-fools-root .shortcut-card h3 {
+    display: inline-block;
+    transform: scaleX(-1); /* 글자 좌우 반전: 은근히 신경쓰임 */
+}
+
+.april-fools-root .shortcut-card .icon {
+    filter: grayscale(1) brightness(1.5);
+    animation: rotate-slow 5s infinite linear;
+}
+
+/* --- 무지개 텍스트 애니메이션 추가 --- */
+.april-fools-root .rainbow-text {
+    /* 여러 색상을 그라데이션으로 설정 */
+    background: linear-gradient(
+        to right, 
+        #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff, #ff0000
+    );
+    /* 배경이 글자 색상에만 나타나도록 설정 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* 배경 사이즈를 크게 키워야 이동하는 효과가 잘 보임 */
+    background-size: 200% auto;
+    /* 애니메이션 적용: 3초 동안 무한 반복 */
+    animation: rainbow-move 3s linear infinite;
+    font-weight: bold;
+}
+
+/* 배경(그라데이션)을 옆으로 밀어주는 애니메이션 */
+@keyframes rainbow-move {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* 기존 커서 깜빡임 효과와 결합 */
+.april-fools-root .cursor-blink {
+    color: var(--april-green); /* 커서는 터미널 느낌의 초록색 유지 */
+    animation: blink 1s steps(2, start) infinite;
+}
+
+/* --- 전용 애니메이션 --- */
+@keyframes terminal-flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.95; }
+    100% { opacity: 1; }
+}
+
+@keyframes rotate-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 커서 깜빡임 */
+.april-fools-root .cursor-blink {
+    animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+    to { visibility: hidden; }
+}
+
+/* 모바일 대응 (스코프 유지) */
 @media (max-width: 768px) {
-    .notice-content {
-        grid-template-columns: 1fr; /* 세로 배치 */
+    .april-fools-root .notice-content {
+        grid-template-columns: 1fr;
     }
-    
-    .notice-right {
-        min-height: 250px;
-    }
-
-    .catch-phrase h1 { font-size: 1.9rem; }
 }

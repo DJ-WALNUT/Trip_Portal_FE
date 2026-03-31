@@ -41,6 +41,7 @@ const AdminPage = () => <div className="container"><h2>관리자 페이지 (곧 
 
 function App() {
   const [showGame, setShowGame] = useState(false);
+  const [isHardMode, setIsHardMode] = useState(false); // 하드모드 상태 추가
   // === [1] PC용 이스터에그: 코나미 커맨드 ===
   useEffect(() => {
     const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
@@ -50,6 +51,7 @@ function App() {
       if (e.key === konamiCode[cursor]) {
         cursor++;
         if (cursor === konamiCode.length) {
+          setIsHardMode(true); // 코나미 커맨드 성공 시 하드모드 활성화
           setShowGame(true);
           cursor = 0;
         }
@@ -90,7 +92,11 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <DinoGame isOpen={showGame} onClose={() => setShowGame(false)} />
+      <DinoGame 
+        isOpen={showGame} 
+        onClose={() => { setShowGame(false); setIsHardMode(false); }} 
+        isHardMode={isHardMode} 
+      />
       <div className="wrapper">
         <Routes>
           <Route path="/teaser" element={<TeaserPage />} />

@@ -122,113 +122,90 @@ function HomePage() {
   const currentPost = instaPosts.length > 0 ? instaPosts[currentIdx] : null;
   const currentImgUrl = currentPost ? getFullImgUrl(currentPost.imgUrl) : '';
 
-  return (
-    <div className="main-page-container">
-      <section className="hero-section">
-        <div className="catch-phrase">
-          <p>제4대 공과대학 학생회 [여정]</p>
-          <h1>변화를 새길, 우리의 여정!</h1>
-        </div>
-      </section>
+return (
+  <div className="main-page-container april-fools-root">
+    {/* 주석으로 개발자의 영혼을 담음 */}
+    {/* DEBUG_LOG: April Fools protocol activated.
+        INFO: Konami Command (U,U,D,D,L,R,L,R,B,A) is still listening... 
+        WARNING: Do not touch the footer 5 times. 
+    */}
+    
+    <section className="hero-section">
+      <div className="catch-phrase">
+        <p>[시스템] 공과대학 학생회 '여정'에 접속되었습니다...</p>
+        <h1>
+          <span className="rainbow-text">root@cukeng:~#</span>
+          <span className="cursor-blink"> _</span>
+        </h1>
+      </div>
+    </section>
 
-      <section className="notice-section container">
-        <div className="notice-header">
-            <h2>공지사항</h2>
-            <Link to="/notices" className="more-link">더보기 +</Link>
-        </div>
+    <section className="notice-section container">
+      <div className="notice-header">
+          <h2>STDOUT: 공지사항</h2>
+          <Link to="/notices" className="more-link">./view_all</Link>
+      </div>
 
-        <div className="notice-content">
-            {/* 왼쪽: 리스트 + D-Day */}
-            <div className="notice-left">
-                <ul className="notice-list">
-                    {notices.length === 0 ? (
-                        <li className="notice-item">등록된 공지사항이 없습니다.</li>
-                    ) : notices.map((notice) => (
-                        <li key={notice.id} className="notice-item">
-                            <Link to={`/notices/${notice.id}`} className="notice-link">
-                              <span className="notice-title">{notice.title}</span>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+      <div className="notice-content">
+          <div className="notice-left">
+              <ul className="notice-list">
+                  <li className="notice-item">
+                      <span className="notice-title">데이터 베이스 손상으로 인한 무한 방학 선포</span>
+                  </li>
+                  <li className="notice-item">
+                      <span className="notice-title">학생회장 취임식 (사실 사이보그였다는 설)</span>
+                  </li>
+                  <li className="notice-item">
+                      <span className="notice-title">코나미 커맨드? 아무튼 그런거를 입력해도 아무 일도 없습니다. 진짜로요.</span>
+                  </li>
+              </ul>
 
-                <div className="d-day-wrapper">
-                    <div className="d-day-item">
-                        <span className={`d-day-badge ${dDayInfo.left.label === '개강' ? 'start' : 'end'}`}>
-                            {dDayInfo.left.label}
-                        </span>
-                        <div className="d-day-count">{dDayInfo.left.count}</div>
-                    </div>
-                    <div className="d-day-item">
-                        <span className={`d-day-badge ${dDayInfo.right.label === '종강' ? 'end' : 'start'}`}>
-                            {dDayInfo.right.label}
-                        </span>
-                        <div className="d-day-count">{dDayInfo.right.count}</div>
-                    </div>
-                </div>
-            </div>
+              <div className="d-day-wrapper" style={{background: '#111', color: '#0f0'}}>
+                  <div className="d-day-item">
+                      <span className="d-day-badge" style={{background: '#333'}}>남은 수명</span>
+                      <div className="d-day-count">NaN</div>
+                  </div>
+                  <div className="d-day-item">
+                      <span className="d-day-badge" style={{background: '#333'}}>과제 마감</span>
+                      <div className="d-day-count">IMMINENT</div>
+                  </div>
+              </div>
+          </div>
 
-            {/* 오른쪽: SNS 슬라이더 */}
-            <a 
-              href={currentPost ? currentPost.link : '#'} 
-              target="_blank" 
-              rel="noreferrer" 
-              className="notice-right"
-              style={{ 
-                backgroundImage: currentImgUrl ? `linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0)), url(${currentImgUrl})` : 'none',
-                backgroundColor: '#999',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              }}
-            >
-                <div className="sns-header">
-                    {/* <span className="sns-icon">📷</span> */}
-                    <span className="sns-id">@cuk_engineering</span>
-                </div>
-                
-                <div className="sns-pagination-control">
-                    <button onClick={handlePrev} className="arrow-btn">&lt;</button>
-                    <span className="page-indicator">
-                        {instaPosts.length > 0 ? `${currentIdx + 1} / ${instaPosts.length}` : '- / -'}
-                    </span>
-                    <button onClick={handleNext} className="arrow-btn">&gt;</button>
-                </div>
-            </a>
-        </div>
-      </section>
+          {/* 인스타 슬라이더 구역 */}
+          <div className="notice-right" style={{background: '#000'}}>
+              <div className="sns-header">
+                  <span className="sns-id">SYSTEM_LOG_INSTA</span>
+              </div>
+              <div style={{padding: '20px', textAlign: 'center', color: '#0f0'}}>
+                  이미지 디코딩 실패... <br/>
+                  수동으로 확인하십시오.
+              </div>
+          </div>
+      </div>
+    </section>
 
-      {/* 바로가기 섹션 (기존 유지) */}
-      <section className="shortcut-section container">
-        {/* --사업시작 전 비공개*/}
-        <h2>물품 대여 사업</h2>
-        <div className="shortcut-grid">
-          <Link to="/borrow" className="shortcut-card main-card">
-            <span className="icon">📦</span>
-            <div className="text">
-              <h3>대여 신청</h3>
-              <p>학생회 비품을 간편하게 빌려요</p>
-            </div>
-          </Link>
-          <Link to="/check" className="shortcut-card main-card">
-            <span className="icon">🔍</span>
-            <div className="text">
-              <h3>대여 확인</h3>
-              <p>신청/대여 기록을 확인하세요</p>
-            </div>
-          </Link>
-        </div>
-        <h2 style={{marginTop: '20px'}}>학교 바로가기</h2>
-        <div className="shortcut-grid small-grid">
-            <a href="https://www.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">학교 홈페이지</a>
-            <a href="https://www.catholic.ac.kr/ko/support/calendar2024_list.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">학사일정</a>
-            <a href="https://uportal.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">트리니티</a>
-            <a href="https://e-cyber.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">사이버캠퍼스</a>
-            <a href="https://www.catholic.ac.kr/ko/support/absence_notification.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">공결허가원</a>
-        </div>
-      </section>
-      <FloatingSNS />
-    </div>
-  );
+    <section className="shortcut-section container">
+      <h2>핵심 커맨드</h2>
+      <div className="shortcut-grid">
+        <Link to="/borrow" className="shortcut-card">
+          <span className="icon">💾</span>
+          <div className="text">
+            <h3>데이터 탈취</h3>
+            <p>비품이 아니라 정보를 빌려드립니다.</p>
+          </div>
+        </Link>
+        <Link to="/check" className="shortcut-card">
+          <span className="icon">🛰️</span>
+          <div className="text">
+            <h3>위치 추적</h3>
+            <p>여러분의 학점을 추적 중입니다.</p>
+          </div>
+        </Link>
+      </div>
+    </section>
+  </div>
+);
 }
 
 export default HomePage;

@@ -59,6 +59,57 @@
     font-weight: bold;
 }
 
+/* 하드모드 카드 테두리 */
+.hard-mode-border {
+    border: 2px solid #ff0000 !important;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4) !important;
+}
+
+/* 하드모드 전용 뱃지 */
+.badge.hard {
+    background: #ff0000;
+    color: #fff;
+    animation: flash-fast 0.8s infinite; /* flash-fast 사용 */
+}
+
+/* 화면 상단 경고 텍스트 */
+.hard-mode-overlay {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    background: rgba(0, 255, 65, 0.1);
+    border-left: 3px solid #00ff41;
+    padding: 8px 12px;
+    z-index: 15;
+    pointer-events: none;
+    animation: slide-in 0.5s ease-out;
+    animation: flash-fast 0.6s infinite; /* flash-fast 사용 */
+}
+
+.glitch-text {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #ff0000;
+    text-transform: uppercase;
+}
+
+.hard-mode-overlay p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #008521;
+    font-weight: bold;
+}
+
+@keyframes flash-fast {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.1; }
+}
+
+@keyframes slide-in {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
 .close-btn {
     background: none;
     border: none;
@@ -126,8 +177,13 @@
 }
 .restart-btn:hover { transform: scale(1.05); background-color: var(--second-navy); }
 
-.blink { animation: blink 1.5s infinite; }
-@keyframes blink { 50% { opacity: 0.5; } }
+.blink {
+    animation: pulse-slow 1.5s infinite; /* pulse-slow 사용 */
+}
+@keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
 
 /* --- 게임 요소 (스프라이트) --- */
 .dino-char {
