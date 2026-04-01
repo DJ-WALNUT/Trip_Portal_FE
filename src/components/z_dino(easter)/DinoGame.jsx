@@ -21,11 +21,11 @@ const decryptScore = (encryptedVal) => {
 };
 
 // --- [물리 상수] 구글 다이노 게임과 유사한 느낌을 위한 값 ---
-const DEFAULT_GRAVITY = 0.6;          // 중력 (매 프레임마다 아래로 당기는 힘)
-const DEFAULT_JUMP = 10;     // 점프력 (위로 솟구치는 힘)
-const DEFAULT_SPEED = 5;   // 초기 게임 속도
-const GAME_SPEED_MAX = 100;    // 최대 게임 속도
-const ACCELERATION = 0.2;   // 가속도 (프레임마다 빨라지는 정도)
+const DEFAULT_GRAVITY = 1.2;          // 중력 (매 프레임마다 아래로 당기는 힘)
+const DEFAULT_JUMP = 14;     // 점프력 (위로 솟구치는 힘)
+const DEFAULT_SPEED = 10;   // 초기 게임 속도
+const GAME_SPEED_MAX = 300;    // 최대 게임 속도
+const ACCELERATION = 0.4;   // 가속도 (프레임마다 빨라지는 정도)
 
 const DinoGame = ({ isOpen, onClose, isHardMode }) => {
   // === React State (UI 렌더링용) ===
@@ -44,9 +44,9 @@ const DinoGame = ({ isOpen, onClose, isHardMode }) => {
   // [수정] 컴포넌트 내부에 별도의 const를 재선언하지 말고, 
   // 필요할 때 직접 계산하거나 값을 변수에 할당합니다.
   const currentPhysics = {
-    gravity: isHardMode ? 0.8 : DEFAULT_GRAVITY,
-    jumpStrength: isHardMode ? 12 : DEFAULT_JUMP,
-    startSpeed: isHardMode ? 10 : DEFAULT_SPEED
+    gravity: isHardMode ? 1.6 : DEFAULT_GRAVITY,
+    jumpStrength: isHardMode ? 14 : DEFAULT_JUMP,
+    startSpeed: isHardMode ? 20 : DEFAULT_SPEED
   };
 
   // 물리 엔진 상태 변수
