@@ -154,10 +154,10 @@
     background-color: #ddd; /* 이미지 로딩 전 배경색 */
 }
 
-.notice-right:hover {
+/*.notice-right:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
+}*/
 
 .sns-header {
     display: flex;
@@ -174,11 +174,11 @@
     align-self: flex-end;
     background: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
     backdrop-filter: blur(4px);
-    padding: 0.4rem 1rem;
+    padding: 0.1rem 0.7rem;
     border-radius: 30px;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     font-size: 0.9rem;
     font-weight: 600;
 }
@@ -189,7 +189,7 @@
     color: white;
     font-weight: bold;
     font-size: 1.1rem;
-    padding: 0;
+    padding: 7px;
     cursor: pointer;
     line-height: 1;
 }
@@ -244,6 +244,7 @@
     
     .notice-right {
         min-height: 250px;
+        aspect-ratio: 3/4;
     }
 
     .catch-phrase h1 { font-size: 1.9rem; }
