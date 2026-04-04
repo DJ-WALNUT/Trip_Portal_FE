@@ -117,6 +117,8 @@ function AdminNoticeWritePage() {
     }
   };
 
+  const adminRole = localStorage.getItem('adminRole');
+
   return (
     <>
       <AdminHeader />
@@ -125,19 +127,21 @@ function AdminNoticeWritePage() {
         
         <form className="notice-form-container" onSubmit={handleSubmit}>
             {/* [NEW] 공개 범위 설정 (라디오 버튼) */}
-            <div className="form-group">
-                <label>공개 설정</label>
-                <div style={{display:'flex', gap:'20px', padding:'10px', background:'#f8f9fa', borderRadius:'8px', border:'1px solid #eee'}}>
-                    <label style={{display:'flex', alignItems:'center', gap:'5px', cursor:'pointer', fontWeight:'normal'}}>
-                        <input type="radio" name="is_public" value="true" checked={formData.is_public === true} onChange={handleChange} />
-                        📢 전체 공개 (즉시 게시)
-                    </label>
-                    <label style={{display:'flex', alignItems:'center', gap:'5px', cursor:'pointer', fontWeight:'normal'}}>
-                        <input type="radio" name="is_public" value="false" checked={formData.is_public === false} onChange={handleChange} />
-                        🔒 미공개 (나중에 공개)
-                    </label>
+            {adminRole === 'master' && (
+                <div className="form-group">
+                    <label>공개 설정</label>
+                    <div style={{display:'flex', gap:'20px', padding:'10px', background:'#f8f9fa', borderRadius:'8px', border:'1px solid #eee'}}>
+                        <label style={{display:'flex', alignItems:'center', gap:'5px', cursor:'pointer', fontWeight:'normal'}}>
+                            <input type="radio" name="is_public" value="true" checked={formData.is_public === true} onChange={handleChange} />
+                            📢 전체 공개 (즉시 게시)
+                        </label>
+                        <label style={{display:'flex', alignItems:'center', gap:'5px', cursor:'pointer', fontWeight:'normal'}}>
+                            <input type="radio" name="is_public" value="false" checked={formData.is_public === false} onChange={handleChange} />
+                            🔒 미공개 (나중에 공개)
+                        </label>
+                    </div>
                 </div>
-            </div>
+            )}
             <div className="checkbox-group">
                 <input type="checkbox" id="fixed" name="fixed" checked={formData.fixed} onChange={handleChange} />
                 <label htmlFor="fixed">🔔 상단 고정 공지로 등록</label>

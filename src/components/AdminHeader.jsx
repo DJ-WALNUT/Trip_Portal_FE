@@ -26,6 +26,8 @@ function AdminHeader() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const adminRole = localStorage.getItem('adminRole');
+
   // [수정] 로그아웃 핸들러 (axios + 상대 경로 사용)
   const handleLogout = async () => {
     if(window.confirm('로그아웃 하시겠습니까?')) {
@@ -38,7 +40,8 @@ function AdminHeader() {
         }
 
         // 클라이언트 세션 정리 및 이동
-        localStorage.removeItem('isAdmin'); 
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('adminRole'); // [추가] 역할 정보 삭제
         alert("로그아웃 되었습니다.");
         navigate('/'); // 메인 페이지로 이동
         closeMenu();
@@ -83,7 +86,9 @@ function AdminHeader() {
             <li><Link to="/admin/dashboard" onClick={closeMenu}>대시보드</Link></li>
             
             <li><Link to="/admin/notices" onClick={closeMenu}>공지사항</Link></li>
-            <li><Link to="/admin/instagram" onClick={closeMenu}>인스타 관리</Link></li>
+            {adminRole === 'master' && (
+              <li><Link to="/admin/instagram" onClick={closeMenu}>인스타 관리</Link></li>
+            )}
             
             {/* ▼▼▼ 드롭다운 메뉴 시작 ▼▼▼ */}
             <li className="dropdown-container">
@@ -92,14 +97,16 @@ function AdminHeader() {
               </a>
               {/* 드롭다운 내용 */}
               <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
-                <li><Link to="/admin/borrow/approve" onClick={closeMenu}>대여 수락</Link></li>
+                <li><Link to="/admin/borrow/approve" onClick={closeMenu}>대여 승인</Link></li>
                 <li><Link to="/admin/borrow/return" onClick={closeMenu}>반납 관리</Link></li>
                 <li><Link to="/admin/borrow/stock" onClick={closeMenu}>재고 관리</Link></li>
                 <li><Link to="/admin/borrow/log" onClick={closeMenu}>전체 기록</Link></li>
               </ul>
             </li>
             {/* ▲▲▲ 드롭다운 메뉴 끝 ▲▲▲ */}
-            <li><Link to="/admin/teaser" onClick={closeMenu}>티저 이벤트</Link></li>
+            {adminRole === 'master' && (
+              <li><Link to="/admin/teaser" onClick={closeMenu}>티저 이벤트</Link></li>
+            )}
             <li>
                 <button 
                     onClick={handleLogout}

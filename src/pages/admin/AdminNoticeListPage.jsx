@@ -74,7 +74,9 @@ function AdminNoticeListPage() {
                 <th>작성일</th>
                 <th style={{width: '80px'}}>조회수</th>
                 <th>고정</th>
-                <th style={{width: '150px'}}>관리</th>
+                {localStorage.getItem('adminRole') === 'master' && (
+                  <th style={{width: '150px'}}>관리</th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -102,20 +104,23 @@ function AdminNoticeListPage() {
                   <td>
                     {notice.fixed ? <span style={{color:'red', fontWeight:'bold'}}>고정</span> : '-'}
                   </td>
-                  <td>
-                    <button 
+                  
+                  {localStorage.getItem('adminRole') === 'master' && (
+                    <td>
+                      <button 
                         className="btn-modify" 
                         onClick={() => navigate(`/admin/notices/edit/${notice.id}`)}
-                    >
+                      >
                         수정
-                    </button>
-                    <button 
+                      </button>
+                      <button 
                         className="btn-delete" 
                         onClick={() => handleDelete(notice.id)}
-                    >
+                      >
                         삭제
-                    </button>
-                  </td>
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

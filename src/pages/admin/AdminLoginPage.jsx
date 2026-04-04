@@ -34,12 +34,11 @@ function AdminLoginPage() {
       const response = await axios.post('/api/admin/login', { password });
       
       if (response.data.status === 'success') {
-        // 로그인 성공!
-        // 브라우저에 '나 관리자야'라고 표시 (새로고침 해도 유지되게 localStorage 사용)
         localStorage.setItem('isAdmin', 'true'); 
-        alert("관리자님 환영합니다! 👋");
-        navigate('/admin/dashboard'); // 대시보드로 이동
-      } 
+        localStorage.setItem('adminRole', response.data.role); // 'master' 또는 'sub' 저장
+        alert(`${response.data.role === 'master' ? '마스터' : ''} 관리자님 환영합니다!`);
+        navigate('/admin/dashboard');
+      }
     } catch (error) {
       // 401 에러(비번 틀림) 등이 오면 여기로
       if (error.response && error.response.status === 401) {

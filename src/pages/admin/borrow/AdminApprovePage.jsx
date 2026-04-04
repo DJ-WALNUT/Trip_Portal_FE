@@ -67,7 +67,7 @@ function AdminApprovePage() {
     <>
       <AdminHeader />
       <div className="container">
-        <h1>대여 신청 수락</h1>
+        <h1>대여 신청 승인</h1>
         <p>사용자가 신청한 대기 목록입니다.</p>
 
         {/* ▼▼▼ 검색창 추가 ▼▼▼ */}

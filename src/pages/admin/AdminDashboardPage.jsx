@@ -51,26 +51,28 @@ function AdminDashboardPage() {
   };
 
   if (loading) return <div className="container">로딩 중...</div>;
+  const adminRole = localStorage.getItem('adminRole');
 
   return (
     <>
       <AdminHeader />
       <div className="container">
         <h1>관리자 대시보드</h1>
-
-        <div style={{
-          background: isSnowfallOn ? '#e3f2fd' : '#f1f3f5',
-          padding: '10px 20px',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          border: isSnowfallOn ? '1px solid #2196f3' : '1px solid #ddd'
-        }}>
-          <span style={{fontWeight: 'bold', color: isSnowfallOn ? '#1565c0' : '#666'}}>
+        
+        {adminRole === 'master' && (
+          <div style={{
+            background: isSnowfallOn ? '#e3f2fd' : '#f1f3f5',
+            padding: '10px 20px',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            border: isSnowfallOn ? '1px solid #2196f3' : '1px solid #ddd'
+          }}>
+            <span style={{fontWeight: 'bold', color: isSnowfallOn ? '#1565c0' : '#666'}}>
               ❄️ 눈송이 효과: {isSnowfallOn ? 'ON' : 'OFF'}
-          </span>
-          <button 
+            </span>
+            <button 
               onClick={toggleSnowfall}
               style={{
                   padding: '6px 12px',
@@ -81,10 +83,11 @@ function AdminDashboardPage() {
                   cursor: 'pointer',
                   fontWeight: 'bold'
               }}
-          >
+            >
               {isSnowfallOn ? '끄기' : '켜기'}
-          </button>
-        </div>
+            </button>
+          </div>
+        )}
 
         {/* 통계 카드 */}
         <div style={{ display: 'grid', gap: '1rem', marginBottom: '2rem' }}>

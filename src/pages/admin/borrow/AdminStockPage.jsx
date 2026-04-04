@@ -64,6 +64,8 @@ function AdminStockPage() {
       }
   }
 
+  const adminRole = localStorage.getItem('adminRole');
+
   return (
     <>
       <AdminHeader />
@@ -71,15 +73,18 @@ function AdminStockPage() {
         <h1>재고 현황 관리</h1>
 
         {/* 신규 추가 폼 */}
-        <h3>신규 물품 추가</h3>
-        <form onSubmit={handleAddItem} className="add-item-form">
-          <input type="text" placeholder="물품명" required onChange={e=>setNewItem({...newItem, name: e.target.value})}/>
-          <input type="number" placeholder="수량" required onChange={e=>setNewItem({...newItem, count: e.target.value})}/>
-          <input type="text" placeholder="카테고리" required onChange={e=>setNewItem({...newItem, category: e.target.value})}/>
-          <button type="submit" className="btn-return">추가</button>
-        </form>
-        
-        <hr className="divider"/>
+        {adminRole === 'master' && (
+          <h3>신규 물품 추가</h3>
+        )}
+        {adminRole === 'master' && (
+          <form onSubmit={handleAddItem} className="add-item-form">
+            <input type="text" placeholder="물품명" required onChange={e=>setNewItem({...newItem, name: e.target.value})}/>
+            <input type="number" placeholder="수량" required onChange={e=>setNewItem({...newItem, count: e.target.value})}/>
+            <input type="text" placeholder="카테고리" required onChange={e=>setNewItem({...newItem, category: e.target.value})}/>
+            <button type="submit" className="btn-return">추가</button>
+          </form>
+        )}
+        {adminRole === 'master' && ( <hr className="divider"/> )}
 
         {/* 재고 리스트 테이블 */}
         <div className="table-responsive">
