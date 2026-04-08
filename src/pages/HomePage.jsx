@@ -13,6 +13,7 @@ function HomePage() {
     right: { label: '-', count: '-' }
   });
   const [currentIdx, setCurrentIdx] = useState(0); // 슬라이더 인덱스
+  const [isServerDown, setIsServerDown] = useState(false); // 서버 상태 관리
 
   // --- 2. 데이터 가져오기 (API) ---
   useEffect(() => {
@@ -39,6 +40,20 @@ function HomePage() {
          calculateDDay(res.data);
       })
       .catch(err => console.error("일정 로드 실패", err));
+
+    // (4) 공지사항 가져오기 (가장 먼저 실행되는 요청으로 체크)
+    axios.get('/api/notices')
+      .then(res => {
+        setNotices(res.data.slice(0, 4));
+        setIsServerDown(false); // 성공하면 서버가 켜져 있음
+      })
+      .catch(err => {
+        console.error("공지 로드 실패", err);
+        // 만약 에러 응답이 없거나(서버 꺼짐), 500대 에러라면 점검 중으로 판단
+        if (!err.response || err.response.status >= 500) {
+          setIsServerDown(true);
+        }
+      });
   }, []);
 
   // --- 3. D-Day 계산 로직 ---
@@ -121,6 +136,32 @@ function HomePage() {
   // 현재 보여줄 인스타 이미지 (데이터 없으면 기본 회색)
   const currentPost = instaPosts.length > 0 ? instaPosts[currentIdx] : null;
   const currentImgUrl = currentPost ? getFullImgUrl(currentPost.imgUrl) : '';
+
+  if (isServerDown) {
+    return (
+      <section className="maintenance-section container">
+          <div className="maintenance-card">
+            <span className="maintenance-icon">🛠️</span>
+            <h2>여정은 지금 점검 중!</h2>
+            <p>
+              보다 안정적인 서비스를 위해 <br />서버를 점검하고 있습니다.<br />
+              <strong>매일 05:00 ~ 06:00</strong>은 정기 점검 시간입니다.
+            </p>
+            <div className="maintenance-info">
+              <p>이용 가능 서비스:<br />학교페이지 바로가기, 조직도 열람,<br />단과대 및 학과 편성</p>
+            </div>
+            {/* 점검 중에도 학교 바로가기 링크는 유지 */}
+            <div className="shortcut-grid small-grid">
+              <a href="https://www.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">학교 홈페이지</a>
+              <a href="https://www.catholic.ac.kr/ko/support/calendar2024_list.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">학사일정</a>
+              <a href="https://uportal.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">트리니티</a>
+              <a href="https://e-cyber.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">사이버캠퍼스</a>
+              <a href="https://www.catholic.ac.kr/ko/support/absence_notification.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">공결허가원</a>
+            </div>
+          </div>
+        </section>
+    );
+  }
 
   return (
     <div className="main-page-container">

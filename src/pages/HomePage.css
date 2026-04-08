@@ -236,6 +236,51 @@
     color: var(--text-color);
 }
 
+.maintenance-section {
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.maintenance-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* 기존 카드들과 통일된 그림자 */
+  max-width: 600px;
+  width: 100%;
+}
+
+.maintenance-icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.maintenance-card h2 {
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.maintenance-card p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.maintenance-info {
+  margin: 25px 0px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
 /* 모바일 대응 */
 @media (max-width: 768px) {
     .notice-content {
