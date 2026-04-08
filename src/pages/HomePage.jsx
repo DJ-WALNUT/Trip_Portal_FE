@@ -44,7 +44,7 @@ function HomePage() {
     // (4) 공지사항 가져오기 (가장 먼저 실행되는 요청으로 체크)
     axios.get('/api/notices')
       .then(res => {
-        setNotices(res.data.slice(0, 4));
+        setNotices(res.data.slice(0, 5));
         setIsServerDown(false); // 성공하면 서버가 켜져 있음
       })
       .catch(err => {
