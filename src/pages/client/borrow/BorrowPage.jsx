@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import dayjs from '../../../lib/dayjs';
 import './BorrowPage.css'; // 스타일 파일
 
 function BorrowPage() {
@@ -96,20 +97,19 @@ function BorrowPage() {
       const response = await axios.post('/api/borrow', payload);
       
       if (response.data.status === 'success') {
-        // --- 날짜 계산 로직 추가 ---
-        const today = new Date();
-        const returnDay = new Date();
-        returnDay.setDate(today.getDate() + 4); // 4일 뒤
-
-        // 날짜 포맷 (YYYY-MM-DD)
-        const formatDate = (d) => d.toISOString().split('T')[0];
+        // 1. 한국 시간 기준 오늘(신청일)
+        const todayKST = dayjs().tz().startOf('day');
+        // 2. 한국 시간 기준 4일 뒤(반납 예정일)
+        const returnDayKST = todayKST.add(4, 'day');
+        // 3. 날짜 포맷 함수 (YYYY-MM-DD)
+        const formatDate = (dObj) => dObj.format('YYYY-MM-DD');
 
         // --- 성공 페이지로 데이터 들고 이동! ---
         navigate('/success', { 
           state: { 
             items: Array.from(cart),
-            date: formatDate(today),
-            returnDate: formatDate(returnDay)
+            date: formatDate(todayKST),      // 오늘 날짜
+            returnDate: formatDate(returnDayKST) // 4일 뒤 날짜
           } 
         });
         

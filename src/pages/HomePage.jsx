@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // axios 추가
 import { Link } from 'react-router-dom';
+import dayjs from '../lib/dayjs';
 import FloatingSNS from '../components/FloatingSNS'; 
 import './HomePage.css'; 
 
@@ -58,49 +59,47 @@ function HomePage() {
 
   // --- 3. D-Day 계산 로직 ---
   const calculateDDay = (scheduleList) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = dayjs().tz().startOf('day');
 
     let targetLeft = null;
     let targetRight = null;
 
     for (let i = 0; i < scheduleList.length; i++) {
         const term = scheduleList[i];
-        const startDate = new Date(term.start); // 백엔드에서 start라고 줌
-        const endDate = term.end ? new Date(term.end) : null;
+        const startDate = dayjs(term.start).tz().startOf('day');
+        const endDate = term.end ? dayjs(term.end).tz().startOf('day') : null;
 
-        if (today < startDate) break; 
+        if (today.isBefore(startDate)) break;
 
-        // 학기 중
-        if (endDate && today >= startDate && today <= endDate) {
+        // --- [Case A] 현재 '학기 중'인 경우 ---
+        // 오늘이 시작일 이후이고, 종료일 이전(또는 당일)일 때
+        if (endDate && (today.isSame(startDate) || today.isAfter(startDate)) && (today.isSame(endDate) || today.isBefore(endDate))) {
             targetLeft = { label: '개강', date: startDate };
             targetRight = { label: '종강', date: endDate };
-            break; 
+            break;
         }
 
-        // 학기 끝남 (방학) -> 다음 학기 찾기
-        if (endDate && today > endDate) {
+        // --- [Case B] 현재 '방학(학기 종료 후)'인 경우 ---
+        // 오늘이 현재 루프의 학기 종료일보다 뒤에 있다면 다음 학기를 확인
+        if (endDate && today.isAfter(endDate)) {
             const nextTerm = scheduleList[i + 1];
             if (nextTerm) {
-                const nextStart = new Date(nextTerm.start);
-                if (today < nextStart) {
-                    targetLeft = { label: '종강', date: endDate };
-                    targetRight = { label: '개강', date: nextStart };
+                const nextStart = dayjs(nextTerm.start).tz().startOf('day');
+                
+                // 오늘이 다음 학기 시작 전이라면, 현재는 '방학' 상태
+                if (today.isBefore(nextStart)) {
+                    targetLeft = { label: '종강', date: endDate };   // 지난 종강일로부터 얼마나 지났나
+                    targetRight = { label: '개강', date: nextStart }; // 다가올 개강일까지 얼마나 남았나
                     break;
                 }
             }
         }
     }
 
+    // D-Day 문자열 생성 보조 함수 (Day.js 적용)
     const getDDayString = (targetDate) => {
         if (!targetDate) return '-';
-        // use the same `today` date from above so we don't re-evaluate mid-day
-        const todayStart = new Date();
-        todayStart.setHours(0, 0, 0, 0);
-
-        const diffTime = targetDate - todayStart;
-        // round toward -infinity so that once the day has passed we get -1, -2, etc
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const diffDays = targetDate.diff(today, 'day'); // 위에서 정의한 today 사용
 
         if (diffDays === 0) return "D-Day";
         return diffDays > 0 ? `D-${diffDays}` : `D+${Math.abs(diffDays)}`;
@@ -108,7 +107,7 @@ function HomePage() {
 
     if (targetLeft && targetRight) {
         setDDayInfo({
-            left: { label: targetLeft.label, count: getDDayString(targetLeft.date) }, 
+            left: { label: targetLeft.label, count: getDDayString(targetLeft.date) },
             right: { label: targetRight.label, count: getDDayString(targetRight.date) }
         });
     }
