@@ -30,6 +30,7 @@
 }
 
 .item-card {
+    min-width: 160px;
     background: white;
     border: 2px solid var(--light-gray);
     border-radius: 8px;

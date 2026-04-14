@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import dayjs from '../../../lib/dayjs';
 import './BorrowPage.css'; // 스타일 파일
 
@@ -11,6 +12,7 @@ function BorrowPage() {
   const [items, setItems] = useState([]); // 전체 물품 리스트
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [selectedCategory, setSelectedCategory] = useState('전체'); // 현재 탭
+  const [searchTerm, setSearchTerm] = useState(''); // [추가] 검색어 상태
   const [cart, setCart] = useState(new Set()); // 장바구니 (중복방지 Set 사용)
   
   // 사용자 입력 폼 상태
@@ -50,13 +52,16 @@ function BorrowPage() {
   }, []);
 
   // --- 2. 카테고리 처리 ---
-  // 존재하는 카테고리 추출 (중복제거)
   const categories = ['전체', ...new Set(items.map(item => item['카테고리']))];
   
-  // 현재 선택된 카테고리의 물품만 필터링
-  const filteredItems = selectedCategory === '전체' 
-    ? items 
-    : items.filter(item => item['카테고리'] === selectedCategory);
+  // [수정] 검색어와 카테고리를 동시에 고려한 필터링
+  const filteredItems = useMemo(() => {
+    return items.filter(item => {
+      const matchesCategory = selectedCategory === '전체' || item['카테고리'] === selectedCategory;
+      const matchesSearch = item['물품'].toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [items, selectedCategory, searchTerm]);
 
   // --- 3. 핸들러 함수들 ---
   
@@ -129,6 +134,28 @@ function BorrowPage() {
       <h1>물품 대여</h1>
       <p style={{marginBottom:'0.5rem'}}>원하는 물품을 선택(클릭)한 후 아래 정보를 입력해주세요.</p>
 
+      {/* [추가] 검색 바 영역 */}
+      <div className="search-container" style={{ marginBottom: '1.5rem', position: 'relative' }}>
+        <input 
+          type="text" 
+          className="search-input"
+          placeholder="빌리고 싶은 물품명을 검색하세요..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '12px 12px 12px 40px',
+            borderRadius: '18px',
+            border: '1px solid #ddd',
+            fontSize: '1rem'
+          }}
+        />
+        <Search 
+          style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#888' }} 
+          size={18} 
+        />
+      </div>
+
       {/* 카테고리 탭 */}
       <div className="category-tabs">
         {categories.map(cat => (
@@ -144,22 +171,28 @@ function BorrowPage() {
 
       {/* 물품 리스트 그리드 */}
       <div className="item-grid">
-        {filteredItems.map((item, idx) => {
-          const isSelected = cart.has(item['물품']);
-          const isOutOfStock = item['재고현황'] <= 0;
-          
-          return (
-            <div 
-              key={idx} 
-              className={`item-card ${isSelected ? 'selected' : ''} ${isOutOfStock ? 'disabled' : ''}`}
-              onClick={() => toggleItem(item['물품'], item['재고현황'])}
-            >
-              <h3>{item['물품']}</h3>
-              <p>남은 수량: {isOutOfStock ? '품절' : item['재고현황'] + '개'}</p>
-              {isSelected && <div className="check-mark">✔</div>}
-            </div>
-          );
-        })}
+        {filteredItems.length > 0 ? (
+          filteredItems.map((item, idx) => {
+            const isSelected = cart.has(item['물품']);
+            const isOutOfStock = item['재고현황'] <= 0;
+            
+            return (
+              <div 
+                key={idx} 
+                className={`item-card ${isSelected ? 'selected' : ''} ${isOutOfStock ? 'disabled' : ''}`}
+                onClick={() => toggleItem(item['물품'], item['재고현황'])}
+              >
+                <h3>{item['물품']}</h3>
+                <p>남은 수량: {isOutOfStock ? '품절' : item['재고현황'] + '개'}</p>
+                {isSelected && <div className="check-mark">✔</div>}
+              </div>
+            );
+          })
+        ) : (
+          <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem', color: '#888' }}>
+            검색 결과가 없습니다.
+          </div>
+        )}
       </div>
 
       {/* 선택된 물품 확인 */}
