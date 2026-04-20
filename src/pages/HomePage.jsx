@@ -63,13 +63,13 @@ function HomePage() {
     axios.get('/api/gallery')
       .then(res => {
         const shuffled = [...res.data].sort(() => 0.5 - Math.random());
-        // 1. 전체 데이터 중 상위 10개만 추출
+        // 1. 전체 데이터 중 일부만 추출
         const limitedData = shuffled.slice(0, 15);
         // 백엔드에서 이미 완성된 API 경로(/api/gallery/image/...)를 주므로 
         // getFullImgUrl을 거치지 않고 그대로 사용하거나, 필요한 경우에만 처리합니다.
         const formattedImages = limitedData.map((img) => ({
           // 백엔드 응답의 src가 이미 /api/gallery/... 로 시작한다면 그대로 사용
-          src: img.src, 
+          src: img.src.startsWith('http') ? img.src : `${BASE_URL}${img.src}`, 
           alt: img.alt || "여정 활동 사진"
         }));
         setGalleryImages(formattedImages);
