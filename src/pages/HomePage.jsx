@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // axios 추가
 import { Link } from 'react-router-dom';
 import dayjs from '../lib/dayjs';
-import FloatingSNS from '../components/FloatingSNS'; 
+import FloatingSNS from '../components/FloatingSNS';
+import DomeGallery from '../components/DomeGallery';
 import './HomePage.css'; 
 
 function HomePage() {
@@ -15,6 +16,7 @@ function HomePage() {
   });
   const [currentIdx, setCurrentIdx] = useState(0); // 슬라이더 인덱스
   const [isServerDown, setIsServerDown] = useState(false); // 서버 상태 관리
+  const [galleryImages, setGalleryImages] = useState([]);
 
   // --- 2. 데이터 가져오기 (API) ---
   useEffect(() => {
@@ -55,6 +57,25 @@ function HomePage() {
           setIsServerDown(true);
         }
       });
+  }, []);
+
+  useEffect(() => {
+    axios.get('/api/gallery')
+      .then(res => {
+        const shuffled = [...res.data].sort(() => 0.5 - Math.random());
+        // 1. 전체 데이터 중 상위 10개만 추출
+        const limitedData = shuffled.slice(0, 15);
+        // 백엔드에서 이미 완성된 API 경로(/api/gallery/image/...)를 주므로 
+        // getFullImgUrl을 거치지 않고 그대로 사용하거나, 필요한 경우에만 처리합니다.
+        const formattedImages = limitedData.map((img) => ({
+          // 백엔드 응답의 src가 이미 /api/gallery/... 로 시작한다면 그대로 사용
+          src: img.src, 
+          alt: img.alt || "여정 활동 사진"
+        }));
+        setGalleryImages(formattedImages);
+      })
+      .catch(err => console.error("갤러리 로드 실패:", err)
+    );
   }, []);
 
   // --- 3. D-Day 계산 로직 ---
@@ -165,9 +186,23 @@ function HomePage() {
   return (
     <div className="main-page-container">
       <section className="hero-section">
+        {/* 1. 배경: Dome Gallery (제스처 적용됨) */}
+        <div className="hero-background">
+          <DomeGallery
+            images={galleryImages.length > 0 ? galleryImages : []} 
+            segments={39}
+            fit={0.8}
+            minRadius={950}
+            maxVerticalRotationDeg={0}
+            dragDampening={2}
+          />
+          <div className="hero-dim-overlay"></div>
+        </div>
+
+        {/* 2. 콘텐츠: 문구 유지 및 디자인 강화 */}
         <div className="catch-phrase">
-          <p>제4대 공과대학 학생회 [여정]</p>
-          <h1>변화를 새길, 우리의 여정!</h1>
+          <p className="hero-sub-text">제4대 공과대학 학생회 [여정]</p>
+          <h1 className="hero-main-title">변화를 새길, 우리의 여정!</h1>
         </div>
       </section>
 
