@@ -40,7 +40,7 @@ const DepartmentPage = () => {
         { name: "인공지능학과", id: "cuk_ai_" },
         { name: "정보통신전자공학부", id: "cuk.ice" },
         { name: "컴퓨터정보공학부", id: "cuk.csie" },
-        { name: "AI의공학과", id: "" },
+        { name: "AI의공학과", id: "cuk_aibme" },
       ]
     },
     {
