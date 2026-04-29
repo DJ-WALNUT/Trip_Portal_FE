@@ -275,7 +275,7 @@ function HomePage() {
       {/* 바로가기 섹션 (기존 유지) */}
       <section className="shortcut-section container">
         {/* --사업시작 전 비공개*/}
-        <h2>물품 대여 사업</h2>
+        <h2 style={{marginBottom: '10px'}}>물품 대여 사업</h2>
         <div className="shortcut-grid">
           <Link to="/borrow" className="shortcut-card main-card">
             <span className="icon">📦</span>
@@ -292,7 +292,7 @@ function HomePage() {
             </div>
           </Link>
         </div>
-        <h2 style={{marginTop: '20px'}}>학교 바로가기</h2>
+        <h2 style={{marginTop: '25px', marginBottom: '10px'}}>학교 바로가기</h2>
         <div className="shortcut-grid small-grid">
             <a href="https://www.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">학교 홈페이지</a>
             <a href="https://www.catholic.ac.kr/ko/support/calendar2024_list.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">학사일정</a>
