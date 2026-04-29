@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/',
   resolve: { // <-- 2. 이 부분 전체 추가
     alias: {
       "@": path.resolve(__dirname, "./src"),

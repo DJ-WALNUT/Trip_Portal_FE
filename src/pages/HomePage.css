@@ -2,10 +2,48 @@
 
 /* --- 1. 상단 배너 섹션 --- */
 .hero-section {
-    background: linear-gradient(135deg, var(--main-navy), var(--accent-blue));
-    color: white;
-    padding: 4rem 1rem;
-    text-align: center;
+  position: relative;
+  height: 53vh; /* 공대 감성 가득한 시원한 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1;
+}
+
+/* 텍스트 가독성을 위한 핵심! */
+.hero-dim-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.5) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  z-index: 2;
+}
+
+.catch-phrase {
+  position: relative;
+  font-weight: 600;
+  z-index: 10; /* 갤러리보다 위로 */
+  color: white;
+  text-align: center;
+  /* 텍스트 그림자로 가독성 끝판왕 만들기 */
+  text-shadow: 0 0 20px rgb(14, 16, 102), 0 0 15px rgba(59, 223, 245, 0.7);
+}
+
+.hero-main-title {
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin-top: 10px;
 }
 
 .catch-phrase p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 0.5rem; }
@@ -236,8 +274,57 @@
     color: var(--text-color);
 }
 
+.maintenance-section {
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.maintenance-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* 기존 카드들과 통일된 그림자 */
+  max-width: 600px;
+  width: 100%;
+}
+
+.maintenance-icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.maintenance-card h2 {
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.maintenance-card p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.maintenance-info {
+  margin: 25px 0px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
 /* 모바일 대응 */
 @media (max-width: 768px) {
+    .hero-section {
+        height: 33vh;
+    }
+
     .notice-content {
         grid-template-columns: 1fr; /* 세로 배치 */
     }

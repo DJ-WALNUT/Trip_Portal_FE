@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import dayjs from '../../../lib/dayjs';
 import AdminHeader from '../../../components/AdminHeader';
 import '../AdminCommon.css';
 
@@ -12,14 +13,14 @@ function AdminReturnPage() {
   const [handlerName, setHandlerName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // [추가] 날짜 계산 로직
-  const today = new Date();
-  const oneWeekAgo = new Date(today);
-  oneWeekAgo.setDate(today.getDate() - 4);
-
+  // --- [수정] 날짜 계산 로직 ---
+  // 한국 시간 기준 오늘 00:00:00
+  const todayKST = dayjs().tz().startOf('day');
+  // 오늘로부터 4일 전 계산
+  const overdueLimit = todayKST.subtract(4, 'day');
   // 날짜 포맷 함수 (YYYY-MM-DD)
-  const formatDate = (date) => {
-    return date.toISOString().split('T')[0];
+  const formatDate = (dateObj) => {
+    return dateObj.format('YYYY-MM-DD');
   };
 
   const fetchRentals = () => {
@@ -73,10 +74,12 @@ function AdminReturnPage() {
         {/* [추가] 날짜 정보 표시 카드 */}
         <div className="date-info-card">
           <div className="date-item">
-            📅 오늘 날짜: <span style={{color: '#2c3e50'}}>{formatDate(today)}</span>
+            {/* [수정] today -> todayKST 로 변경 */}
+            📅 오늘 날짜: <span style={{color: '#2c3e50'}}>{formatDate(todayKST)}</span>
           </div>
           <div className="date-item">
-            ⚠️ 반납 기한 만료일 (4일 전): <span style={{color: '#c0392b'}}>{formatDate(oneWeekAgo)}</span>
+            {/* [수정] oneWeekAgo -> overdueLimit 로 변경 */}
+            ⚠️ 반납 기한 만료일 (4일 전): <span style={{color: '#c0392b'}}>{formatDate(overdueLimit)}</span>
           </div>
         </div>
 
@@ -112,8 +115,10 @@ function AdminReturnPage() {
               {filteredRentals.length === 0 ? (
                 <tr><td colSpan="6">검색 결과가 없거나 미반납 건이 없습니다.</td></tr>
               ) : filteredRentals.map((item, idx) => {
-                // 대여일이 4일 지난 경우 날짜를 빨간색으로 표시하는 시각적 힌트 추가
-                const isOverdue = item.date.split(' ')[0] <= formatDate(oneWeekAgo);
+                // [수정] 대여일(문자열)을 Day.js로 변환하여 비교
+                const rentalDay = dayjs(item.date).tz().startOf('day');
+                // 대여일이 연체 기준일(4일 전)보다 이전이거나 같으면 연체로 판단
+                const isOverdue = rentalDay.isSame(overdueLimit) || rentalDay.isBefore(overdueLimit);
                 
                 return (
                   <tr key={idx} style={isOverdue ? {backgroundColor: '#fff5f5'} : {}}>

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // axios 추가
 import { Link } from 'react-router-dom';
-import FloatingSNS from '../components/FloatingSNS'; 
+import dayjs from '../lib/dayjs';
+import FloatingSNS from '../components/FloatingSNS';
+import DomeGallery from '../components/DomeGallery';
 import './HomePage.css'; 
 
 function HomePage() {
@@ -13,6 +15,8 @@ function HomePage() {
     right: { label: '-', count: '-' }
   });
   const [currentIdx, setCurrentIdx] = useState(0); // 슬라이더 인덱스
+  const [isServerDown, setIsServerDown] = useState(false); // 서버 상태 관리
+  const [galleryImages, setGalleryImages] = useState([]);
 
   // --- 2. 데이터 가져오기 (API) ---
   useEffect(() => {
@@ -39,53 +43,84 @@ function HomePage() {
          calculateDDay(res.data);
       })
       .catch(err => console.error("일정 로드 실패", err));
+
+    // (4) 공지사항 가져오기 (가장 먼저 실행되는 요청으로 체크)
+    axios.get('/api/notices')
+      .then(res => {
+        setNotices(res.data.slice(0, 5));
+        setIsServerDown(false); // 성공하면 서버가 켜져 있음
+      })
+      .catch(err => {
+        console.error("공지 로드 실패", err);
+        // 만약 에러 응답이 없거나(서버 꺼짐), 500대 에러라면 점검 중으로 판단
+        if (!err.response || err.response.status >= 500) {
+          setIsServerDown(true);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get('/api/gallery')
+      .then(res => {
+        const shuffled = [...res.data].sort(() => 0.5 - Math.random());
+        // 1. 전체 데이터 중 일부만 추출
+        const limitedData = shuffled.slice(0, 15);
+        // 백엔드에서 이미 완성된 API 경로(/api/gallery/image/...)를 주므로 
+        // getFullImgUrl을 거치지 않고 그대로 사용하거나, 필요한 경우에만 처리합니다.
+        const formattedImages = limitedData.map((img) => ({
+          // 백엔드 응답의 src가 이미 /api/gallery/... 로 시작한다면 그대로 사용
+          src: img.src.startsWith('http') ? img.src : `${BASE_URL}${img.src}`, 
+          alt: img.alt || "여정 활동 사진"
+        }));
+        setGalleryImages(formattedImages);
+      })
+      .catch(err => console.error("갤러리 로드 실패:", err)
+    );
   }, []);
 
   // --- 3. D-Day 계산 로직 ---
   const calculateDDay = (scheduleList) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = dayjs().tz().startOf('day');
 
     let targetLeft = null;
     let targetRight = null;
 
     for (let i = 0; i < scheduleList.length; i++) {
         const term = scheduleList[i];
-        const startDate = new Date(term.start); // 백엔드에서 start라고 줌
-        const endDate = term.end ? new Date(term.end) : null;
+        const startDate = dayjs(term.start).tz().startOf('day');
+        const endDate = term.end ? dayjs(term.end).tz().startOf('day') : null;
 
-        if (today < startDate) break; 
+        if (today.isBefore(startDate)) break;
 
-        // 학기 중
-        if (endDate && today >= startDate && today <= endDate) {
+        // --- [Case A] 현재 '학기 중'인 경우 ---
+        // 오늘이 시작일 이후이고, 종료일 이전(또는 당일)일 때
+        if (endDate && (today.isSame(startDate) || today.isAfter(startDate)) && (today.isSame(endDate) || today.isBefore(endDate))) {
             targetLeft = { label: '개강', date: startDate };
             targetRight = { label: '종강', date: endDate };
-            break; 
+            break;
         }
 
-        // 학기 끝남 (방학) -> 다음 학기 찾기
-        if (endDate && today > endDate) {
+        // --- [Case B] 현재 '방학(학기 종료 후)'인 경우 ---
+        // 오늘이 현재 루프의 학기 종료일보다 뒤에 있다면 다음 학기를 확인
+        if (endDate && today.isAfter(endDate)) {
             const nextTerm = scheduleList[i + 1];
             if (nextTerm) {
-                const nextStart = new Date(nextTerm.start);
-                if (today < nextStart) {
-                    targetLeft = { label: '종강', date: endDate };
-                    targetRight = { label: '개강', date: nextStart };
+                const nextStart = dayjs(nextTerm.start).tz().startOf('day');
+                
+                // 오늘이 다음 학기 시작 전이라면, 현재는 '방학' 상태
+                if (today.isBefore(nextStart)) {
+                    targetLeft = { label: '종강', date: endDate };   // 지난 종강일로부터 얼마나 지났나
+                    targetRight = { label: '개강', date: nextStart }; // 다가올 개강일까지 얼마나 남았나
                     break;
                 }
             }
         }
     }
 
+    // D-Day 문자열 생성 보조 함수 (Day.js 적용)
     const getDDayString = (targetDate) => {
         if (!targetDate) return '-';
-        // use the same `today` date from above so we don't re-evaluate mid-day
-        const todayStart = new Date();
-        todayStart.setHours(0, 0, 0, 0);
-
-        const diffTime = targetDate - todayStart;
-        // round toward -infinity so that once the day has passed we get -1, -2, etc
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const diffDays = targetDate.diff(today, 'day'); // 위에서 정의한 today 사용
 
         if (diffDays === 0) return "D-Day";
         return diffDays > 0 ? `D-${diffDays}` : `D+${Math.abs(diffDays)}`;
@@ -93,7 +128,7 @@ function HomePage() {
 
     if (targetLeft && targetRight) {
         setDDayInfo({
-            left: { label: targetLeft.label, count: getDDayString(targetLeft.date) }, 
+            left: { label: targetLeft.label, count: getDDayString(targetLeft.date) },
             right: { label: targetRight.label, count: getDDayString(targetRight.date) }
         });
     }
@@ -122,12 +157,52 @@ function HomePage() {
   const currentPost = instaPosts.length > 0 ? instaPosts[currentIdx] : null;
   const currentImgUrl = currentPost ? getFullImgUrl(currentPost.imgUrl) : '';
 
+  if (isServerDown) {
+    return (
+      <section className="maintenance-section container">
+          <div className="maintenance-card">
+            <span className="maintenance-icon">🛠️</span>
+            <h2>여정은 지금 점검 중!</h2>
+            <p>
+              보다 안정적인 서비스를 위해 <br />서버를 점검하고 있습니다.<br />
+              <strong>매일 05:00 ~ 06:00</strong>은 정기 점검 시간입니다.
+            </p>
+            <div className="maintenance-info">
+              <p>이용 가능 서비스:<br />학교페이지 바로가기, 조직도 열람,<br />단과대 및 학과 편성</p>
+            </div>
+            {/* 점검 중에도 학교 바로가기 링크는 유지 */}
+            <div className="shortcut-grid small-grid">
+              <a href="https://www.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">학교 홈페이지</a>
+              <a href="https://www.catholic.ac.kr/ko/support/calendar2024_list.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">학사일정</a>
+              <a href="https://uportal.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">트리니티</a>
+              <a href="https://e-cyber.catholic.ac.kr" target="_blank" rel="noreferrer" className="shortcut-card small-card">사이버캠퍼스</a>
+              <a href="https://www.catholic.ac.kr/ko/support/absence_notification.do" target="_blank" rel="noreferrer" className="shortcut-card small-card">공결허가원</a>
+            </div>
+          </div>
+        </section>
+    );
+  }
+
   return (
     <div className="main-page-container">
       <section className="hero-section">
+        {/* 1. 배경: Dome Gallery (제스처 적용됨) */}
+        <div className="hero-background">
+          <DomeGallery
+            images={galleryImages.length > 0 ? galleryImages : []} 
+            segments={39}
+            fit={0.8}
+            minRadius={950}
+            maxVerticalRotationDeg={0}
+            dragDampening={2}
+          />
+          <div className="hero-dim-overlay"></div>
+        </div>
+
+        {/* 2. 콘텐츠: 문구 유지 및 디자인 강화 */}
         <div className="catch-phrase">
-          <p>제4대 공과대학 학생회 [여정]</p>
-          <h1>변화를 새길, 우리의 여정!</h1>
+          <p className="hero-sub-text">제4대 공과대학 학생회 [여정]</p>
+          <h1 className="hero-main-title">변화를 새길, 우리의 여정!</h1>
         </div>
       </section>
 
