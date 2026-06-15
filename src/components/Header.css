@@ -149,6 +149,23 @@
     color: white;
 }
 
+/* 비활성화된 메뉴 항목 (대여 신청 일시 중단 등) */
+.dropdown-menu a.disabled-link,
+.main-nav a.disabled-link {
+    color: rgba(255, 255, 255, 0.35);
+    text-decoration: line-through;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* 비활성화 상태에서는 hover 강조 제거 */
+.dropdown-menu a.disabled-link:hover,
+.main-nav a.disabled-link:hover {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.35);
+    opacity: 0.6;
+}
+
 /* 모바일 반응형 (768px 이하) */
 @media (max-width: 920px) {
     .header-content {

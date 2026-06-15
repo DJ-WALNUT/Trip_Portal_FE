@@ -265,6 +265,28 @@
 .main-card h3 { font-size: 1.5rem; color: var(--main-navy); margin-bottom: 0.5rem; }
 .main-card p { color: #666; }
 
+/* 비활성화된 카드 (대여 신청 일시 중단 등) */
+.shortcut-card.disabled-card {
+    background: #f0f0f0;
+    border-color: #ddd;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.6;
+    filter: grayscale(100%);
+}
+
+.shortcut-card.disabled-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: #ddd;
+}
+
+.shortcut-card.disabled-card .icon,
+.shortcut-card.disabled-card h3,
+.shortcut-card.disabled-card p {
+    color: #999;
+}
+
 /* 작은 그리드 (외부 링크) */
 .small-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 .small-card { 

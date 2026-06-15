@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import dayjs from '../lib/dayjs';
 import FloatingSNS from '../components/FloatingSNS';
 import DomeGallery from '../components/DomeGallery';
-import './HomePage.css'; 
+import { RENTAL_ENABLED } from '../config/features';
+import './HomePage.css';
 
 function HomePage() {
   // --- 1. 상태 관리 ---
@@ -277,13 +278,27 @@ function HomePage() {
         {/* --사업시작 전 비공개*/}
         <h2 style={{marginBottom: '10px'}}>물품 대여 사업</h2>
         <div className="shortcut-grid">
-          <Link to="/borrow" className="shortcut-card main-card">
-            <span className="icon">📦</span>
-            <div className="text">
-              <h3>대여 신청</h3>
-              <p>학생회 비품을 간편하게 빌려요</p>
+          {RENTAL_ENABLED ? (
+            <Link to="/borrow" className="shortcut-card main-card">
+              <span className="icon">📦</span>
+              <div className="text">
+                <h3>대여 신청</h3>
+                <p>학생회 비품을 간편하게 빌려요</p>
+              </div>
+            </Link>
+          ) : (
+            <div
+              className="shortcut-card main-card disabled-card"
+              aria-disabled="true"
+              title="대여 신청은 현재 이용할 수 없습니다."
+            >
+              <span className="icon">📦</span>
+              <div className="text">
+                <h3>대여 신청</h3>
+                <p>현재 이용할 수 없습니다</p>
+              </div>
             </div>
-          </Link>
+          )}
           <Link to="/check" className="shortcut-card main-card">
             <span className="icon">🔍</span>
             <div className="text">
