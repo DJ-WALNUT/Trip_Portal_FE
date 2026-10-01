@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
@@ -26,6 +26,10 @@ function BorrowPage() {
   // 기존 departments 변수는 삭제하거나 빈 배열로 초기화
   const [departments, setDepartments] = useState([]);
 
+  // 하단 고정 바: 신청 폼이 화면에 보이면 숨김
+  const formRef = useRef(null);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
   // --- 1. 데이터 가져오기 (API 연동) ---
   useEffect(() => {
     axios.get('/api/items') // Proxy 덕분에 http://192.168.0.50:5050/api/items 로 요청됨
@@ -51,20 +55,32 @@ function BorrowPage() {
       .catch(err => console.error("학과 로드 실패:", err));
   }, []);
 
+  // 신청 폼이 화면에 들어왔는지 감시
+  useEffect(() => {
+    if (loading || !formRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsFormVisible(entry.isIntersecting),
+      { threshold: 0.15 }
+    );
+    observer.observe(formRef.current);
+    return () => observer.disconnect();
+  }, [loading]);
+
   // --- 2. 카테고리 처리 ---
   const categories = ['전체', ...new Set(items.map(item => item['카테고리']))];
   
-  // [수정] 검색어와 카테고리를 동시에 고려한 필터링 + 재고 있는 물품 우선 정렬
-  const filteredItems = useMemo(() => {
-    const isInStock = item => Number(item['재고현황']) > 0;
-    return items
-      .filter(item => {
-        const matchesCategory = selectedCategory === '전체' || item['카테고리'] === selectedCategory;
-        const matchesSearch = item['물품'].toLowerCase().includes(searchTerm.toLowerCase());
-        return matchesCategory && matchesSearch;
-      })
-      // 재고 있는 물품을 앞으로, 품절 물품을 뒤로 (같은 그룹 내에서는 기존 순서 유지)
-      .sort((a, b) => isInStock(b) - isInStock(a));
+  // [수정] 검색어와 카테고리를 동시에 고려한 필터링 + 재고 유무로 분리
+  // (재고 있는 물품은 카드로, 재고 없는 물품은 아래에 작게 표시)
+  const { inStockItems, outOfStockItems } = useMemo(() => {
+    const filtered = items.filter(item => {
+      const matchesCategory = selectedCategory === '전체' || item['카테고리'] === selectedCategory;
+      const matchesSearch = item['물품'].toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+    return {
+      inStockItems: filtered.filter(item => Number(item['재고현황']) > 0),
+      outOfStockItems: filtered.filter(item => Number(item['재고현황']) <= 0),
+    };
   }, [items, selectedCategory, searchTerm]);
 
   // --- 3. 핸들러 함수들 ---
@@ -80,6 +96,14 @@ function BorrowPage() {
       newCart.add(itemName); // 없으면 추가
     }
     setCart(newCart);
+  };
+
+  // 하단 바 버튼: 신청 폼으로 이동 후 첫 입력칸에 포커스
+  const scrollToForm = () => {
+    const form = formRef.current;
+    if (!form) return;
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    form.querySelector('input[name="name"]')?.focus({ preventScroll: true });
   };
 
   // 입력 폼 변경 핸들러
@@ -174,30 +198,42 @@ function BorrowPage() {
       </div>
 
       {/* 물품 리스트 그리드 */}
-      <div className="item-grid">
-        {filteredItems.length > 0 ? (
-          filteredItems.map((item, idx) => {
-            const isSelected = cart.has(item['물품']);
-            const isOutOfStock = item['재고현황'] <= 0;
-            
-            return (
-              <div 
-                key={idx} 
-                className={`item-card ${isSelected ? 'selected' : ''} ${isOutOfStock ? 'disabled' : ''}`}
-                onClick={() => toggleItem(item['물품'], item['재고현황'])}
-              >
-                <h3>{item['물품']}</h3>
-                <p>남은 수량: {isOutOfStock ? '품절' : item['재고현황'] + '개'}</p>
-                {isSelected && <div className="check-mark">✔</div>}
-              </div>
-            );
-          })
-        ) : (
-          <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem', color: '#888' }}>
-            검색 결과가 없습니다.
-          </div>
-        )}
-      </div>
+      {inStockItems.length + outOfStockItems.length === 0 ? (
+        <div className="item-empty">검색 결과가 없습니다.</div>
+      ) : (
+        <>
+          {inStockItems.length > 0 && (
+            <div className="item-grid">
+              {inStockItems.map(item => {
+                const isSelected = cart.has(item['물품']);
+                return (
+                  <div
+                    key={item['물품']}
+                    className={`item-card ${isSelected ? 'selected' : ''}`}
+                    onClick={() => toggleItem(item['물품'], item['재고현황'])}
+                  >
+                    <h3>{item['물품']}</h3>
+                    <p>남은 수량: <strong>{item['재고현황']}개</strong></p>
+                    {isSelected && <div className="check-mark">✔</div>}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* 재고 없는 물품: 선택 불가이므로 작게 모아서 표시 */}
+          {outOfStockItems.length > 0 && (
+            <div className="out-of-stock">
+              <h4>재고 없음 <span>{outOfStockItems.length}</span></h4>
+              <ul>
+                {outOfStockItems.map(item => (
+                  <li key={item['물품']}>{item['물품']}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
+      )}
 
       {/* 선택된 물품 확인 */}
       <div className="cart-summary">
@@ -214,7 +250,7 @@ function BorrowPage() {
       <hr className="divider" />
 
       {/* 신청 폼 */}
-      <form onSubmit={handleSubmit} className="borrow-form">
+      <form onSubmit={handleSubmit} className="borrow-form" ref={formRef}>
         <h3 style={{marginBottom:'0.5rem'}}>신청자 정보</h3>
         <div className="form-group">
           <input 
@@ -238,6 +274,17 @@ function BorrowPage() {
           대여 신청하기
         </button>
       </form>
+
+      {/* 하단 고정 바: 물품을 고르면 나타나고, 신청 폼이 보이면 사라짐 */}
+      <div className={`borrow-bar ${cart.size > 0 && !isFormVisible ? 'show' : ''}`} aria-hidden={cart.size === 0 || isFormVisible}>
+        <div className="borrow-bar-info">
+          <strong>{cart.size}개 선택</strong>
+          <span>{Array.from(cart).join(', ')}</span>
+        </div>
+        <button type="button" onClick={scrollToForm} tabIndex={cart.size > 0 && !isFormVisible ? 0 : -1}>
+          신청 정보 입력
+        </button>
+      </div>
     </div>
   );
 }
