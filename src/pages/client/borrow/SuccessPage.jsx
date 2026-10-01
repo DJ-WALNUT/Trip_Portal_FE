@@ -22,7 +22,7 @@ function SuccessPage() {
         
         {/* 안내 박스 (파란색) */}
         <div className="info-box">
-          <p><strong>공대방(N502)에 방문하여</strong><br/>담당자 확인 후 물품을 수령해주세요!</p>
+          <p><strong>공대방(N507)에 방문하여</strong><br/>담당자 확인 후 물품을 수령해주세요!</p>
         </div>
 
         <p className="warning-text">
@@ -43,7 +43,7 @@ function SuccessPage() {
           </div>
 
           <p className="return-info">
-            <strong>{returnDate}</strong> 까지 공대방(N502)으로 반납해주세요.
+            <strong>{returnDate}</strong> 까지 공대방(N507)으로 반납해주세요.
           </p>
         </div>
 

@@ -16,7 +16,7 @@ function Footer() {
           홈페이지 운영 책임자 : 김세호<br/>
           &copy; 2026 Catholic University of Korea.<br/>
           CUK Engineering Student Council <strong>Trip</strong>. All Rights Reserved<br/>
-          14662 경기 부천시 원미구 지봉로 43 가톨릭대학교 니콜스관 N502 공과대학 학생회실<br/>
+          14662 경기 부천시 원미구 지봉로 43 가톨릭대학교 니콜스관 N507 공과대학 학생회실<br/>
           E Mail : cukeng2026@gmail.com
         </p>
       </div>
