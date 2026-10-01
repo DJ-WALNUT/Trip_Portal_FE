@@ -54,13 +54,17 @@ function BorrowPage() {
   // --- 2. 카테고리 처리 ---
   const categories = ['전체', ...new Set(items.map(item => item['카테고리']))];
   
-  // [수정] 검색어와 카테고리를 동시에 고려한 필터링
+  // [수정] 검색어와 카테고리를 동시에 고려한 필터링 + 재고 있는 물품 우선 정렬
   const filteredItems = useMemo(() => {
-    return items.filter(item => {
-      const matchesCategory = selectedCategory === '전체' || item['카테고리'] === selectedCategory;
-      const matchesSearch = item['물품'].toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
+    const isInStock = item => Number(item['재고현황']) > 0;
+    return items
+      .filter(item => {
+        const matchesCategory = selectedCategory === '전체' || item['카테고리'] === selectedCategory;
+        const matchesSearch = item['물품'].toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesCategory && matchesSearch;
+      })
+      // 재고 있는 물품을 앞으로, 품절 물품을 뒤로 (같은 그룹 내에서는 기존 순서 유지)
+      .sort((a, b) => isInStock(b) - isInStock(a));
   }, [items, selectedCategory, searchTerm]);
 
   // --- 3. 핸들러 함수들 ---
