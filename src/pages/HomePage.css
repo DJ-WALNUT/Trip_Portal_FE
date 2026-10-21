@@ -1,5 +1,15 @@
 /* src/pages/HomePage.css (모바일 우선, min-width 쿼리로 확장) */
 
+/* --- 0. 페이지 좌우 여백 --- */
+.main-page-container,
+.maintenance-section {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
 /* --- 1. 히어로 --- */
 .hero-section {
   position: relative;
@@ -228,6 +238,7 @@
 
 /* 카드 전체를 덮는 링크 (컨트롤은 그 위) */
 .insta-link { position: absolute; inset: 0; z-index: 1; }
+.insta-link:focus-visible { outline-offset: -3px; }
 
 .sns-header { position: relative; z-index: 2; pointer-events: none; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); }
 .sns-id { font-weight: 700; font-size: var(--fs-body); }
@@ -284,6 +295,8 @@
 
 /* --- 태블릿 --- */
 @media (min-width: 768px) {
+  .main-page-container,
+  .maintenance-section { padding-inline: var(--space-6); }
   .hero-section { min-height: 460px; }
   .catch-phrase .hero-main-title { font-size: 2.8rem; }
   .hero-actions .ui-btn.hero-action { flex-direction: row; min-height: 64px; font-size: var(--fs-body); }
@@ -300,4 +313,5 @@
   .catch-phrase .hero-main-title { font-size: 4rem; letter-spacing: -2px; }
   .home-grid { grid-template-columns: 1.6fr 1fr; align-items: start; }
   .home-aside { flex-direction: column; }
+  .home-aside > * { flex: none; }
 }
