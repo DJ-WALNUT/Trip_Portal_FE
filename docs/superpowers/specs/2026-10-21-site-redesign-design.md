@@ -83,7 +83,7 @@
 - **그 외**: 360px에서 가로 스크롤 없음, `prefers-reduced-motion`이면 애니메이션 정지
 
 ### 3.5 변경하지 않는 것
-- **라우트와 코드**: 라우트 구조(`App.jsx`의 Routes), API 엔드포인트와 요청·응답 처리 코드, 페이지 상태 로직
+- **라우트와 코드**: 라우트 경로와 페이지 연결(`App.jsx`, 관리자 레이아웃 래핑만 5.1절에 따라 변경), API 엔드포인트와 요청·응답 처리 코드, 페이지 상태 로직
 - **이스터에그와 효과**: 코나미 커맨드, 푸터 5회 터치, 공룡 게임 로직, 눈송이 효과(`react-snowfall`), `ClickSpark`, `DomeGallery`의 동작과 파라미터
 - **권한**: `ProtectedRoute`, `localStorage`의 `isAdmin`/`adminRole` 사용 방식
 - **안내 방식**: 모든 `alert`/`confirm`의 문구와 시점
