@@ -85,6 +85,7 @@ function AdminShell() {
           {drawerOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
         <h1 className="admin-topbar-title">{title}</h1>
+        <span className="admin-topbar-logo">여정 관리자</span>
       </header>
 
       <div className="admin-drawer" data-drawer={drawerOpen ? 'open' : 'closed'}>

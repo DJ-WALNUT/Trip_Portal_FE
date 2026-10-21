@@ -3,7 +3,8 @@ import { render, screen, fireEvent, waitFor, act, within } from '@testing-librar
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import axios from 'axios'
 import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import BorrowPage from './BorrowPage'
 
 vi.mock('axios')
@@ -154,8 +155,9 @@ describe('BorrowPage wizard', () => {
 
 describe('BorrowPage.css tokens', () => {
   it('uses only defined --space-N tokens', () => {
-    const css = readFileSync(resolve('src/pages/client/borrow/BorrowPage.css'), 'utf-8')
-    const tokens = readFileSync(resolve('src/styles/tokens.css'), 'utf-8')
+    const here = dirname(fileURLToPath(import.meta.url))
+    const css = readFileSync(resolve(here, 'BorrowPage.css'), 'utf-8')
+    const tokens = readFileSync(resolve(here, '../../../styles/tokens.css'), 'utf-8')
     const used = [...new Set([...css.matchAll(/var\((--space-\d+)\)/g)].map((m) => m[1]))]
     expect(used.length).toBeGreaterThan(0)
     used.forEach((v) => expect(tokens).toContain(v + ':'))

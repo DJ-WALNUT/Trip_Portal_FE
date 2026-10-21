@@ -2,7 +2,8 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { Badge, Button, Toggle, ResponsiveTable } from '@/components/ui'
 
 describe('ui components', () => {
@@ -51,8 +52,8 @@ describe('ui components', () => {
   })
 
   it('ui.css has no selector repeating a ui- root as its own descendant', () => {
-    // vitest runs with css:false, so ?raw yields '' and import.meta.url is not a file URL; read relative to the project root (cwd)
-    const css = readFileSync(resolve('src/components/ui/ui.css'), 'utf-8')
+    // vitest runs with css:false, so ?raw yields ''; resolve from this test file (string import.meta.url is a file URL; new URL() under jsdom is not)
+    const css = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), 'ui.css'), 'utf-8')
     expect(css.length).toBeGreaterThan(500)
     expect(css).not.toMatch(/\.ui-([a-z-]+)[^{,\n]*\s\.ui-\1(?![\w-])/)
   })

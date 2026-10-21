@@ -2,9 +2,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor, within, act } from '@testing-library/react'
 import { useEffect } from 'react'
 import { readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import AdminLayout from './AdminLayout'
+
+const HERE = dirname(fileURLToPath(import.meta.url))
 
 vi.mock('axios')
 vi.mock('@/components/icons/LucianIcon', () => ({
@@ -40,6 +44,12 @@ beforeEach(() => {
 afterEach(() => vi.restoreAllMocks())
 
 describe('AdminLayout', () => {
+  it('shows the 여정 관리자 logo text in the mobile topbar', () => {
+    const { container } = setup()
+    const topbar = container.querySelector('.admin-topbar')
+    expect(within(topbar).getByText('여정 관리자')).toBeInTheDocument()
+  })
+
   it('shows pending badge', async () => {
     axios.get.mockResolvedValue(reqs(3))
     setup()
@@ -129,7 +139,7 @@ describe('AdminLayout', () => {
   })
 
   it('hides closed off-canvas sidebar from focus via CSS visibility', () => {
-    const css = readFileSync('src/layouts/AdminLayout.css', 'utf-8')
+    const css = readFileSync(resolve(HERE, 'AdminLayout.css'), 'utf-8')
     expect(css).toMatch(/\.admin-sidebar\s*\{[^}]*visibility:\s*hidden/)
     expect(css).toMatch(/data-drawer="open"\]\s*\.admin-sidebar\s*\{[^}]*visibility:\s*visible/)
     const desktop = css.slice(css.indexOf('@media (min-width: 1024px)'))

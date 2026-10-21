@@ -17,10 +17,38 @@ function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // 패널 안에 포커스가 있던 채로 닫히면 햄버거 버튼으로 포커스를 돌려준다
+  const restoreFocusIfInside = () => {
+    if (navRef.current && navRef.current.contains(document.activeElement)) {
+      btnRef.current?.focus();
+    }
+  };
+
   // 메뉴 클릭 시 닫기 (모바일에서 이동 후 메뉴가 닫히도록)
   const closeMenu = () => {
+    if (isMenuOpen) restoreFocusIfInside();
     setIsMenuOpen(false);
   };
+
+  // 모바일 패널이 열리면 첫 링크로 포커스 이동
+  useEffect(() => {
+    if (!isMenuOpen || !navRef.current) return;
+    const first = navRef.current.querySelector('a[href]:not([aria-disabled="true"])');
+    first?.focus();
+  }, [isMenuOpen]);
+
+  // Esc로 모바일 패널 닫기
+  useEffect(() => {
+    if (!isMenuOpen) return undefined;
+    const onKeyDown = (event) => {
+      if (event.key !== 'Escape') return;
+      restoreFocusIfInside();
+      setIsMenuOpen(false);
+      setIsDropdownOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isMenuOpen]);
 
   // 드롭다운 토글 함수
   const toggleDropdown = (e) => {
@@ -39,6 +67,7 @@ function Header() {
         navRef.current && !navRef.current.contains(event.target) &&
         btnRef.current && !btnRef.current.contains(event.target)
       ) {
+        if (isMenuOpen) restoreFocusIfInside();
         setIsMenuOpen(false);
         setIsDropdownOpen(false);
       }

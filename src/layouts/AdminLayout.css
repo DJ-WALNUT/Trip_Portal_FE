@@ -1,6 +1,7 @@
 .admin-layout { min-height: 100vh; background: var(--color-bg); }
 .admin-topbar { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: var(--space-2); height: 56px; padding: 0 var(--space-3); background: var(--color-navy-900); color: #fff; }
-.admin-topbar-title { margin: 0; font-size: 17px; font-weight: 700; color: #fff; }
+.admin-topbar-title { margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 17px; font-weight: 700; color: #fff; }
+.admin-topbar-logo { margin-left: auto; flex: none; font-size: 14px; font-weight: 700; color: var(--color-sky); white-space: nowrap; }
 .admin-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: var(--radius-control); background: transparent; color: inherit; cursor: pointer; }
 .admin-icon-btn:hover { background: rgba(255, 255, 255, 0.1); }
 .admin-icon-btn:focus-visible, .admin-nav-item:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }

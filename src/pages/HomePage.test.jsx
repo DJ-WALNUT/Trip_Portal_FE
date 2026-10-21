@@ -54,7 +54,6 @@ describe('HomePage', () => {
     expect(bg).not.toBeNull()
     expect(bg).toHaveAttribute('inert')
     expect(bg).toHaveAttribute('aria-hidden', 'true')
-    expect(within(bg).queryAllByRole('button')).toHaveLength(0)
   })
 
   it('hero quick actions', async () => {

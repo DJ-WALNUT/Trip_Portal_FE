@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, within, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import Header from './Header';
@@ -48,6 +48,41 @@ describe('Header', () => {
     await user.click(screen.getByRole('button', { name: '메뉴 열기' }));
     await user.click(within(nav).getByRole('link', { name: '조직도' }));
     expect(nav).toHaveAttribute('data-open', 'false');
+  });
+
+  it('moves focus into the panel on open and back to the hamburger on Esc', async () => {
+    const user = userEvent.setup();
+    const { container } = setup();
+    const nav = container.querySelector('nav.main-nav');
+    await user.click(screen.getByRole('button', { name: '메뉴 열기' }));
+    expect(within(nav).getByRole('link', { name: '공지사항' })).toHaveFocus();
+    await user.keyboard('{Escape}');
+    expect(nav).toHaveAttribute('data-open', 'false');
+    expect(screen.getByRole('button', { name: '메뉴 열기' })).toHaveFocus();
+  });
+
+  it('returns focus to the hamburger when closed via a link or outside click', async () => {
+    const user = userEvent.setup();
+    const { container } = setup();
+    const nav = container.querySelector('nav.main-nav');
+    await user.click(screen.getByRole('button', { name: '메뉴 열기' }));
+    await user.click(within(nav).getByRole('link', { name: '조직도' }));
+    expect(screen.getByRole('button', { name: '메뉴 열기' })).toHaveFocus();
+
+    await user.click(screen.getByRole('button', { name: '메뉴 열기' }));
+    expect(within(nav).getByRole('link', { name: '공지사항' })).toHaveFocus();
+    fireEvent.mouseDown(document.body);
+    expect(nav).toHaveAttribute('data-open', 'false');
+    expect(screen.getByRole('button', { name: '메뉴 열기' })).toHaveFocus();
+  });
+
+  it('Esc does nothing to focus when the panel is closed', async () => {
+    const user = userEvent.setup();
+    setup();
+    const link = screen.getByRole('link', { name: '조직도' });
+    link.focus();
+    await user.keyboard('{Escape}');
+    expect(link).toHaveFocus();
   });
 
   describe('when RENTAL_ENABLED is false', () => {
