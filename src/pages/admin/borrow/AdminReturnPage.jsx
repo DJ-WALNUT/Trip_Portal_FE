@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import dayjs from '../../../lib/dayjs';
-import AdminHeader from '../../../components/AdminHeader';
+import { ResponsiveTable, Button, PageHeader } from '@/components/ui';
+import HandlerModal from './HandlerModal';
 import '../AdminCommon.css';
+import './AdminBorrow.css';
 
 function AdminReturnPage() {
   const navigate = useNavigate();
@@ -13,7 +15,6 @@ function AdminReturnPage() {
   const [handlerName, setHandlerName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // --- [수정] 날짜 계산 로직 ---
   // 한국 시간 기준 오늘 00:00:00
   const todayKST = dayjs().tz().startOf('day');
   // 오늘로부터 4일 전 계산
@@ -35,13 +36,15 @@ function AdminReturnPage() {
       alert("관리자 로그인이 필요합니다.");
       navigate('/admin');
       return;
-    } 
-    fetchRentals(); 
+    }
+    axios.get('/api/admin/ongoing')
+      .then(res => setRentals(res.data.data))
+      .catch(err => console.error(err));
   }, [navigate]);
 
-  // ▼▼▼ 검색 필터링 로직 ▼▼▼
-  const filteredRentals = rentals.filter(item => 
-    item.name.includes(searchTerm) || 
+  // 검색 필터링 로직
+  const filteredRentals = rentals.filter(item =>
+    item.name.includes(searchTerm) ||
     item.student_id.includes(searchTerm) ||
     (item.phone && item.phone.includes(searchTerm))
   );
@@ -50,6 +53,8 @@ function AdminReturnPage() {
     setSelectedId(id);
     setIsModalOpen(true);
   };
+
+  const closeModal = () => setIsModalOpen(false);
 
   const handleReturn = async (e) => {
     e.preventDefault();
@@ -64,105 +69,74 @@ function AdminReturnPage() {
     }
   };
 
+  // 대여일이 연체 기준일(4일 전)보다 이전이거나 같으면 연체
+  const isOverdue = (item) => {
+    const rentalDay = dayjs(item.date).tz().startOf('day');
+    return rentalDay.isSame(overdueLimit) || rentalDay.isBefore(overdueLimit);
+  };
+
+  const columns = [
+    {
+      key: 'date',
+      header: '대여일',
+      primary: true,
+      render: (item) => (
+        <span className={isOverdue(item) ? 'borrow-overdue' : undefined}>{item.date}</span>
+      ),
+    },
+    { key: 'name', header: '이름', render: (item) => item.name },
+    { key: 'sid', header: '학번', render: (item) => item.student_id },
+    { key: 'phone', header: '연락처', render: (item) => item.phone },
+    { key: 'items', header: '대여물품', render: (item) => item.items },
+    {
+      key: 'actions',
+      header: '처리',
+      render: (item) => (
+        <Button onClick={() => openReturnModal(item.id)}>반납 확인</Button>
+      ),
+    },
+  ];
+
   return (
-    <>
-      <AdminHeader />
-      <div className="container">
-        <h1>반납 현황 관리</h1>
-        <p>아직 반납되지 않은 대여 건 목록입니다.</p>
-        
-        {/* [추가] 날짜 정보 표시 카드 */}
-        <div className="date-info-card">
-          <div className="date-item">
-            {/* [수정] today -> todayKST 로 변경 */}
-            📅 오늘 날짜: <span style={{color: '#2c3e50'}}>{formatDate(todayKST)}</span>
-          </div>
-          <div className="date-item">
-            {/* [수정] oneWeekAgo -> overdueLimit 로 변경 */}
-            ⚠️ 반납 기한 만료일 (4일 전): <span style={{color: '#c0392b'}}>{formatDate(overdueLimit)}</span>
-          </div>
-        </div>
+    <div className="admin-borrow">
+      <PageHeader title="반납 현황 관리" description="아직 반납되지 않은 대여 건 목록입니다." />
 
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '1rem' }}>
-          <input 
-            type="text" 
-            placeholder="이름, 학번, 연락처로 검색" 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              padding: '0.8rem', 
-              border: '1px solid #ccc', 
-              borderRadius: '8px', 
-              width: '300px',
-              fontSize: '1rem'
-            }}
-          />
-        </div>
-
-        <div className="table-responsive">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>대여일</th>
-                <th>이름</th>
-                <th>학번</th>
-                <th>연락처</th>
-                <th>대여물품</th>
-                <th>처리</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRentals.length === 0 ? (
-                <tr><td colSpan="6">검색 결과가 없거나 미반납 건이 없습니다.</td></tr>
-              ) : filteredRentals.map((item, idx) => {
-                // [수정] 대여일(문자열)을 Day.js로 변환하여 비교
-                const rentalDay = dayjs(item.date).tz().startOf('day');
-                // 대여일이 연체 기준일(4일 전)보다 이전이거나 같으면 연체로 판단
-                const isOverdue = rentalDay.isSame(overdueLimit) || rentalDay.isBefore(overdueLimit);
-                
-                return (
-                  <tr key={idx} style={isOverdue ? {backgroundColor: '#fff5f5'} : {}}>
-                    <td style={isOverdue ? {color: 'red', fontWeight: 'bold'} : {}}>
-                      {item.date}
-                    </td>
-                    <td>{item.name}</td>
-                    <td>{item.student_id}</td>
-                    <td>{item.phone}</td>
-                    <td>{item.items}</td>
-                    <td>
-                      <button className="btn-return" onClick={() => openReturnModal(item.id)}>반납 확인</button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+      <div className="borrow-dates">
+        <div>오늘 날짜: <span>{formatDate(todayKST)}</span></div>
+        <div>반납 기한 만료일 (4일 전): <span className="borrow-dates__due">{formatDate(overdueLimit)}</span></div>
       </div>
 
+      <div className="borrow-search">
+        <input
+          type="text"
+          className="borrow-search__input"
+          placeholder="이름, 학번, 연락처로 검색"
+          aria-label="이름, 학번, 연락처로 검색"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      <ResponsiveTable
+        breakpoint="lg"
+        columns={columns}
+        rows={filteredRentals}
+        rowKey={(item, i) => item.id ?? i}
+        empty="검색 결과가 없거나 미반납 건이 없습니다."
+      />
+
       {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>반납 처리</h3>
-            <p>확인한 담당자 이름을 입력하세요.</p>
-            <form onSubmit={handleReturn}>
-              <input 
-                type="text" 
-                placeholder="담당자 이름" 
-                value={handlerName} 
-                onChange={(e) => setHandlerName(e.target.value)} 
-                required 
-                className="modal-input"
-              />
-              <div className="modal-actions">
-                <button type="submit" className="btn-confirm">반납 완료</button>
-                <button type="button" className="btn-cancel" onClick={() => setIsModalOpen(false)}>취소</button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <HandlerModal
+          title="반납 처리"
+          description="확인한 담당자 이름을 입력하세요."
+          confirmLabel="반납 완료"
+          value={handlerName}
+          onChange={setHandlerName}
+          onSubmit={handleReturn}
+          onClose={closeModal}
+        />
       )}
-    </>
+    </div>
   );
 }
 
