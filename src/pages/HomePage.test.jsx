@@ -6,6 +6,12 @@ import dayjs from '@/lib/dayjs'
 import HomePage from './HomePage'
 
 vi.mock('axios')
+const flags = vi.hoisted(() => ({ RENTAL_ENABLED: true }))
+vi.mock('@/config/features', () => ({
+  get RENTAL_ENABLED() {
+    return flags.RENTAL_ENABLED
+  },
+}))
 vi.mock('@/components/DomeGallery', () => ({ default: () => <div data-testid="dome" /> }))
 vi.mock('@/components/FloatingSNS', () => ({ default: () => null }))
 vi.mock('@/components/icons/LucianIcon', () => ({ default: (p) => <span data-icon={p.name} /> }))
@@ -34,6 +40,7 @@ const SCHOOL = [
 describe('HomePage', () => {
   beforeEach(() => {
     vi.resetAllMocks()
+    flags.RENTAL_ENABLED = true
     axios.get.mockImplementation((url) => {
       if (url === '/api/notices') return Promise.resolve({ data: notices })
       return Promise.resolve({ data: [] })
@@ -74,5 +81,21 @@ describe('HomePage', () => {
       expect(screen.getByRole('link', { name })).toHaveAttribute('href', href)
     })
     expect(screen.queryByTestId('dome')).not.toBeInTheDocument()
+  })
+
+  it('rental disabled: 대여 신청 quick action is not a link and aria-disabled', async () => {
+    flags.RENTAL_ENABLED = false
+    const { container } = renderHome()
+    await screen.findByText('오늘 공지')
+    expect(screen.queryByRole('link', { name: /대여 신청/ })).not.toBeInTheDocument()
+    expect(container.querySelector('a[href="/borrow"]')).toBeNull()
+    const action = screen.getByText('대여 신청').closest('.hero-action')
+    expect(action.tagName).not.toBe('A')
+    expect(action).toHaveAttribute('aria-disabled', 'true')
+    expect(action).toHaveAttribute('title', '대여 신청은 현재 이용할 수 없습니다.')
+    expect(within(action).getByText('현재 이용할 수 없습니다')).toBeInTheDocument()
+    // 나머지 바로가기는 그대로
+    expect(screen.getByRole('link', { name: /대여 확인/ })).toHaveAttribute('href', '/check')
+    expect(screen.getByRole('link', { name: /성심지도/ })).toHaveAttribute('href', '/campusmap')
   })
 })

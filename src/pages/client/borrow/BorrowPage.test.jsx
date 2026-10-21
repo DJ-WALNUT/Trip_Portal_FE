@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act, within } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import axios from 'axios'
 import { readFileSync } from 'node:fs'
@@ -60,6 +60,32 @@ describe('BorrowPage wizard', () => {
     fireEvent.click(sold)
     expect(screen.getByText('0개 선택됨')).toBeInTheDocument()
     expect(sold).toHaveAttribute('aria-disabled', 'true')
+  })
+
+  it('in-stock items first, sold-out items grouped under 재고 없음', async () => {
+    const MIXED = [
+      { 물품: '텐트', 카테고리: '생활', 재고현황: 0 },
+      { 물품: '우산', 카테고리: '생활', 재고현황: 3 },
+      { 물품: '돗자리', 카테고리: '생활', 재고현황: '0' },
+      { 물품: '보조배터리', 카테고리: '전자', 재고현황: '2' },
+    ]
+    axios.get.mockImplementation((url) =>
+      Promise.resolve({ data: { status: 'success', data: url === '/api/items' ? MIXED : DEPTS } }))
+    setup(); await loaded()
+    const names = screen.getAllByRole('button', { name: /남은 수량/ }).map((b) => b.querySelector('.borrow-item__name').textContent)
+    expect(names).toEqual(['우산', '보조배터리', '텐트', '돗자리'])
+    const group = screen.getByRole('heading', { name: /재고 없음/ }).closest('section')
+    expect(within(group).getByText('2')).toBeInTheDocument()
+    expect(within(group).getByRole('button', { name: /텐트/ })).toHaveAttribute('aria-disabled', 'true')
+    expect(within(group).queryByRole('button', { name: /우산/ })).toBeNull()
+    fireEvent.click(within(group).getByRole('button', { name: /돗자리/ }))
+    expect(screen.getByText('0개 선택됨')).toBeInTheDocument()
+  })
+
+  it('no 재고 없음 group when everything is in stock', async () => {
+    setup(); await loaded()
+    fireEvent.click(screen.getByRole('button', { name: '전자' }))
+    expect(screen.queryByRole('heading', { name: /재고 없음/ })).toBeNull()
   })
 
   it('search and category filter', async () => {

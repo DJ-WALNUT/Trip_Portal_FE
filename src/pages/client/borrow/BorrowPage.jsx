@@ -75,13 +75,18 @@ function BorrowPage() {
   // --- 2. 카테고리 처리 ---
   const categories = ['전체', ...new Set(items.map(item => item['카테고리']))];
 
-  // [수정] 검색어와 카테고리를 동시에 고려한 필터링
-  const filteredItems = useMemo(() => {
-    return items.filter(item => {
+  // [수정] 검색어와 카테고리를 동시에 고려한 필터링 + 재고 유무로 분리
+  // (재고 있는 물품을 먼저, 재고 없는 물품은 아래 '재고 없음' 묶음으로 표시)
+  const { inStockItems, outOfStockItems } = useMemo(() => {
+    const filtered = items.filter(item => {
       const matchesCategory = selectedCategory === '전체' || item['카테고리'] === selectedCategory;
       const matchesSearch = item['물품'].toLowerCase().includes(searchTerm.toLowerCase());
       return matchesCategory && matchesSearch;
     });
+    return {
+      inStockItems: filtered.filter(item => Number(item['재고현황']) > 0),
+      outOfStockItems: filtered.filter(item => Number(item['재고현황']) <= 0),
+    };
   }, [items, selectedCategory, searchTerm]);
 
   // --- 3. 핸들러 함수들 ---
@@ -169,7 +174,8 @@ function BorrowPage() {
             onCategory={setSelectedCategory}
             searchTerm={searchTerm}
             onSearch={setSearchTerm}
-            items={filteredItems}
+            items={inStockItems}
+            outOfStockItems={outOfStockItems}
             cart={cart}
             onToggle={toggleItem}
             onNext={goToForm}

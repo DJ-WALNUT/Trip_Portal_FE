@@ -8,6 +8,7 @@ import DomeGallery from '../components/DomeGallery';
 import { Card, Badge, Button } from '@/components/ui';
 import LucianIcon from '@/components/icons/LucianIcon';
 import { isNewNotice } from '@/lib/notice';
+import { RENTAL_ENABLED } from '@/config/features';
 import './HomePage.css';
 
 const SCHOOL_LINKS = [
@@ -223,9 +224,24 @@ function HomePage() {
             <h1 className="hero-main-title">변화를 새길, 우리의 여정!</h1>
           </div>
           <div className="hero-actions">
-            <Button as={Link} to="/borrow" className="hero-action">
-              <LucianIcon name="box" size={28} /><span>대여 신청</span>
-            </Button>
+            {RENTAL_ENABLED ? (
+              <Button as={Link} to="/borrow" className="hero-action">
+                <LucianIcon name="box" size={28} /><span>대여 신청</span>
+              </Button>
+            ) : (
+              <Button
+                as="div"
+                className="hero-action hero-action--disabled"
+                aria-disabled="true"
+                title="대여 신청은 현재 이용할 수 없습니다."
+              >
+                <LucianIcon name="box" size={28} />
+                <span className="hero-action-text">
+                  <span>대여 신청</span>
+                  <small className="hero-action-note">현재 이용할 수 없습니다</small>
+                </span>
+              </Button>
+            )}
             <Button as={Link} to="/check" className="hero-action">
               <LucianIcon name="search" size={28} /><span>대여 확인</span>
             </Button>

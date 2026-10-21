@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown, Megaphone, Package, Map, Network, GraduationCap, ExternalLink } from 'lucide-react';
+import { RENTAL_ENABLED } from '../config/features';
 import './Header.css';
 
 function Header() {
@@ -71,7 +72,21 @@ function Header() {
                 <Package size={18} aria-hidden="true" />대여사업 <ChevronDown size={16} className="arrow" aria-hidden="true" />
               </a>
               <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
-                <li><Link to="/borrow" onClick={closeMenu}>대여 신청</Link></li>
+                {RENTAL_ENABLED ? (
+                  <li><Link to="/borrow" onClick={closeMenu}>대여 신청</Link></li>
+                ) : (
+                  <li>
+                    <a
+                      href="#"
+                      className="disabled-link"
+                      aria-disabled="true"
+                      title="대여 신청은 현재 잠시 이용할 수 없습니다."
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      대여 신청
+                    </a>
+                  </li>
+                )}
                 <li><Link to="/check" onClick={closeMenu}>신청/대여 확인</Link></li>
               </ul>
             </li>

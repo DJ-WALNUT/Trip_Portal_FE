@@ -56,6 +56,9 @@
 .borrow-item__stock { font-size: 13px; color: var(--color-text-muted); font-weight: 400; }
 .borrow-item__check { position: absolute; top: 8px; right: 12px; color: var(--color-navy-700); font-weight: 700; }
 .borrow-empty { text-align: center; padding: 2rem var(--space-4); color: #888; }
+.borrow-out { margin-top: var(--space-6); }
+.borrow-out__title { display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-3); font-size: 0.95rem; font-weight: 600; color: var(--color-text-muted); }
+.borrow-out__count { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #f1f1f1; font-size: 12px; }
 .borrow-count { font-weight: 600; color: var(--color-navy-900); align-self: center; }
 
 /* 2단계 */

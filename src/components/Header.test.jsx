@@ -1,8 +1,15 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import Header from './Header';
+
+const flags = vi.hoisted(() => ({ RENTAL_ENABLED: true }));
+vi.mock('../config/features', () => ({
+  get RENTAL_ENABLED() {
+    return flags.RENTAL_ENABLED;
+  },
+}));
 
 const setup = () =>
   render(
@@ -41,5 +48,34 @@ describe('Header', () => {
     await user.click(screen.getByRole('button', { name: '메뉴 열기' }));
     await user.click(within(nav).getByRole('link', { name: '조직도' }));
     expect(nav).toHaveAttribute('data-open', 'false');
+  });
+
+  describe('when RENTAL_ENABLED is false', () => {
+    afterEach(() => {
+      flags.RENTAL_ENABLED = true;
+    });
+
+    it('renders 대여 신청 as a disabled, non-navigating item', async () => {
+      flags.RENTAL_ENABLED = false;
+      const user = userEvent.setup();
+      const { container } = setup();
+      const item = screen.getByText('대여 신청').closest('a');
+      expect(item).toHaveAttribute('aria-disabled', 'true');
+      expect(item).toHaveAttribute('href', '#');
+      expect(container.querySelector('a[href="/borrow"]')).toBeNull();
+      expect(item).toHaveAttribute('title', '대여 신청은 현재 잠시 이용할 수 없습니다.');
+      expect(item).toHaveClass('disabled-link');
+      // 다른 대여 메뉴는 그대로 링크
+      expect(screen.getByRole('link', { name: '신청/대여 확인' })).toHaveAttribute('href', '/check');
+
+      // 모바일 패널에서 눌러도 이동/닫힘 없이 그대로 (기본 동작 차단)
+      const nav = container.querySelector('nav.main-nav');
+      await user.click(screen.getByRole('button', { name: '메뉴 열기' }));
+      const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+      item.dispatchEvent(click);
+      expect(click.defaultPrevented).toBe(true);
+      await user.click(item);
+      expect(nav).toHaveAttribute('data-open', 'true');
+    });
   });
 });

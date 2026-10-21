@@ -99,6 +99,21 @@
 
 .hero-actions .ui-btn.hero-action:hover { background: #fff; border-color: var(--color-saegil); }
 
+/* RENTAL_ENABLED=false: 대여 신청 바로가기 비활성 (회색, 클릭/이동 불가) */
+.hero-actions .ui-btn.hero-action--disabled,
+.hero-actions .ui-btn.hero-action--disabled:hover {
+  background: rgba(240, 240, 240, 0.9);
+  border-color: var(--color-border);
+  color: #999;
+  box-shadow: none;
+  filter: grayscale(100%);
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.hero-action-text { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.hero-action-note { font-size: 0.7rem; font-weight: 500; }
+
 /* --- 2. 본문 --- */
 .home-body {
   display: flex;

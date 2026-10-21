@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { 
   Search, Instagram, ExternalLink, School, Smile,
   BookOpen, Microscope, Users, Music, Pill, LibraryBig,
@@ -152,10 +152,10 @@ const DepartmentPage = () => {
   ];
 
   // --- Filtering Logic ---
-  const filteredContent = useMemo(() => {
+  // 데이터가 렌더마다 새로 만들어지므로 메모이제이션 없이 바로 계산한다
+  const filteredContent = (() => {
     // 1. 검색어가 있을 때: 탭 무시하고 전체에서 검색
     if (searchTerm) {
-      const lowerTerm = searchTerm.toLowerCase();
       
       const matchedGeneral = generalOrgs.filter(org => 
         org.name.includes(searchTerm) || org.id.includes(searchTerm)
@@ -187,7 +187,7 @@ const DepartmentPage = () => {
         : collegesData.filter(col => col.category === activeTab),
       mode: 'tab'
     };
-  }, [searchTerm, activeTab]);
+  })();
 
   return (
     <div className="dept-page-container">
