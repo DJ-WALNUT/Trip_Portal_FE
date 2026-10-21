@@ -1,6 +1,6 @@
-.notice-title { display: flex; align-items: center; gap: var(--space-2); max-width: 560px; min-width: 0; }
-.notice-title .ui-badge { flex: none; }
-.notice-title__text { flex: 0 1 auto; min-width: 0; font-weight: 600; color: var(--color-text); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.admin-notice-title { display: flex; align-items: center; gap: var(--space-2); max-width: 560px; min-width: 0; }
+.admin-notice-title .ui-badge { flex: none; }
+.admin-notice-title__text { flex: 0 1 auto; min-width: 0; font-weight: 600; color: var(--color-text); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 .notice-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .ui-btn.notice-icon-btn { min-width: 44px; padding: 0; justify-content: center; gap: var(--space-1); }
 .admin-notice-list .rtable__table tr[data-private="true"] > td,
@@ -35,9 +35,9 @@
 
 .insta-add { max-width: 760px; margin-bottom: var(--space-6); padding: var(--space-5); }
 .insta-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
-.insta-card { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; padding: var(--space-3); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); }
-.insta-card__img { aspect-ratio: 1 / 1; width: 100%; overflow: hidden; border-radius: var(--radius-control); background: var(--color-bg); }
-.insta-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.insta-card__link { display: flex; align-items: center; gap: var(--space-1); min-height: 44px; color: var(--color-navy-700); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-insta-card { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; padding: var(--space-3); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); }
+.admin-insta-card__img { aspect-ratio: 1 / 1; width: 100%; overflow: hidden; border-radius: var(--radius-control); background: var(--color-bg); }
+.admin-insta-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.admin-insta-card__link { display: flex; align-items: center; gap: var(--space-1); min-height: 44px; color: var(--color-navy-700); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (min-width: 768px) { .insta-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 1024px) { .insta-grid { grid-template-columns: repeat(4, 1fr); } }

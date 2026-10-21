@@ -262,7 +262,7 @@
 .insta-link { position: absolute; inset: 0; z-index: 1; }
 .insta-link:focus-visible { outline-offset: -3px; }
 
-.sns-header { position: relative; z-index: 2; pointer-events: none; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); }
+.home-sns-header { position: relative; z-index: 2; pointer-events: none; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); }
 .sns-id { font-weight: 700; font-size: var(--fs-body); }
 
 .sns-pagination-control {

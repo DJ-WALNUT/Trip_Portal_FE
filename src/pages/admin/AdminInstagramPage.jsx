@@ -91,14 +91,14 @@ function AdminInstagramPage() {
       ) : (
         <ul className="insta-grid">
           {posts.map(post => (
-            <li key={post.id} className="insta-card">
-              <div className="insta-card__img">
+            <li key={post.id} className="admin-insta-card">
+              <div className="admin-insta-card__img">
                 <img
                   src={post.imgUrl.startsWith('http') ? post.imgUrl : `${BASE_URL}${post.imgUrl}`}
                   alt="인스타그램 게시물"
                 />
               </div>
-              <a className="insta-card__link" href={post.link} target="_blank" rel="noreferrer">
+              <a className="admin-insta-card__link" href={post.link} target="_blank" rel="noreferrer">
                 <ExternalLink size={14} aria-hidden="true" /> {post.link}
               </a>
               <Button variant="danger" block onClick={() => handleDelete(post.id)}>

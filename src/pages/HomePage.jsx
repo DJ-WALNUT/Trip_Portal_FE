@@ -311,7 +311,7 @@ function HomePage() {
                 className="insta-link"
                 aria-label="인스타그램 게시물 열기"
               />
-              <div className="sns-header">
+              <div className="home-sns-header">
                 <span className="sns-id">@cuk_engineering</span>
               </div>
               <div className="sns-pagination-control">

@@ -58,9 +58,9 @@ function AdminNoticeListPage() {
       header: '제목',
       primary: true,
       render: (n) => (
-        <span className="notice-title">
+        <span className="admin-notice-title">
           {n.fixed ? <Badge tone="pinned">고정</Badge> : null}
-          <span className="notice-title__text" title={n.title}>{n.title}</span>
+          <span className="admin-notice-title__text" title={n.title}>{n.title}</span>
         </span>
       ),
     },

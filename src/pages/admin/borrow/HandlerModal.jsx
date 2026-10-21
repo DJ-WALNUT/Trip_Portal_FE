@@ -13,8 +13,8 @@ function HandlerModal({ title, description, confirmLabel, value, onChange, onSub
   }, [onClose])
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content" role="dialog" aria-modal="true" aria-labelledby="handler-modal-title">
+    <div className="admin-modal-overlay">
+      <div className="admin-modal-content" role="dialog" aria-modal="true" aria-labelledby="handler-modal-title">
         <h3 id="handler-modal-title">{title}</h3>
         <p>{description}</p>
         <form onSubmit={onSubmit}>
@@ -26,9 +26,9 @@ function HandlerModal({ title, description, confirmLabel, value, onChange, onSub
             value={value}
             onChange={(e) => onChange(e.target.value)}
             required
-            className="modal-input"
+            className="admin-modal-input"
           />
-          <div className="modal-actions">
+          <div className="admin-modal-actions">
             <Button type="submit" variant="primary" block>{confirmLabel}</Button>
             <Button variant="ghost" block onClick={onClose}>취소</Button>
           </div>

@@ -106,10 +106,10 @@ function AdminReturnPage() {
         <div>반납 기한 만료일 (4일 전): <span className="borrow-dates__due">{formatDate(overdueLimit)}</span></div>
       </div>
 
-      <div className="borrow-search">
+      <div className="admin-search">
         <input
           type="text"
-          className="borrow-search__input"
+          className="admin-search__input"
           placeholder="이름, 학번, 연락처로 검색"
           aria-label="이름, 학번, 연락처로 검색"
           value={searchTerm}

@@ -94,10 +94,10 @@ function AdminApprovePage() {
     <div className="admin-borrow">
       <PageHeader title="대여 신청 승인" description="사용자가 신청한 대기 목록입니다." />
 
-      <div className="borrow-search">
+      <div className="admin-search">
         <input
           type="text"
-          className="borrow-search__input"
+          className="admin-search__input"
           placeholder="이름 또는 학번으로 검색"
           aria-label="이름 또는 학번으로 검색"
           value={searchTerm}

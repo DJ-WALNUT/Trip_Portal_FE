@@ -23,7 +23,7 @@ describe('AdminNoticeListPage', () => {
     const texts = await screen.findAllByTitle(longTitle)
     expect(texts.length).toBeGreaterThan(0)
     texts.forEach((el) => {
-      expect(el.className).toContain('notice-title__text')
+      expect(el.className).toContain('admin-notice-title__text')
       expect(el.textContent).toBe(longTitle)
     })
     expect(screen.getAllByText('고정').length).toBeGreaterThan(0)
