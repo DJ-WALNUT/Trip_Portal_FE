@@ -1,68 +1,75 @@
 .floating-sns {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 12px;
-    border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-    z-index: 1000;
+    bottom: var(--space-5);
+    right: var(--space-4);
+    background: rgba(255, 255, 255, 0.92);
+    padding: var(--space-3);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+    z-index: 90;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.5);
+    border: 1px solid var(--color-border);
     transition: transform 0.3s;
 }
 
 .floating-sns:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
 }
 
 .sns-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #eee;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .fond-logo {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
 }
 
 .fond-title {
     font-size: 12px;
     font-weight: bold;
-    color: #222;
+    color: var(--color-text);
     line-height: 1.2;
     text-align: left;
 }
 
 .fond-title strong {
-    color: #e0245e; /* 강조 색상 */
+    color: var(--color-saegil);
 }
 
 .sns-links {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-1);
 }
 
 .sns-item {
     display: flex;
     align-items: center;
     gap: 10px;
+    min-height: 44px;
     text-decoration: none;
-    color: #333;
+    color: var(--color-text);
     font-size: 13px;
     font-weight: 500;
     transition: color 0.2s;
 }
 
 .sns-item:hover {
-    color: var(--main-navy);
+    color: var(--color-navy-700);
+}
+
+.sns-item:focus-visible {
+    outline: 2px solid var(--color-saegil);
+    outline-offset: 2px;
+    border-radius: var(--radius-control);
 }
 
 .sns-item .img {
@@ -71,11 +78,9 @@
     object-fit: contain;
 }
 
-/* 모바일에서는 너무 가리지 않게 크기 조정 */
-@media (max-width: 768px) {
+@media (min-width: 768px) {
     .floating-sns {
-        bottom: 20px;
-        right: 20px;
-        padding: 12px;
+        bottom: 30px;
+        right: 30px;
     }
 }

@@ -9,7 +9,7 @@ const MainLayout = () => {
       <Header /> {/* 고정 헤더 */}
       
       {/* 헤더 높이만큼 여백을 주는 Wrapper */}
-      <div className="content-with-header" style={{ marginTop: '70px' }}> 
+      <div className="content-with-header" style={{ marginTop: 'var(--header-h)' }}> 
         <Outlet /> {/* 실제 페이지들이 들어갈 자리 */}
       </div>
     </>
