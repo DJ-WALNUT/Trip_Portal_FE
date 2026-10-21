@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import TeaserPage from './pages/client/TeaserPage';
 import AdminTeaserPage from './pages/admin/AdminTeaserPage';
@@ -39,6 +39,17 @@ import AdminLogPage from './pages/admin/borrow/AdminLogPage';
 
 // 관리자 페이지는 아직 임시
 const AdminPage = () => <div className="container"><h2>관리자 페이지 (곧 만듭니다!)</h2></div>;
+
+// 관리자 경로(/admin, /admin/*)에서는 푸터와 이스터에그 래퍼를 렌더하지 않는다.
+function SiteFooter({ onClick }) {
+  const { pathname } = useLocation();
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) return null;
+  return (
+    <div onClick={onClick} style={{ width: '100%' }}>
+      <Footer />
+    </div>
+  );
+}
 
 function App() {
   const [showGame, setShowGame] = useState(false);
@@ -137,9 +148,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
-        <div onClick={handleMobileEasterEgg} style={{ width: '100%' }}>
-          <Footer />
-        </div>
+        <SiteFooter onClick={handleMobileEasterEgg} />
       </div>
     </Router>
   );

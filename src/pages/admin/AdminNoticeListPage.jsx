@@ -60,7 +60,7 @@ function AdminNoticeListPage() {
       render: (n) => (
         <span className="notice-title">
           {n.fixed ? <Badge tone="pinned">고정</Badge> : null}
-          <span className="notice-title__text">{n.title}</span>
+          <span className="notice-title__text" title={n.title}>{n.title}</span>
         </span>
       ),
     },

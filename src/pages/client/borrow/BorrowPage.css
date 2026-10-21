@@ -73,7 +73,10 @@
 .borrow-form input[type='number'] { -moz-appearance: textfield; appearance: textfield; }
 
 @media (min-width: 768px) {
-  .borrow-page { padding-inline: var(--space-6); }
+  .borrow-page {
+    padding-inline: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
   .borrow-body { padding-bottom: 0; }
   .borrow-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-4); }
   .borrow-item { align-items: center; text-align: center; padding: var(--space-6) var(--space-4); }

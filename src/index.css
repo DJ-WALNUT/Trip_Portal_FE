@@ -103,7 +103,8 @@ button { font-family: inherit; cursor: pointer; }
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
-    overflow-x: hidden; /* 이중 안전장치 */
+    overflow-x: hidden; /* 이중 안전장치 (clip 미지원 브라우저용 폴백) */
+    overflow-x: clip; /* 스크롤 컨테이너를 만들지 않아 내부 position: sticky가 뷰포트 기준으로 동작 */
 }
 
 .content {
