@@ -27,7 +27,7 @@ describe('SuccessPage', () => {
   it('shows info and check link', () => {
     setup({ items: ['우산'], date: '2026-10-21', returnDate: '2026-10-25' })
     expect(screen.getByText('대여 신청이 완료되었습니다!')).toBeInTheDocument()
-    expect(screen.getAllByText(/공대방\(N502\)/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/공대방\(N507\)/).length).toBeGreaterThan(0)
     expect(screen.getByText('2026-10-25')).toBeInTheDocument()
     expect(screen.getByText('우산')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '신청 확인하기' })).toHaveAttribute('href', '/check')

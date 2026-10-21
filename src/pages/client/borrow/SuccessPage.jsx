@@ -25,7 +25,7 @@ function SuccessPage() {
 
         <Card className="success-card">
           <p className="success-guide">
-            <strong>공대방(N502)에 방문하여</strong><br />담당자 확인 후 물품을 수령해주세요!
+            <strong>공대방(N507)에 방문하여</strong><br />담당자 확인 후 물품을 수령해주세요!
           </p>
 
           <p className="warning-text">
@@ -43,7 +43,7 @@ function SuccessPage() {
           </ul>
 
           <p className="return-info">
-            <strong>{returnDate}</strong> 까지 공대방(N502)으로 반납해주세요.
+            <strong>{returnDate}</strong> 까지 공대방(N507)으로 반납해주세요.
           </p>
         </Card>
 

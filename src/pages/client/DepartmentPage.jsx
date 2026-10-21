@@ -32,7 +32,7 @@ const DepartmentPage = () => {
         { name: "공과대학 선거관리위원회", id: "cuk_engineering_vote" },
         { name: "데이터사이언스학과", id: "cuk_datascience" },
         { name: "미디어기술콘텐츠학과", id: "cuk_mtc" },
-        { name: "바이오로직스공학부", id: "" },
+        { name: "바이오로직스공학부", id: "cuk_biologics" },
         { name: "바이오메디컬소프트웨어학과", id: "cuk_bmsw" },
         { name: "바이오메디컬화학공학과", id: "cuk_bmce" },
         { name: "생명공학과", id: "cuk_biotech" },
@@ -40,7 +40,7 @@ const DepartmentPage = () => {
         { name: "인공지능학과", id: "cuk_ai_" },
         { name: "정보통신전자공학부", id: "cuk.ice" },
         { name: "컴퓨터정보공학부", id: "cuk.csie" },
-        { name: "AI의공학과", id: "" },
+        { name: "AI의공학과", id: "cuk_aibme" },
       ]
     },
     {
