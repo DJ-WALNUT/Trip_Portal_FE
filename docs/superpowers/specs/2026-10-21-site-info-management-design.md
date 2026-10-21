@@ -124,7 +124,10 @@
 ## 5. 프론트엔드
 
 ### 5.1 사이트 정보 공급
-- `src/lib/siteInfo.js`: `DEFAULT_SITE_INFO`(3.2절 기본값, `system.snowfall` 제외), `mergeSiteInfo(defaults, server)`, `instagramUrl(id)`(→ `https://www.instagram.com/{id}`).
+- **`src/config/siteDefaults.js` (기본값 전용 파일)**: `export const DEFAULT_SITE_INFO = { … }` 하나만 담는다(3.2절 기본값, `system.snowfall` 제외). 사용자가 직접 열어 고치기 쉽도록 3.2절의 그룹 순서(연락처·위치 → SNS → 링크 → 홈 → 푸터 → 점검 → 대여)대로 정렬하고, 키마다 "어느 화면에 쓰이는지" 한 줄 주석을 단다. 로직은 넣지 않는다.
+  - 프론트의 기본값은 **이 파일에만** 둔다. 화면 컴포넌트, `siteInfo.js`, 테스트 이외의 소스에 같은 문자열이 하드코딩되지 않도록 가드 테스트 `src/config/siteDefaults.test.js`를 둔다. 이 테스트는 `src/**/*.{js,jsx}`(테스트 파일, `siteDefaults.js`, `src/vendor/**` 제외)에서 `N507`, `cukeng2026@gmail.com`, `cuk.engineering`, `linktr.ee/cuk_engineering`, `pf.kakao.com/_xcyDGn`, `2025saegil.cukeng.kr`, `catholic.ac.kr`, `제4대 공과대학 학생회`, `변화를 새길, 우리의 여정!`, `05:00 ~ 06:00`, `김세호`를 검색해 0건이어야 통과한다. 파일 경로는 테스트 파일 기준으로 해석한다.
+  - 백엔드의 기본값(`site_settings.py`)은 **DB가 비어 있을 때 처음 한 번 채우는 초기값**이다. 운영 중의 실제 값은 DB(관리자 페이지)가 기준이고, 프론트 기본값은 API를 받지 못할 때만 쓰인다. 두 저장소가 달라서 기본값 파일을 하나로 합칠 수는 없으므로, 3.2절 표를 기준으로 두 파일을 같은 값으로 유지한다.
+- `src/lib/siteInfo.js`: `mergeSiteInfo(defaults, server)`, `instagramUrl(id)`(→ `https://www.instagram.com/{id}`). 기본값은 `siteDefaults.js`에서 가져온다.
 - `src/context/SiteInfoContext.jsx`: `SiteInfoProvider`, `useSiteInfo() => { info, refresh }`.
   - 마운트 시 `GET /api/site-info`를 1회 호출한다.
   - 성공하면 기본값과 병합하고, 실패하면 기본값을 유지한다(오류를 조용히 처리하고 `console.error`만 남긴다).
@@ -175,6 +178,7 @@
 
 ### 5.4 테스트 (Vitest)
 - `siteInfo`: 병합 규칙(서버 값 우선, 없는 키는 기본값 유지), `instagramUrl`
+- `siteDefaults`: 3.2절의 모든 키(`system.snowfall` 제외)가 존재하는지, 가드 테스트(기본값 문자열이 다른 소스에 없음)
 - `SiteInfoContext`: 성공 시 서버 값 사용, 실패 시 기본값 사용, `refresh`
 - 소비처
   - Footer: 설정값 렌더링
@@ -195,7 +199,7 @@
 ## 6. 진행 순서
 1. **백엔드**: 모델과 설정 모듈, 기본값 채우기, 눈송이 이전 + pytest
 2. **백엔드**: 설정 API, 학사일정 API, 대여·확인 동작 변경, docker-compose 수정 + pytest
-3. **프론트**: siteInfo, Context, MultilineText + 테스트
+3. **프론트**: siteDefaults(기본값 전용 파일), siteInfo, Context, MultilineText + 테스트
 4. **프론트**: 소비처 교체(Footer, Header, Home, FloatingSNS, Department, Borrow, Success, borrowStatus 사용처), `features.js` 삭제
 5. **프론트**: 관리자 정보 관리 페이지 + 사이드바 + 아이콘
 6. **통합 점검**: 로컬 백엔드(`tools/local-backend`)와 프론트를 함께 띄워 API 계약 확인. 백엔드를 끈 상태에서 기본값으로 표시되는지 확인.
