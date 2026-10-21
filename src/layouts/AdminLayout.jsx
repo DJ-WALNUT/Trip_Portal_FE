@@ -13,9 +13,13 @@ function AdminShell() {
   const location = useLocation()
   const { pendingCount, refreshPendingCount } = useAdmin()
   const [collapsed, setCollapsed] = useState(() => readBool('adminSidebarCollapsed', false))
-  // 서랍이 열린 경로를 기억해 두면 경로가 바뀔 때 자동으로 닫힌 상태가 된다.
-  const [drawerPath, setDrawerPath] = useState(null)
-  const drawerOpen = drawerPath === location.pathname
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [prevPath, setPrevPath] = useState(location.pathname)
+  // 경로가 바뀌면 렌더 중에 서랍을 닫는다(되돌아와도 다시 열리지 않는다).
+  if (prevPath !== location.pathname) {
+    setPrevPath(location.pathname)
+    setDrawerOpen(false)
+  }
   let adminRole = null
   try {
     adminRole = localStorage.getItem('adminRole')
@@ -31,7 +35,7 @@ function AdminShell() {
   useEffect(() => {
     if (!drawerOpen) return undefined
     const onKey = (e) => {
-      if (e.key === 'Escape') setDrawerPath(null)
+      if (e.key === 'Escape') setDrawerOpen(false)
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
@@ -76,7 +80,7 @@ function AdminShell() {
           className="admin-icon-btn"
           aria-label={drawerOpen ? '메뉴 닫기' : '메뉴 열기'}
           aria-expanded={drawerOpen}
-          onClick={() => setDrawerPath(drawerOpen ? null : location.pathname)}
+          onClick={() => setDrawerOpen(!drawerOpen)}
         >
           {drawerOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
@@ -84,7 +88,7 @@ function AdminShell() {
       </header>
 
       <div className="admin-drawer" data-drawer={drawerOpen ? 'open' : 'closed'}>
-        <div className="admin-overlay" onClick={() => setDrawerPath(null)} aria-hidden="true" />
+        <div className="admin-overlay" onClick={() => setDrawerOpen(false)} aria-hidden="true" />
         <aside className="admin-sidebar">
           <div className="admin-brand">
             <span className="admin-brand-text">Trip 관리자</span>

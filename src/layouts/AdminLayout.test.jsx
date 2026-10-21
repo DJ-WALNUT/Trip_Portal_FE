@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react'
-import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { render, screen, fireEvent, waitFor, within, act } from '@testing-library/react'
+import { useEffect } from 'react'
+import { readFileSync } from 'node:fs'
+import { MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import AdminLayout from './AdminLayout'
 
@@ -96,5 +98,41 @@ describe('AdminLayout', () => {
     expect(localStorage.getItem('isAdmin')).toBeNull()
     expect(localStorage.getItem('adminRole')).toBeNull()
     expect(alertSpy).toHaveBeenCalledWith('로그아웃 되었습니다.')
+  })
+
+  it('does not reopen drawer when returning to a previous path', () => {
+    const navRef = { current: null }
+    function Grab() {
+      const navigate = useNavigate()
+      useEffect(() => {
+        navRef.current = navigate
+      })
+      return null
+    }
+    const { container } = render(
+      <MemoryRouter initialEntries={['/admin/notices']}>
+        <Grab />
+        <Routes>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/*" element={<div>page</div>} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    )
+    const drawer = () => container.querySelector('[data-drawer]')
+    fireEvent.click(screen.getByRole('button', { name: '메뉴 열기' }))
+    expect(drawer().dataset.drawer).toBe('open')
+    fireEvent.click(within(drawer()).getByRole('link', { name: /반납 관리/ }))
+    expect(drawer().dataset.drawer).toBe('closed')
+    act(() => navRef.current(-1))
+    expect(drawer().dataset.drawer).toBe('closed')
+  })
+
+  it('hides closed off-canvas sidebar from focus via CSS visibility', () => {
+    const css = readFileSync('src/layouts/AdminLayout.css', 'utf-8')
+    expect(css).toMatch(/\.admin-sidebar\s*\{[^}]*visibility:\s*hidden/)
+    expect(css).toMatch(/data-drawer="open"\]\s*\.admin-sidebar\s*\{[^}]*visibility:\s*visible/)
+    const desktop = css.slice(css.indexOf('@media (min-width: 1024px)'))
+    expect(desktop).toMatch(/\.admin-sidebar\s*\{[^}]*visibility:\s*visible/)
   })
 })
