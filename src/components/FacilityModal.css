@@ -1,23 +1,23 @@
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6); /* 배경 어둡게 */
+  background-color: rgba(0, 31, 63, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000; /* 헤더보다 위에 뜨도록 */
-  animation: fadeIn 0.2s ease-out;
+  animation: modalFadeIn 0.2s ease-out;
 }
 
 .modal-content {
-  background: white;
+  background: var(--color-surface);
   width: 90%;
   max-width: 420px;
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-md);
   position: relative;
-  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-content p{
@@ -28,11 +28,11 @@
 
 .modal-close-btn {
   position: absolute;
-  top: 12px; right: 12px;
+  top: var(--space-2); right: var(--space-2);
   background: rgba(0,0,0,0.4);
   border: none;
   border-radius: 50%;
-  width: 32px; height: 32px;
+  width: 44px; height: 44px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,11 +42,12 @@
   transition: background 0.2s;
 }
 .modal-close-btn:hover { background: rgba(0,0,0,0.6); }
+.modal-close-btn:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
 
 .modal-image-container {
   width: 100%;
   height: 220px;
-  background-color: #f1f3f5;
+  background-color: var(--gray-100);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,12 +60,12 @@
 }
 
 .modal-no-image {
-  color: #adb5bd;
+  color: var(--gray-400);
   font-size: 0.9rem;
 }
 
 .modal-body {
-  padding-top: 1.5rem;
+  padding: var(--space-4);
 }
 
 .modal-title-row {
@@ -72,22 +73,22 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  border-bottom: 2px solid #f1f3f5;
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.8rem;
 }
 
 .modal-title-row h3 {
   margin: 0;
   font-size: 1.3rem;
-  color: #333;
+  color: var(--color-navy-900);
   font-weight: 700;
 }
 
 .modal-badge {
-  background-color: #e7f5ff;
-  color: #1971c2;
+  background-color: var(--tone-ongoing-bg);
+  color: var(--tone-ongoing-fg);
   padding: 0.3rem 0.6rem;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   font-size: 0.85rem;
   font-weight: 600;
   display: flex;
@@ -96,13 +97,13 @@
 }
 
 .modal-desc-box {
-  background-color: #f8f9fa;
+  background-color: var(--color-bg);
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius-control);
   display: flex;
   gap: 0.8rem;
   align-items: flex-start;
-  color: #495057;
+  color: var(--gray-700);
   font-size: 0.95rem;
   line-height: 1.6;
   white-space: pre-wrap;
@@ -110,10 +111,11 @@
 }
 
 .desc-icon {
-  color: #868e96;
+  color: var(--gray-500);
   flex-shrink: 0;
   margin-top: 3px;
 }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalSlideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .modal-overlay, .modal-content { animation: none; } }

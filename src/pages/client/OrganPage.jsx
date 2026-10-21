@@ -1,13 +1,12 @@
 import React from 'react';
-import './OrganPage.css'; // 전용 CSS 파일 (아래 참고)
+import { PageHeader } from '@/components/ui';
+import './OrganPage.css';
 
 function DepartmentPage() {
   return (
-    <div className="wrapper">
-      <div className="content container department-page-container">
-        <div className="page-header">
-          <h2>조직도</h2>
-        </div>
+    <div className="organ-page">
+      <div className="organ-page__content">
+        <PageHeader title="조직도" />
 
         <div className="organization-chart-wrapper">
           {/* public 폴더는 루트 경로(/)로 접근합니다. */}

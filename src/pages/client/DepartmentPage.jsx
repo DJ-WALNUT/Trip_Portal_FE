@@ -6,6 +6,8 @@ import {
   SquareSigma,
   Cpu, Globe, HeartPulse, Palette, CheckCircle,
 } from 'lucide-react';
+import { PageHeader, Card, EmptyState } from '@/components/ui';
+import LucianIcon from '@/components/icons/LucianIcon';
 import './DepartmentPage.css';
 
 const DepartmentPage = () => {
@@ -193,23 +195,28 @@ const DepartmentPage = () => {
     <div className="dept-page-container">
       
       {/* Header Area */}
-      <div className="page-header">
-        <div className="page-title">
-          <h2>단과대 및 학과</h2>
-          <p>가톨릭대학교의 단과대별 모든 학과를 한 곳에서 모아보세요.</p>
-          <p>계열별 분류는 <a href='https://www.catholic.ac.kr/ko/academics/edu_undergraduate1.do' style={{color: 'var(--saegil-blue)'}}>가톨릭대학교 공식 홈페이지 학과소개 페이지</a>를 참고해주세요.</p>
-        </div>
-        
-        <div className="search-container">
-          <input 
-            type="text" 
-            className="search-input"
-            placeholder="학과명, 단과대 또는 ID 검색..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Search className="search-icon" size={20} />
-        </div>
+      <PageHeader
+        title="단과대 및 학과"
+        icon={<LucianIcon name="graduation" size={28} />}
+        description={(
+          <>
+            가톨릭대학교의 단과대별 모든 학과를 한 곳에서 모아보세요.
+            <br />
+            계열별 분류는 <a href='https://www.catholic.ac.kr/ko/academics/edu_undergraduate1.do' className="dept-ref-link">가톨릭대학교 공식 홈페이지 학과소개 페이지</a>를 참고해주세요.
+          </>
+        )}
+      />
+
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="학과명, 단과대 또는 ID 검색..."
+          aria-label="학과명, 단과대 또는 ID 검색"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <Search className="search-icon" size={20} aria-hidden="true" />
       </div>
 
       {/* Category Tabs (Hide when searching) */}
@@ -218,6 +225,8 @@ const DepartmentPage = () => {
           {tabs.map((tab) => (
             <button
               key={tab.id}
+              type="button"
+              aria-pressed={activeTab === tab.id}
               className={`filter-chip ${activeTab === tab.id ? 'active' : ''}`}
               onClick={() => setActiveTab(tab.id)}
             >
@@ -266,7 +275,7 @@ const DepartmentPage = () => {
           
           <div className="grid-container">
             {filteredContent.colleges.map((college, idx) => (
-              <div key={idx} className="org-card">
+              <Card key={idx} className="org-card">
                 {/* Card Header */}
                 <div className="card-header">
                   <span className="card-title flex items-center gap-2">
@@ -306,24 +315,24 @@ const DepartmentPage = () => {
                         </span>
                       </a>
                     ) : (
-                      <div key={dIdx} className="dept-item" style={{cursor: 'default', opacity: 0.6}}>
+                      <div key={dIdx} className="dept-item dept-item--static">
                         <span className="dept-name">{dept.name}</span>
-                        <span className="dept-id" style={{fontSize: '0.75rem'}}>(계정 없음)</span>
+                        <span className="dept-id dept-id--none">(계정 없음)</span>
                       </div>
                     )
                   ))}
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         </section>
       ) : (
         /* Empty State */
-        <div className="empty-state">
-          <Search size={48} style={{ margin: '0 auto 1rem', opacity: 0.2 }} />
-          <h3>검색 결과가 없습니다</h3>
-          <p>다른 키워드로 검색해보세요.</p>
-        </div>
+        <EmptyState
+          icon={<Search size={48} />}
+          title="검색 결과가 없습니다"
+          description="다른 키워드로 검색해보세요."
+        />
       )}
     </div>
   );
