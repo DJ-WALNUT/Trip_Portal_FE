@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Search, ChevronLeft, ChevronRight, Paperclip, Eye } from 'lucide-react';
+import { ResponsiveTable, Badge, PageHeader, EmptyState, Spinner } from '@/components/ui';
+import LucianIcon from '@/components/icons/LucianIcon';
+import { isNewNotice, formatNoticeDate } from '@/lib/notice';
 import './NoticePage.css';
 
 function NoticePage() {
@@ -59,89 +63,93 @@ function NoticePage() {
     if (e.key === 'Enter') handleSearch();
   };
 
+  const columns = [
+    { key: 'date', header: '작성일', render: (n) => formatNoticeDate(n.date) },
+    {
+      key: 'title',
+      header: '제목',
+      primary: true,
+      render: (n) => (
+        <span className={`notice-title-cell${n.fixed ? ' is-fixed' : ''}`}>
+          {n.fixed && <Badge tone="pinned">고정</Badge>}
+          {isNewNotice(n.date) && <Badge tone="new">NEW</Badge>}
+          <Link to={`/notices/${n.id}`} className="board-link">{n.title}</Link>
+          {n.files && n.files.length > 0 && (
+            <span className="notice-attach">
+              <Paperclip size={14} aria-hidden="true" />
+              <span aria-hidden="true">{n.files.length}</span>
+              <span className="ui-sr-only">{`첨부파일 ${n.files.length}개`}</span>
+            </span>
+          )}
+        </span>
+      ),
+    },
+    { key: 'author', header: '작성자' },
+    { key: 'views', header: '조회수', render: (n) => (<span className="notice-views"><Eye size={14} aria-hidden="true" />{n.views}</span>) },
+  ];
+
+  const emptyText = notices.length === 0 ? '등록된 공지사항이 없습니다.' : '검색 결과가 없습니다.';
+
   return (
-    <div className="wrapper">
-      <div className="content container notice-page-container">
-        <div className="page-header">
-            <h2>공지사항</h2>
-            <div className="search-bar">
-                <select className="search-select" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
-                    <option value="title">제목</option>
-                    <option value="content">내용</option>
-                </select>
-                <input 
-                    type="text" className="search-input" placeholder="검색어를 입력하세요" 
-                    value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} onKeyDown={handleKeyDown}
-                />
-                <button className="search-btn" onClick={handleSearch}>검색</button>
-            </div>
-        </div>
+    <div className="notice-page">
+      <PageHeader title="공지사항" icon={<LucianIcon name="megaphone" size={28} />} />
 
-        {loading ? (
-           <div style={{textAlign:'center', padding:'3rem'}}>로딩 중...</div>
-        ) : (
-            <table className="board-table">
-                <thead>
-                    <tr>
-                        <th className="th-date" style={{ width: '120px' }}>작성일</th>
-                        <th>제목</th>
-                        <th className="th-author" style={{ width: '120px' }}>작성자</th>
-                        <th className="th-views" style={{ width: '80px' }}>조회수</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {/* --- 3. filteredNotices 대신 currentNotices를 사용 --- */}
-                    {currentNotices.map((notice) => (
-                        <tr key={notice.id} className={notice.fixed ? "notice-fixed" : ""}>
-                            <td className="td-date">{notice.date}</td>
-                            <td className="title-col">
-                                <Link to={`/notices/${notice.id}`} className="board-link">{notice.title}</Link>
-                            </td>
-                            <td className="td-author">{notice.author}</td>
-                            <td className="td-views">{notice.views}</td>
-                        </tr>
-                    ))}
-                    
-                    {filteredNotices.length === 0 && (
-                        <tr>
-                            <td colSpan="4" style={{ padding: '3rem 0', color: '#888', textAlign: 'center' }}>
-                                {notices.length === 0 ? "등록된 공지사항이 없습니다." : "검색 결과가 없습니다."}
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        )}
-
-        {/* --- 4. 페이지네이션 UI 및 이벤트 연결 --- */}
-        <div className="pagination">
-            <button 
-              className="page-btn" 
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              &lt;
-            </button>
-            
-            {[...Array(totalPages)].map((_, i) => (
-              <button 
-                key={i + 1} 
-                className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}
-                onClick={() => setCurrentPage(i + 1)}
-              >
-                {i + 1}
-              </button>
-            ))}
-
-            <button 
-              className="page-btn" 
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages || totalPages === 0}
-            >
-              &gt;
-            </button>
-        </div>
+      <div className="search-bar" role="search">
+        <select className="search-select" aria-label="검색 기준" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+          <option value="title">제목</option>
+          <option value="content">내용</option>
+        </select>
+        <input
+          type="text" className="search-input" placeholder="검색어를 입력하세요"
+          value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} onKeyDown={handleKeyDown}
+        />
+        <button type="button" className="search-btn" onClick={handleSearch}>
+          <Search size={16} aria-hidden="true" />
+          검색
+        </button>
       </div>
+
+      {loading ? (
+        <Spinner />
+      ) : (
+        <ResponsiveTable
+          columns={columns}
+          rows={currentNotices}
+          rowKey={(n) => n.id}
+          breakpoint="md"
+          empty={<EmptyState title={emptyText} />}
+        />
+      )}
+
+      <nav className="pagination" aria-label="페이지 이동">
+        <button
+          type="button" className="page-btn" aria-label="이전 페이지"
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          <ChevronLeft size={18} aria-hidden="true" />
+        </button>
+
+        {[...Array(totalPages)].map((_, i) => (
+          <button
+            type="button"
+            key={i + 1}
+            className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}
+            aria-current={currentPage === i + 1 ? 'page' : undefined}
+            onClick={() => setCurrentPage(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+
+        <button
+          type="button" className="page-btn" aria-label="다음 페이지"
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages || totalPages === 0}
+        >
+          <ChevronRight size={18} aria-hidden="true" />
+        </button>
+      </nav>
     </div>
   );
 }

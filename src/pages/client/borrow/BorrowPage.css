@@ -1,230 +1,116 @@
-/* src/pages/BorrowPage.css */
-.category-tabs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
+/* 대여 신청 마법사: 모바일 기본, 768px 이상에서 확장 */
+.borrow-page {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+  box-sizing: border-box;
 }
+.borrow-title { color: var(--color-navy-900); margin: var(--space-4) 0; }
+.borrow-body { padding-bottom: calc(var(--space-16) + env(safe-area-inset-bottom)); }
+.borrow-lead { margin: 0 0 var(--space-3); color: var(--color-text-muted); }
 
-.category-tabs button {
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--light-gray);
-    border-radius: 20px;
-    background: white;
-    cursor: pointer;
-    white-space: nowrap;
+/* 단계 표시 */
+.borrow-steps { list-style: none; margin: 0 0 var(--space-4); padding: 0; display: flex; gap: var(--space-2); }
+.borrow-steps__item { flex: 1; display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-muted); font-size: 14px; }
+.borrow-steps__num {
+  width: 24px; height: 24px; border-radius: 50%; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--color-border); font-weight: 600; font-size: 13px;
 }
+.borrow-steps__item--current { color: var(--color-navy-900); font-weight: 600; }
+.borrow-steps__item--current .borrow-steps__num,
+.borrow-steps__item--done .borrow-steps__num { background: var(--color-navy-700); border-color: var(--color-navy-700); color: #fff; }
 
-.category-tabs button.active {
-    background-color: var(--main-navy);
-    color: white;
-    border-color: var(--main-navy);
+/* 검색 */
+.borrow-search { position: relative; margin-bottom: var(--space-3); }
+.borrow-search__icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888; pointer-events: none; }
+.borrow-search__input {
+  width: 100%; box-sizing: border-box; min-height: 44px;
+  padding: 12px 12px 12px 40px; border-radius: 18px;
+  border: 1px solid #ddd; font-size: 1rem;
 }
+.borrow-search__input:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
 
-.item-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
+/* 카테고리 */
+.borrow-tabs { display: flex; gap: var(--space-2); margin-bottom: var(--space-4); overflow-x: auto; padding-bottom: var(--space-2); }
+.borrow-tab {
+  min-height: 44px; padding: 0 var(--space-4); border: 1px solid var(--color-border);
+  border-radius: 22px; background: var(--color-surface); cursor: pointer; white-space: nowrap; font: inherit;
 }
+.borrow-tab--active { background: var(--color-navy-900); border-color: var(--color-navy-900); color: #fff; }
+.borrow-tab:focus-visible, .borrow-item:focus-visible, .borrow-link:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
 
-.item-card {
-    min-width: 160px;
-    background: white;
-    border: 2px solid var(--light-gray);
-    border-radius: 8px;
-    padding: 1.5rem 1rem;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.2s;
+/* 물품 목록: 모바일 한 줄, 데스크톱 그리드 */
+.borrow-items { display: flex; flex-direction: column; gap: var(--space-2); }
+.borrow-item {
+  position: relative; display: flex; flex-direction: column; gap: 2px; align-items: flex-start;
+  min-height: 56px; width: 100%; box-sizing: border-box; padding: var(--space-3) var(--space-4);
+  background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 8px;
+  text-align: left; font: inherit; color: inherit; cursor: pointer; overflow-wrap: anywhere;
 }
+.borrow-item:hover { border-color: var(--color-saegil); }
+.borrow-item--selected { border-color: var(--color-navy-700); background: #eaf5fc; font-weight: 600; }
+.borrow-item--out { opacity: 0.5; cursor: not-allowed; background: #f1f1f1; }
+.borrow-item--out:hover { border-color: var(--color-border); }
+.borrow-item__name { font-size: 1rem; }
+.borrow-item__stock { font-size: 13px; color: var(--color-text-muted); font-weight: 400; }
+.borrow-item__check { position: absolute; top: 8px; right: 12px; color: var(--color-navy-700); font-weight: 700; }
+.borrow-empty { text-align: center; padding: 2rem var(--space-4); color: #888; }
+.borrow-out { margin-top: var(--space-6); }
+.borrow-out__title { display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-3); font-size: 0.95rem; font-weight: 600; color: var(--color-text-muted); }
+.borrow-out__count { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #f1f1f1; font-size: 12px; }
+.borrow-count { font-weight: 600; color: var(--color-navy-900); align-self: center; }
 
-.item-card:hover { border-color: var(--accent-blue); }
-.item-card.selected {
-    border-color: var(--main-navy);
-    background-color: #eaf5fc;
-    font-weight: bold;
-}
+/* 2단계 */
+.borrow-cart { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: var(--space-3) var(--space-4); margin-bottom: var(--space-4); }
+.borrow-cart__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.borrow-cart__title, .borrow-form__title { font-size: 1.05rem; margin: 0; color: var(--color-navy-900); }
+.borrow-form__title { margin-bottom: var(--space-3); }
+.borrow-link { min-height: 44px; padding: 0 var(--space-2); background: none; border: 0; color: var(--color-navy-700); font: inherit; text-decoration: underline; cursor: pointer; }
+.borrow-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+.borrow-tag { background: var(--color-navy-700); color: #fff; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.9rem; max-width: 100%; overflow-wrap: anywhere; }
 
-.item-empty {
-    text-align: center;
-    padding: 3rem;
-    color: #888;
-    margin-bottom: 2rem;
-}
+/* number 입력 스피너 제거 */
+.borrow-form input::-webkit-outer-spin-button,
+.borrow-form input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.borrow-form input[type='number'] { -moz-appearance: textfield; appearance: textfield; }
 
-/* --- 재고 없는 물품: 작은 칩으로 모아서 표시 --- */
-.out-of-stock {
-    margin: -0.5rem 0 2rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--light-gray);
-}
-.out-of-stock h4 {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin: 0 0 0.6rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #888;
-}
-.out-of-stock h4 span {
-    padding: 0.05rem 0.45rem;
-    border-radius: 10px;
-    background: var(--light-gray);
-    font-size: 0.75rem;
-}
-.out-of-stock ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin: 0;
-    padding: 0;
-}
-.out-of-stock li {
-    padding: 0.3rem 0.7rem;
-    border-radius: 14px;
-    background: #f1f3f5;
-    color: #999;
-    font-size: 0.8rem;
-    text-decoration-color: rgba(0, 0, 0, 0.2);
-}
-
-.check-mark {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    color: var(--main-navy);
-    font-weight: bold;
-}
-
-.none{ display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
-.tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
-.tag{
-    background-color: var(--second-navy);
-    color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 15px;
-    font-size: 0.9rem;
-}
-
-.borrow-form .form-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.borrow-form input, .borrow-form select {
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-/* Firefox  */
-input[type='number'] { -moz-appearance: textfield; }
-
-.submit-btn {
-    width: 100%;
-    padding: 1rem;
-    background: var(--success);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-.submit-btn.borrow {
-    background: linear-gradient(135deg, var(--main-navy), var(--saegil-blue));
-}
-
-.submit-btn:disabled { background: #ccc; cursor: not-allowed; }
-.container h1{ color: var(--main-navy);}
-/* --- 하단 고정 신청 바 --- */
-.borrow-bar {
-    position: fixed;
-    left: 50%;
-    bottom: 16px;
-    z-index: 90; /* 헤더(100)보다 아래 */
-    width: min(560px, calc(100% - 32px));
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.6rem 0.6rem 0.6rem 1rem;
-    background: var(--main-navy);
-    color: white;
-    border-radius: 14px;
-    box-shadow: 0 8px 24px rgba(0, 31, 63, 0.3);
+@media (min-width: 768px) {
+  .borrow-page {
+    padding-inline: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  .borrow-body { padding-bottom: 0; }
+  .borrow-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-4); }
+  .borrow-item { align-items: center; text-align: center; padding: var(--space-6) var(--space-4); }
+  /* 2단계: 데스크톱에서는 카드 한 장으로 묶는다 */
+  .borrow-form {
+    max-width: 640px;
+    margin-inline: auto;
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
     box-sizing: border-box;
-    transform: translate(-50%, calc(100% + 24px));
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-}
-.borrow-bar.show {
-    transform: translate(-50%, 0);
-    opacity: 1;
-    pointer-events: auto;
-}
-.borrow-bar-info {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    line-height: 1.3;
-}
-.borrow-bar-info strong { font-size: 0.95rem; }
-.borrow-bar-info span {
-    font-size: 0.8rem;
-    opacity: 0.8;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.borrow-bar button {
-    flex-shrink: 0;
-    padding: 0.7rem 1rem;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--accent-blue), var(--saegil-blue));
-    color: white;
-    font-weight: bold;
-    font-size: 0.95rem;
+  }
 }
 
-/* 폼 이동 시 고정 헤더(70px)에 가려지지 않도록 */
-.borrow-form { scroll-margin-top: 86px; }
-
-/* --- 작은 화면: 카드를 촘촘하게 --- */
-@media (max-width: 640px) {
-    .category-tabs { margin-bottom: 1rem; }
-    .out-of-stock { margin-top: -0.25rem; margin-bottom: 1.5rem; }
-
-    .item-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
-    .item-card {
-        min-width: 0;
-        padding: 0.7rem 0.75rem;
-        text-align: left;
-        border-width: 1.5px;
-    }
-    .item-card h3 {
-        font-size: 0.95rem;
-        line-height: 1.3;
-        margin: 0 1.1rem 0.2rem 0; /* 체크 표시 자리 */
-    }
-    .item-card p {
-        font-size: 0.8rem;
-        color: #666;
-        margin: 0;
-    }
-    .check-mark { top: 6px; right: 8px; }
+@media (min-width: 1024px) {
+  /* 왼쪽: 선택된 물품 / 오른쪽: 신청자 정보 + 버튼 */
+  .borrow-form {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    column-gap: var(--space-8);
+    align-items: start;
+  }
+  .borrow-form > * { grid-column: 2; }
+  .borrow-form > .borrow-cart {
+    grid-column: 1;
+    grid-row: 1 / span 6;
+    margin-bottom: 0;
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-4));
+  }
 }

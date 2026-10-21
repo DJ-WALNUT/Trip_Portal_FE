@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import AdminHeader from '../../components/AdminHeader'; // 관리자 헤더 사용
+import { Link, useNavigate } from 'react-router-dom';
+import { useAdmin } from '@/layouts/AdminContext';
+import { ResponsiveTable, Toggle, Card, Badge, PageHeader, Spinner } from '@/components/ui';
+import { getBorrowToneFromBorrowedAt } from '@/lib/borrowStatus';
+import './AdminDashboardPage.css';
 
 function AdminDashboardPage() {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ today_count: 0, recent_logs: [] });
   const [loading, setLoading] = useState(true);
   const [isSnowfallOn, setIsSnowfallOn] = useState(false);
+  const [ongoingCount, setOngoingCount] = useState(0);
+  const { pendingCount } = useAdmin();
 
   useEffect(() => {
     // 1. 권한 체크 (로그인 안 했으면 튕겨내기)
@@ -28,13 +33,21 @@ function AdminDashboardPage() {
         setLoading(false);
       });
 
+    // 대여 중 개수
+    axios.get('/api/admin/ongoing')
+      .then(res => {
+        if (res.data.status === 'success') setOngoingCount(res.data.data.length);
+      })
+      .catch(err => console.error(err));
+
     // 눈송이 설정 상태 로드
     axios.get('/api/system/snowfall')
       .then(res => {
         if (res.data.status === 'success') {
           setIsSnowfallOn(res.data.enabled);
         }
-      });
+      })
+      .catch(err => console.error(err));
   }, [navigate]);
 
   // 눈송이 토글 핸들러
@@ -47,86 +60,65 @@ function AdminDashboardPage() {
           alert(`눈송이 효과를 ${res.data.enabled ? '켰습니다' : '껐습니다'}.`);
         }
       })
-      .catch(err => alert('설정 변경 실패'));
+      .catch(() => alert('설정 변경 실패'));
   };
 
-  if (loading) return <div className="container">로딩 중...</div>;
+  if (loading) return <Spinner />;
   const adminRole = localStorage.getItem('adminRole');
 
+  const statCards = [
+    { label: '금일 대여', value: stats.today_count, to: '/admin/borrow/log' },
+    { label: '승인 대기', value: pendingCount, to: '/admin/borrow/approve' },
+    { label: '대여 중', value: ongoingCount, to: '/admin/borrow/return' },
+  ];
+
+  const columns = [
+    { key: 'time', header: '대여시각', render: (log) => log['대여시각'], primary: true },
+    { key: 'name', header: '이름', render: (log) => log['이름'] },
+    { key: 'sid', header: '학번', render: (log) => log['학번'] },
+    { key: 'item', header: '물품', render: (log) => log['대여물품'] },
+    {
+      key: 'status',
+      header: '상태',
+      render: (log) => (
+        <Badge tone={getBorrowToneFromBorrowedAt(log['대여현황'], log['대여시각'])}>{log['대여현황']}</Badge>
+      ),
+    },
+  ];
+
   return (
-    <>
-      <AdminHeader />
-      <div className="container">
-        <h1>관리자 대시보드</h1>
-        
-        {adminRole === 'master' && (
-          <div style={{
-            background: isSnowfallOn ? '#e3f2fd' : '#f1f3f5',
-            padding: '10px 20px',
-            borderRadius: '8px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            border: isSnowfallOn ? '1px solid #2196f3' : '1px solid #ddd'
-          }}>
-            <span style={{fontWeight: 'bold', color: isSnowfallOn ? '#1565c0' : '#666'}}>
-              ❄️ 눈송이 효과: {isSnowfallOn ? 'ON' : 'OFF'}
-            </span>
-            <button 
-              onClick={toggleSnowfall}
-              style={{
-                  padding: '6px 12px',
-                  background: isSnowfallOn ? '#ef5350' : '#2196f3',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-              }}
-            >
-              {isSnowfallOn ? '끄기' : '켜기'}
-            </button>
-          </div>
-        )}
+    <div className="admin-dashboard">
+      <PageHeader title="관리자 대시보드" />
 
-        {/* 통계 카드 */}
-        <div style={{ display: 'grid', gap: '1rem', marginBottom: '2rem' }}>
-          <div style={{ background: '#eaf5fc', padding: '2rem', borderRadius: '12px', textAlign: 'center' }}>
-            <h3 style={{ color: '#2980b9' }}>금일 대여 건수</h3>
-            <p style={{ fontSize: '3rem', fontWeight: 'bold', color: '#001f3f' }}>
-              {stats.today_count}<span style={{ fontSize: '1.5rem' }}>건</span>
-            </p>
-          </div>
-        </div>
-
-        {/* 최근 기록 테이블 */}
-        <h2>최근 대여 기록 (최신 5건)</h2>
-        <div className="table-responsive">
-            <table className="history-table">
-                <thead>
-                    <tr>
-                        <th>대여시각</th>
-                        <th>이름</th>
-                        <th>학번</th>
-                        <th>물품</th>
-                        <th>상태</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {stats.recent_logs.map((log, idx) => (
-                        <tr key={idx}>
-                            <td>{log['대여시각']}</td>
-                            <td>{log['이름']}</td>
-                            <td>{log['학번']}</td>
-                            <td>{log['대여물품']}</td>
-                            <td>{log['대여현황']}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+      <div className="dash-stats">
+        {statCards.map((c) => (
+          <Link key={c.to} to={c.to} className="dash-stat">
+            <span className="dash-stat__label">{c.label}</span>{' '}
+            <span className="dash-stat__value">{c.value}건</span>
+          </Link>
+        ))}
       </div>
-    </>
+
+      {adminRole === 'master' && (
+        <Card className="dash-snow">
+          <Toggle
+            id="snowfall-toggle"
+            checked={isSnowfallOn}
+            onChange={toggleSnowfall}
+            label={`눈송이 효과: ${isSnowfallOn ? 'ON' : 'OFF'}`}
+          />
+        </Card>
+      )}
+
+      <h2 className="dash-section-title">최근 대여 기록 (최신 5건)</h2>
+      <ResponsiveTable
+        breakpoint="lg"
+        columns={columns}
+        rows={stats.recent_logs}
+        rowKey={(log, i) => i}
+        empty="최근 대여 기록이 없습니다."
+      />
+    </div>
   );
 }
 

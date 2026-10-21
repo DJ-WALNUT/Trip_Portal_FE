@@ -1,0 +1,46 @@
+.admin-layout { min-height: 100vh; background: var(--color-bg); }
+.admin-topbar { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: var(--space-2); height: 56px; padding: 0 var(--space-3); background: var(--color-navy-900); color: #fff; }
+.admin-topbar-title { margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 17px; font-weight: 700; color: #fff; }
+.admin-topbar-logo { margin-left: auto; flex: none; font-size: 14px; font-weight: 700; color: var(--color-sky); white-space: nowrap; }
+.admin-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: var(--radius-control); background: transparent; color: inherit; cursor: pointer; }
+.admin-icon-btn:hover { background: rgba(255, 255, 255, 0.1); }
+.admin-icon-btn:focus-visible, .admin-nav-item:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
+
+/* 모바일: 왼쪽 서랍 */
+.admin-drawer { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+.admin-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); opacity: 0; transition: opacity 0.2s; }
+.admin-sidebar { position: absolute; top: 0; left: 0; bottom: 0; width: 260px; max-width: 85vw; display: flex; flex-direction: column; background: var(--color-navy-900); color: #fff; transform: translateX(-100%); visibility: hidden; transition: transform 0.2s, visibility 0s linear 0.2s; overflow-y: auto; }
+.admin-drawer[data-drawer="open"] { pointer-events: auto; }
+.admin-drawer[data-drawer="open"] .admin-overlay { opacity: 1; }
+.admin-drawer[data-drawer="open"] .admin-sidebar { transform: translateX(0); visibility: visible; transition: transform 0.2s, visibility 0s; }
+.admin-collapse-btn { display: none; }
+
+.admin-brand { display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 0 var(--space-4); font-weight: 800; font-size: 17px; }
+.admin-nav { flex: 1; padding: var(--space-2) var(--space-3); }
+.admin-nav-group { margin-bottom: var(--space-3); }
+.admin-nav-group-label { padding: var(--space-2) var(--space-3); font-size: 12px; font-weight: 700; color: var(--color-sky); opacity: 0.8; }
+.admin-nav-item { display: flex; align-items: center; gap: var(--space-3); width: 100%; min-height: 44px; padding: 0 var(--space-3); border: 0; border-radius: var(--radius-control); background: transparent; color: rgba(255, 255, 255, 0.85); font: inherit; font-size: 15px; text-decoration: none; cursor: pointer; text-align: left; }
+.admin-nav-item:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.admin-nav-item.is-active { background: var(--color-navy-700); color: #fff; font-weight: 700; }
+.admin-nav-label { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.admin-nav-badge { min-width: 22px; padding: 0 6px; border-radius: var(--radius-pill); background: var(--tone-new-fg); color: #fff; font-size: 12px; font-weight: 700; line-height: 22px; text-align: center; }
+.admin-nav-ext { opacity: 0.7; }
+.admin-logout { color: #ffb4b4; }
+.admin-sidebar-foot { padding: var(--space-3); border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.admin-main { padding: var(--space-4); min-width: 0; }
+
+@media (min-width: 1024px) {
+  .admin-layout { display: grid; grid-template-columns: 240px 1fr; transition: grid-template-columns 0.2s; }
+  .admin-layout.is-collapsed { grid-template-columns: 72px 1fr; }
+  .admin-topbar, .admin-overlay { display: none; }
+  /* 드로어는 그리드 열 전체 높이를 채우는 남색 배경, 사이드바는 그 안에서 뷰포트 높이로 sticky */
+  .admin-drawer { position: relative; z-index: 10; inset: auto; background: var(--color-navy-900); pointer-events: auto; }
+  .admin-sidebar { position: sticky; top: 0; left: auto; bottom: auto; width: 100%; max-width: none; height: 100vh; transform: none; visibility: visible; transition: none; }
+  .admin-collapse-btn { display: inline-flex; }
+  .admin-main { padding: var(--space-8); }
+
+  .is-collapsed .admin-brand { flex-direction: column; justify-content: center; padding: var(--space-2) 0; }
+  .is-collapsed .admin-brand-text, .is-collapsed .admin-nav-label, .is-collapsed .admin-nav-group-label, .is-collapsed .admin-nav-ext { display: none; }
+  .is-collapsed .admin-nav-item { justify-content: center; padding: 0; position: relative; }
+  .is-collapsed .admin-nav-badge { position: absolute; top: 4px; right: 8px; min-width: 18px; line-height: 18px; font-size: 11px; }
+}

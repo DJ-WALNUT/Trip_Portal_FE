@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import AdminHeader from '../../components/AdminHeader';
 import './AdminCommon.css';
 
 function AdminTeaserPage() {
@@ -28,7 +27,6 @@ function AdminTeaserPage() {
 
   return (
     <>
-      <AdminHeader />
       <div className="container">
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
             <h1>티저 이벤트 응모 현황</h1>

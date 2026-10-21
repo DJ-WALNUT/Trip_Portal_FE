@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { PageHeader } from '@/components/ui';
+import './Terms.css';
 
 function TermsPage() {
   const [content, setContent] = useState('');
@@ -16,53 +18,17 @@ function TermsPage() {
   }, []);
 
   return (
-    <div className="wrapper">
-      <div className="content">
-        <div className="container" style={{maxWidth: '1000px', margin: '2rem auto'}}>
-          
-          {/* ReactMarkdown 컴포넌트가 md 내용을 HTML로 변환 */}
-          <div className="markdown-body">
-            <ReactMarkdown
-              components={{
-                // index.css와 통일감을 주기 위해 태그별 스타일 커스텀
-                h1: ({node, ...props}) => <h2 style={{
-                    fontSize: '2rem', 
-                    fontWeight: '700', 
-                    color: 'var(--main-navy)', 
-                    borderBottom: '2px solid var(--light-gray)',
-                    paddingBottom: '1rem',
-                    marginBottom: '2rem'
-                }} {...props} />,
-                h3: ({node, ...props}) => <h3 style={{
-                    fontSize: '1.2rem',
-                    fontWeight: '700',
-                    color: 'var(--main-navy)',
-                    marginTop: '2rem',
-                    marginBottom: '1rem',
-                    borderLeft: '4px solid var(--accent-blue)',
-                    paddingLeft: '0.8rem'
-                }} {...props} />,
-                p: ({node, ...props}) => <p style={{
-                    fontSize: '0.95rem', 
-                    lineHeight: '1.7', 
-                    color: '#555',
-                    marginBottom: '1rem',
-                    wordBreak: 'keep-all'
-                }} {...props} />,
-                li: ({node, ...props}) => <li style={{
-                    fontSize: '0.95rem',
-                    lineHeight: '1.7',
-                    color: '#555',
-                    marginBottom: '0.3rem',
-                    marginLeft: '1.2rem'
-                }} {...props} />
-              }}
-            >
-              {content}
-            </ReactMarkdown>
-          </div>
-
-        </div>
+    <div className="terms-page">
+      <PageHeader title="이용약관" />
+      <div className={'terms-page__body'}>
+        <ReactMarkdown
+          components={{
+            // 상단 제목은 PageHeader가 대신 표시 (본문 텍스트는 .md 그대로)
+            h1: () => null,
+          }}
+        >
+          {content}
+        </ReactMarkdown>
       </div>
     </div>
   );

@@ -1,307 +1,222 @@
-/* src/pages/DepartmentPage.css */
-
-/* --- Container & Header (공통 디자인 적용) --- */
+/* 단과대 및 학과 — 페이지 루트가 거터를 가진다 (/teaser/departments 에서는 MainLayout 없이 렌더) */
 .dept-page-container {
-    /* NoticePage의 .container와 동일한 스타일 적용 */
-    width: auto;
-    margin: 2rem; /* 중앙 정렬 */
-    padding: 2rem;
-    background-color: var(--white); /* 흰색 배경 추가 */
-    border-radius: var(--border-radius); /* 둥근 모서리 */
-    box-shadow: var(--box-shadow); /* 그림자 효과 */
-    
-    font-family: var(--font-family);
-    color: var(--text-color);
-    box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: var(--space-4);
+  font-family: var(--font-family);
+  color: var(--color-text);
+}
+@media (min-width: 768px) {
+  .dept-page-container { padding: var(--space-6); }
 }
 
-.page-header {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    align-items: flex-start;
-}
-
-.page-title h2 {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--main-navy); /* 글로벌 변수 사용 */
-    margin-bottom: 0.5rem;
-}
-
-.page-title p {
-    color: #666; 
-    font-size: 1rem;
-}
+.dept-page-container .ui-page-header { margin-bottom: var(--space-2); padding-bottom: 0; }
+.dept-page-container .dept-ref-link { color: var(--color-navy-700); text-decoration: underline; }
 
 /* --- Search Bar --- */
-.search-container {
-    display: flex;
-    position: relative;
-    max-width: 500px;
-    width: 100%;
+.dept-page-container .search-container {
+  display: flex;
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  margin-bottom: var(--space-4);
 }
-
-.search-input {
-    width: 100%;
-    padding: 1rem 1.2rem;
-    padding-right: 3rem;
-    border: 2px solid var(--light-gray);
-    border-radius: 50px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background-color: var(--white); /* 입력창 배경 명시 */
-    color: var(--text-color);
+.dept-page-container .search-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-10) var(--space-2) var(--space-4);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 16px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
 }
-
-.search-input:focus {
-    outline: none;
-    border-color: var(--main-navy);
-    box-shadow: 0 0 0 4px rgba(0, 31, 63, 0.1); 
+.dept-page-container .search-input:focus-visible {
+  outline: 2px solid var(--color-saegil);
+  outline-offset: 2px;
+  border-color: var(--color-navy-700);
 }
-
-.search-icon {
-    position: absolute;
-    right: 1.2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #999;
+.dept-page-container .search-icon {
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  pointer-events: none;
 }
 
 /* --- Category Filter Tabs (Scrollable) --- */
-.category-filter {
-    display: flex;
-    gap: 0.8rem;
-    overflow-x: auto;
-    padding: 0.5rem 0.2rem 1rem 0.2rem;
-    margin-bottom: 2rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin; 
-    scrollbar-color: #d1d5db transparent;
+.dept-page-container .category-filter {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding: var(--space-1) var(--space-1) var(--space-3);
+  margin-bottom: var(--space-4);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-300) transparent;
 }
-.category-filter::-webkit-scrollbar { height: 6px; }
-.category-filter::-webkit-scrollbar-track { background: transparent; }
-.category-filter::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 10px; transition: background-color 0.2s; }
-.category-filter::-webkit-scrollbar-thumb:hover { background-color: #9ca3af; }
+.dept-page-container .category-filter::-webkit-scrollbar { height: 6px; }
+.dept-page-container .category-filter::-webkit-scrollbar-track { background: transparent; }
+.dept-page-container .category-filter::-webkit-scrollbar-thumb { background-color: var(--gray-300); border-radius: var(--radius-pill); }
+.dept-page-container .category-filter::-webkit-scrollbar-thumb:hover { background-color: var(--gray-400); }
 
-.filter-chip {
-    flex: 0 0 auto;
-    padding: 0.6rem 1.2rem;
-    border-radius: 50px;
-    background-color: var(--background-color); /* 칩 배경을 약간 회색으로 변경하여 흰 바탕과 구분 */
-    border: 1px solid var(--light-gray);
-    color: #666;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-family);
+.dept-page-container .filter-chip {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--gray-600);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-family);
 }
-
-.filter-chip:hover {
-    background-color: var(--light-gray);
-    color: var(--main-navy);
-}
-
-.filter-chip.active {
-    background-color: var(--main-navy);
-    color: var(--white);
-    border-color: var(--main-navy);
-    box-shadow: 0 4px 10px rgba(0, 31, 63, 0.2);
+.dept-page-container .filter-chip:hover { background-color: var(--gray-100); color: var(--color-navy-900); }
+.dept-page-container .filter-chip:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
+.dept-page-container .filter-chip.active {
+  background-color: var(--color-navy-900);
+  color: #fff;
+  border-color: var(--color-navy-900);
 }
 
 /* --- Grid Layouts --- */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 1.5rem;
+.dept-page-container .grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+@media (min-width: 768px) {
+  .dept-page-container .grid-container { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-6); }
 }
 
 /* --- Section Dividers --- */
-.section-label {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--main-navy);
-    margin: 2rem 0 1rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+.dept-page-container .section-label {
+  font-size: var(--fs-sub);
+  font-weight: 700;
+  color: var(--color-navy-900);
+  margin: var(--space-6) 0 var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
-.section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background-color: var(--light-gray);
-    margin-left: 1rem;
+.dept-page-container .section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+  margin-left: var(--space-4);
 }
 
 /* --- Card Styles --- */
-.org-card {
-    background: var(--white);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--light-gray);
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    display: flex;
-    flex-direction: column;
+.dept-page-container .org-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.org-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--box-shadow);
-    border-color: var(--accent-blue);
+.dept-page-container .card-header {
+  background-color: var(--color-bg);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-/* Card Header */
-.card-header {
-    background-color: var(--background-color); /* 흰색 컨테이너 위에서 구분되도록 회색 유지 */
-    padding: 1.2rem;
-    border-bottom: 1px solid var(--light-gray);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.dept-page-container .card-title {
+  display: flex;
+  font-size: var(--fs-sub);
+  font-weight: 700;
+  color: var(--color-navy-900);
+  align-items: center;
 }
+.dept-page-container .card-title svg { margin: 0 var(--space-2); }
+.dept-page-container .card-title span { margin: 0; padding: 0; line-height: 1; }
 
-.card-title {
-    display: flex;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--main-navy);
-    align-items: center;
+.dept-page-container .college-insta-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 13px;
+  color: #E1306C; /* Instagram 브랜드 색 */
+  background: #fff0f5;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  text-decoration: none;
 }
-.card-title svg { margin: 0 0.5rem; }
-.card-title span {
-    margin: 0;        /* 마진 강제 제거 */
-    padding: 0;       /* 패딩 제거 */
-    line-height: 1;   /* 글자 높이를 폰트 크기에 딱 맞춤 (중요) */
-    /* 폰트 특성상 그래도 위로 쏠려 보인다면 
-       아래 속성 중 하나를 주석 해제하여 미세 조정하세요.
-       보통 1px~2px 정도 내리면 시각적으로 맞습니다.
-    */
-    /* padding-top: 2px; */
-    /* transform: translateY(1px); */
-}
-
-.college-insta-link {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.8rem;
-    color: #E1306C;
-    background: #fff0f5;
-    padding: 0.3rem 0.6rem;
-    border-radius: 20px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.2s;
-}
-
-.college-insta-link:hover {
-    background: #ffe4ef;
-}
+.dept-page-container .college-insta-link:hover { background: #ffe4ef; }
 
 /* Card List */
-.dept-list {
-    padding: 0.5rem;
-    flex: 1;
+.dept-page-container .dept-list { padding: var(--space-2); flex: 1; }
+
+.dept-page-container .dept-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  text-decoration: none;
+  color: var(--color-text);
+}
+.dept-page-container a.dept-item:hover { background-color: var(--gray-100); }
+.dept-page-container a.dept-item:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: -2px; }
+.dept-page-container .dept-item--static { cursor: default; opacity: 0.6; }
+
+.dept-page-container .dept-name { font-weight: 500; font-size: var(--fs-body); }
+.dept-page-container .dept-id {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.dept-page-container .dept-id--none { font-size: 12px; }
+.dept-page-container a.dept-item:hover .dept-id { color: var(--color-navy-900); }
+
+/* --- Featured Cards (Central Org) --- */
+.dept-page-container .featured-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+@media (min-width: 480px) {
+  .dept-page-container .featured-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 }
 
-.dept-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 1rem;
-    margin: 0.2rem 0;
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--text-color);
-    transition: background-color 0.2s;
+.dept-page-container .featured-card {
+  background: var(--color-navy-900);
+  color: #fff;
+  padding: var(--space-4) var(--space-6);
+  min-height: 44px;
+  border-radius: var(--radius-card);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.2s;
 }
-
-.dept-item:hover {
-    background-color: var(--light-gray);
-}
-
-.dept-name {
-    font-weight: 500;
-    font-size: 0.95rem;
-}
-
-.dept-id {
-    font-size: 0.85rem;
-    color: #666;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.dept-item:hover .dept-id {
-    color: var(--main-navy);
-}
-
-/* --- Special: Featured Cards (Central Org) --- */
-.featured-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.featured-card {
-    background: linear-gradient(135deg, var(--main-navy), #004085);
-    color: var(--white);
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-.featured-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--box-shadow);
-}
-
-.featured-info h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin: 0 0 0.3rem 0;
-}
-
-.featured-info span {
-    font-size: 0.85rem;
-    opacity: 0.9;
-}
-
-.featured-icon {
-    opacity: 0.9;
-}
-
-/* --- Empty State --- */
-.empty-state {
-    text-align: center;
-    padding: 4rem 0;
-    color: #999;
-}
-
-/* --- Responsive Mobile --- */
-@media (max-width: 768px) {
-    /* 모바일에서는 여백을 줄여 화면을 넓게 사용 */
-    .dept-page-container {
-        margin: 1rem 0;
-        padding: 1rem;
-        border-radius: 0; /* 모바일에서는 꽉 차게 보이도록 (선택사항) */
-    }
-    
-    .page-title h2 { font-size: 2rem; }
-    .grid-container { grid-template-columns: 1fr; }
-    .category-filter { padding-bottom: 0.5rem; }
-    .search-input { font-size: 0.9rem; }
-}
+.dept-page-container .featured-card:hover { background: var(--color-navy-700); box-shadow: var(--shadow-md); }
+.dept-page-container .featured-card:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
+.dept-page-container .featured-info h3 { font-size: var(--fs-body); font-weight: 700; margin: 0 0 var(--space-1); }
+.dept-page-container .featured-info span { font-size: 13px; opacity: 0.9; }
+.dept-page-container .featured-icon { opacity: 0.9; }

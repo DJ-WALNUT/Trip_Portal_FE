@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Menu, X, ChevronDown, Megaphone, Package, Map, Network, GraduationCap, ExternalLink } from 'lucide-react';
 import { RENTAL_ENABLED } from '../config/features';
 import './Header.css';
 
@@ -16,10 +17,38 @@ function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // 패널 안에 포커스가 있던 채로 닫히면 햄버거 버튼으로 포커스를 돌려준다
+  const restoreFocusIfInside = () => {
+    if (navRef.current && navRef.current.contains(document.activeElement)) {
+      btnRef.current?.focus();
+    }
+  };
+
   // 메뉴 클릭 시 닫기 (모바일에서 이동 후 메뉴가 닫히도록)
   const closeMenu = () => {
+    if (isMenuOpen) restoreFocusIfInside();
     setIsMenuOpen(false);
   };
+
+  // 모바일 패널이 열리면 첫 링크로 포커스 이동
+  useEffect(() => {
+    if (!isMenuOpen || !navRef.current) return;
+    const first = navRef.current.querySelector('a[href]:not([aria-disabled="true"])');
+    first?.focus();
+  }, [isMenuOpen]);
+
+  // Esc로 모바일 패널 닫기
+  useEffect(() => {
+    if (!isMenuOpen) return undefined;
+    const onKeyDown = (event) => {
+      if (event.key !== 'Escape') return;
+      restoreFocusIfInside();
+      setIsMenuOpen(false);
+      setIsDropdownOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isMenuOpen]);
 
   // 드롭다운 토글 함수
   const toggleDropdown = (e) => {
@@ -38,6 +67,7 @@ function Header() {
         navRef.current && !navRef.current.contains(event.target) &&
         btnRef.current && !btnRef.current.contains(event.target)
       ) {
+        if (isMenuOpen) restoreFocusIfInside();
         setIsMenuOpen(false);
         setIsDropdownOpen(false);
       }
@@ -53,7 +83,7 @@ function Header() {
   }, [isMenuOpen, isDropdownOpen]); // 상태가 변할 때마다 이펙트 재실행
 
   return (
-    <header className="header">
+    <header className="header site-header">
       <div className="header-content">
         <Link to="/" className="logo" onClick={closeMenu}>
            {/* ▼▼▼ 로고 이미지 추가 (글자 왼쪽에 배치) ▼▼▼ */}
@@ -63,12 +93,12 @@ function Header() {
         </Link>
 
         {/* 네비게이션 메뉴 */}
-        <nav className={`main-nav ${isMenuOpen ? 'active' : ''}`} ref={navRef}>
+        <nav className="main-nav" data-open={isMenuOpen} ref={navRef}>
           <ul>
-            <li><Link to="/notices" onClick={closeMenu}>공지사항</Link></li>
+            <li><Link to="/notices" onClick={closeMenu}><Megaphone size={18} aria-hidden="true" />공지사항</Link></li>
             <li className="dropdown-container">
-              <a href="#" onClick={toggleDropdown} className="dropdown-btn">
-                대여사업 <span className="arrow">▼</span>
+              <a href="#" onClick={toggleDropdown} className="dropdown-btn" aria-expanded={isDropdownOpen}>
+                <Package size={18} aria-hidden="true" />대여사업 <ChevronDown size={16} className="arrow" aria-hidden="true" />
               </a>
               <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
                 {RENTAL_ENABLED ? (
@@ -89,20 +119,28 @@ function Header() {
                 <li><Link to="/check" onClick={closeMenu}>신청/대여 확인</Link></li>
               </ul>
             </li>
-            <li><Link to="/campusmap" onClick={closeMenu}>성심지도</Link></li>
-            <li><Link to="/organ" onClick={closeMenu}>조직도</Link></li>
-            <li><Link to="/departments" onClick={closeMenu}>단과대 및 학과</Link></li>
+            <li><Link to="/campusmap" onClick={closeMenu}><Map size={18} aria-hidden="true" />성심지도</Link></li>
+            <li><Link to="/organ" onClick={closeMenu}><Network size={18} aria-hidden="true" />조직도</Link></li>
+            <li><Link to="/departments" onClick={closeMenu}><GraduationCap size={18} aria-hidden="true" />단과대 및 학과</Link></li>
             <li>
               <a href="https://2025saegil.cukeng.kr" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
-                2025 새길
+                <ExternalLink size={18} aria-hidden="true" />2025 새길
               </a>
             </li>
           </ul>
         </nav>
 
-        <button className="hamburger-btn" onClick={toggleMenu} ref={btnRef}>
-          ☰
+        <button
+          type="button"
+          className="hamburger-btn"
+          onClick={toggleMenu}
+          ref={btnRef}
+          aria-label={isMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
+          aria-expanded={isMenuOpen}
+        >
+          {isMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
         </button>
+        <div className="nav-overlay" data-open={isMenuOpen} onClick={closeMenu} aria-hidden="true" />
       </div>
     </header>
   );

@@ -1,0 +1,43 @@
+.admin-notice-title { display: flex; align-items: center; gap: var(--space-2); max-width: 560px; min-width: 0; }
+.admin-notice-title .ui-badge { flex: none; }
+.admin-notice-title__text { flex: 0 1 auto; min-width: 0; font-weight: 600; color: var(--color-text); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.notice-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.ui-btn.notice-icon-btn { min-width: 44px; padding: 0; justify-content: center; gap: var(--space-1); }
+.admin-notice-list .rtable__table tr[data-private="true"] > td,
+.admin-notice-list .rtable__cards li[data-private="true"] { background: var(--color-bg); }
+
+.notice-form { display: grid; gap: 0; max-width: 760px; padding: var(--space-5); }
+.notice-form .ui-field textarea { min-height: 280px; resize: vertical; }
+.notice-form__fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.notice-form__legend { margin: 0 0 var(--space-2); padding: 0; font-size: var(--fs-body); font-weight: 600; color: var(--gray-800); }
+.segmented { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-control); margin-bottom: var(--space-4); }
+.segmented__item { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-4); border-radius: calc(var(--radius-control) - 2px); cursor: pointer; font-weight: 600; color: var(--color-text-muted); }
+.segmented__item input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.segmented__item:has(input:checked) { background: var(--color-navy-900); color: #fff; }
+.segmented__item:has(input:focus-visible) { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
+.notice-fixed { margin-bottom: var(--space-4); }
+
+.dropzone {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 120px; padding: var(--space-5); text-align: center; cursor: pointer;
+  border: 2px dashed var(--color-border); border-radius: var(--radius-card);
+  background: var(--color-bg); color: var(--color-text-muted);
+}
+.dropzone:hover, .dropzone:focus-within { border-color: var(--color-saegil); color: var(--color-navy-700); }
+.dropzone:has(input:focus-visible) { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
+.dropzone__input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.file-list { list-style: none; margin: 0 0 var(--space-3); padding: 0; display: grid; gap: var(--space-2); }
+.file-list__title { margin: 0 0 var(--space-2); font-size: 14px; font-weight: 700; color: var(--color-text); }
+.file-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-control); background: var(--color-surface); }
+.file-row--new { background: var(--tone-pending-bg); }
+.file-row__name { min-width: 0; overflow-wrap: anywhere; }
+.notice-form__actions { display: flex; gap: var(--space-3); justify-content: flex-end; margin-top: var(--space-4); }
+
+.insta-add { max-width: 760px; margin-bottom: var(--space-6); padding: var(--space-5); }
+.insta-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+.admin-insta-card { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; padding: var(--space-3); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); }
+.admin-insta-card__img { aspect-ratio: 1 / 1; width: 100%; overflow: hidden; border-radius: var(--radius-control); background: var(--color-bg); }
+.admin-insta-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.admin-insta-card__link { display: flex; align-items: center; gap: var(--space-1); min-height: 44px; color: var(--color-navy-700); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (min-width: 768px) { .insta-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .insta-grid { grid-template-columns: repeat(4, 1fr); } }

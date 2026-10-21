@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Search, MapPin, Building, ArrowRight } from 'lucide-react';
+import { PageHeader, Card } from '@/components/ui';
+import LucianIcon from '@/components/icons/LucianIcon';
 import axios from 'axios'; // axios 임포트
 import CampusMap from '../../components/CampusMap'; 
 import FacilityModal from '../../components/FacilityModal';
@@ -52,7 +54,7 @@ const MapPage = () => {
       // [수정] 대소문자 구분 없이 검색하기 위해 검색어를 소문자로 변환
       const lowerTerm = searchTerm.toLowerCase();
 
-      const results = Object.entries(buildingsData).filter(([key, bldg]) => {
+      const results = Object.entries(buildingsData).filter(([, bldg]) => {
         // 1. 건물 이름 매칭 (예: "니콜스")
         const isBuildingMatch = bldg.name.toLowerCase().includes(lowerTerm);
 
@@ -81,25 +83,25 @@ const MapPage = () => {
   return (
     <div className="map-page-container">
       {/* Header */}
-      <div className="page-header">
-        <div className="page-title">
-          <h2>성심지도</h2>
-          <p>지도를 클릭하여 건물별 행정지원실과 편의시설을 확인하세요.</p>
-        </div>
-        
-        <div className="search-container">
-          <input 
-            type="text" 
-            className="search-input"
-            placeholder="건물명 또는 부서명 검색..."
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setSelectedBuildingId(null);
-            }}
-          />
-          <Search className="search-icon" size={20} />
-        </div>
+      <PageHeader
+        title="성심지도"
+        description="지도를 클릭하여 건물별 행정지원실과 편의시설을 확인하세요."
+        icon={<LucianIcon name="map" size={28} />}
+      />
+
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="건물명 또는 부서명 검색..."
+          aria-label="건물명 또는 부서명 검색"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setSelectedBuildingId(null);
+          }}
+        />
+        <Search className="search-icon" size={20} aria-hidden="true" />
       </div>
 
       {/* Map Section */}
@@ -119,7 +121,7 @@ const MapPage = () => {
 
         {/* Case 1: 건물 상세 정보 (여기가 수정됨) */}
         {displayContent.type === 'building' && (
-          <div className="building-detail-card animate-fade-in">
+          <Card className="building-detail-card animate-fade-in">
             <div className="detail-header">
               <h3>{displayContent.data.name}</h3>
               <p>{displayContent.data.description}</p>
@@ -147,22 +149,22 @@ const MapPage = () => {
 
                 if (filteredFacilities.length > 0) {
                   return filteredFacilities.map((fac, idx) => (
-                    <div 
-                      key={idx} 
+                    <button
+                      type="button"
+                      key={idx}
                       className="facility-item"
-                      style={{ cursor: 'pointer' }}
                       onClick={() => handleFacilityClick(fac)}
                     >
                       <span className="fac-name">{fac.name}</span>
                       <span className="fac-loc"><MapPin size={14}/> {fac.loc}</span>
-                    </div>
+                    </button>
                   ));
                 } else {
                   return <div className="no-facility-msg">검색 조건에 맞는 시설이 없습니다.</div>;
                 }
               })()}
             </div>
-          </div>
+          </Card>
         )}
 
         {/* Case 2: 검색 결과 */}
@@ -170,10 +172,10 @@ const MapPage = () => {
           <div className="search-results">
             <div className="section-label">검색 결과 ({displayContent.data.length})</div>
             {displayContent.data.map(([id, bldg]) => (
-              <div key={id} className="result-item" onClick={() => setSelectedBuildingId(id)}>
+              <button type="button" key={id} className="result-item" onClick={() => setSelectedBuildingId(id)}>
                 <span className="bldg-name">{bldg.name}</span>
                 <ArrowRight size={16} />
-              </div>
+              </button>
             ))}
           </div>
         )}
@@ -181,7 +183,7 @@ const MapPage = () => {
         {/* Case 3: 기본 상태 (안내 문구) */}
         {displayContent.type === 'default' && (
           <div className="empty-state">
-            <Building size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
+            <Building size={48} className="empty-state-icon" />
             <h3>지도의 건물을 클릭해보세요</h3>
             <p>건물별 상세 시설 정보가 이곳에 표시됩니다.</p>
           </div>

@@ -1,36 +1,13 @@
-.login-container {
-    max-width: 400px;
-    margin: 5rem auto;
-    text-align: center;
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: var(--color-bg);
 }
-
-.login-form h2 {
-    margin-bottom: 1rem;
-    color: var(--main-navy);
-}
-
-.login-form p {
-    margin-bottom: 2rem;
-    color: #666;
-}
-
-.login-form input {
-    width: 100%;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-}
-
-.login-form .submit-btn {
-    width: 100%;
-    padding: 1rem;
-    background-color: var(--main-navy);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-}
+.admin-login__card { width: 100%; max-width: 400px; padding: var(--space-8) var(--space-6); text-align: center; }
+.admin-login__icon { display: flex; justify-content: center; margin-bottom: var(--space-3); color: var(--color-navy-700); }
+.admin-login__title { margin: 0 0 var(--space-2); font-size: var(--fs-title); color: var(--color-navy-900); }
+.admin-login__desc { margin: 0 0 var(--space-6); color: var(--color-text-muted); }
+.admin-login .field { text-align: left; }

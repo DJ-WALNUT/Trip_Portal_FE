@@ -1,0 +1,71 @@
+/* 디자인 토큰 (정돈된 네이비) */
+:root {
+  --color-navy-900: #001f3f;
+  --color-navy-700: #004085;
+  --color-saegil: #3986c6;
+  --color-sky: #a9d0f5;
+  --color-bg: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #333333;
+  --color-text-muted: #6b7280;
+
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  --tone-pending-bg: #fff3d6;
+  --tone-pending-fg: #b45309;
+  --tone-ongoing-bg: #dbeafe;
+  --tone-ongoing-fg: #1d4ed8;
+  --tone-overdue-bg: #fee2e2;
+  --tone-overdue-fg: #b91c1c;
+  --tone-done-bg: #dcfce7;
+  --tone-done-fg: #15803d;
+  --tone-new-bg: #fee2e2;
+  --tone-new-fg: #dc2626;
+  --tone-pinned-bg: #dbeafe;
+  --tone-pinned-fg: #1d4ed8;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-11: 44px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-card: 12px;
+  --radius-control: 10px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 31, 63, 0.08);
+  --shadow-md: 0 4px 15px rgba(0, 31, 63, 0.1);
+
+  --fs-body: 15px;
+  --fs-sub: 18px;
+  --fs-title: 22px;
+
+  --header-h: 70px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --fs-body: 16px;
+    --fs-sub: 20px;
+    --fs-title: 26px;
+  }
+}

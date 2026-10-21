@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import AdminHeader from '../../components/AdminHeader';
+import { Pencil, Trash2, Plus } from 'lucide-react';
+import { ResponsiveTable, Badge, Button, PageHeader, Spinner } from '@/components/ui';
 import './AdminCommon.css';
+import './AdminNotice.css';
 
 function AdminNoticeListPage() {
   const navigate = useNavigate();
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const isMaster = localStorage.getItem('adminRole') === 'master';
 
   useEffect(() => {
     // 1. 권한 체크
@@ -18,23 +21,22 @@ function AdminNoticeListPage() {
     }
 
     // 2. [수정] 실제 API 호출
+    const fetchNotices = async () => {
+      try {
+        // [수정] 관리자용 목록이므로 'include_private' 파라미터 추가
+        const res = await axios.get('/api/notices', {
+          params: { include_private: 'true' }
+        });
+        setNotices(res.data); // 백엔드에서 받은 배열 저장
+      } catch (err) {
+        console.error("공지사항 로드 실패:", err);
+        alert("데이터를 불러오지 못했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchNotices();
   }, [navigate]);
-
-  const fetchNotices = async () => {
-    try {
-      // [수정] 관리자용 목록이므로 'include_private' 파라미터 추가
-      const res = await axios.get('/api/notices', {
-          params: { include_private: 'true' }
-      });
-      setNotices(res.data); // 백엔드에서 받은 배열 저장
-    } catch (err) {
-      console.error("공지사항 로드 실패:", err);
-      alert("데이터를 불러오지 못했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async (id) => {
     if (window.confirm('정말 삭제하시겠습니까? (삭제 시 복구 불가)')) {
@@ -50,84 +52,67 @@ function AdminNoticeListPage() {
     }
   };
 
-  if (loading) return <div className="container">로딩 중...</div>;
+  const columns = [
+    {
+      key: 'title',
+      header: '제목',
+      primary: true,
+      render: (n) => (
+        <span className="admin-notice-title">
+          {n.fixed ? <Badge tone="pinned">고정</Badge> : null}
+          <span className="admin-notice-title__text" title={n.title}>{n.title}</span>
+        </span>
+      ),
+    },
+    { key: 'id', header: '번호', render: (n) => n.id },
+    {
+      key: 'status',
+      header: '상태',
+      render: (n) => (n.is_public ? <Badge tone="done">공개</Badge> : <Badge tone="overdue">미공개</Badge>),
+    },
+    { key: 'author', header: '작성자', render: (n) => n.author },
+    { key: 'date', header: '작성일', render: (n) => n.date },
+    { key: 'views', header: '조회수', render: (n) => n.views },
+  ];
+
+  if (isMaster) {
+    columns.push({
+      key: 'actions',
+      header: '관리',
+      render: (n) => (
+        <div className="notice-actions">
+          <Button variant="ghost" className="notice-icon-btn" aria-label={`${n.title} 수정`} onClick={() => navigate(`/admin/notices/edit/${n.id}`)}>
+            <Pencil size={16} aria-hidden="true" />
+          </Button>
+          <Button variant="danger" className="notice-icon-btn" aria-label={`${n.title} 삭제`} onClick={() => handleDelete(n.id)}>
+            <Trash2 size={16} aria-hidden="true" />
+          </Button>
+        </div>
+      ),
+    });
+  }
+
+  if (loading) return <Spinner />;
 
   return (
-    <>
-      <AdminHeader />
-      <div className="container">
-        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: '1rem'}}>
-            <h1>공지사항 관리</h1>
-            <Link to="/admin/notices/write" className="btn-write">
-                ✏️ 새 공지 작성
-            </Link>
-        </div>
-        
-        <div className="table-responsive">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th style={{width: '60px'}}>번호</th>
-                <th style={{width: '80px'}}>상태</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th style={{width: '80px'}}>조회수</th>
-                <th>고정</th>
-                {localStorage.getItem('adminRole') === 'master' && (
-                  <th style={{width: '150px'}}>관리</th>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {notices.length === 0 ? (
-                <tr><td colSpan="7" style={{textAlign:'center', padding: '2rem'}}>등록된 공지사항이 없습니다.</td></tr>
-              ) : notices.map((notice) => (
-                <tr key={notice.id} style={{backgroundColor: notice.is_public ? 'white' : '#fff5f5'}}> 
-                    {/* 미공개면 배경을 살짝 붉게 */}
-                  <td>{notice.id}</td>
-                  {/* [NEW] 상태 뱃지 표시 */}
-                  <td>
-                    {notice.is_public ? (
-                      <span style={{color:'green', fontWeight:'bold', border:'1px solid green', padding:'2px 6px', borderRadius:'4px', fontSize:'0.8rem'}}>공개</span>
-                    ) : (
-                      <span style={{color:'#d63031', fontWeight:'bold', border:'1px solid #d63031', padding:'2px 6px', borderRadius:'4px', fontSize:'0.8rem'}}>미공개</span>
-                    )}
-                  </td>
-
-                  <td style={{textAlign: 'left', fontWeight: notice.fixed ? 'bold' : 'normal'}}>
-                    {notice.title}
-                  </td>
-                  <td>{notice.author}</td>
-                  <td>{notice.date}</td>
-                  <td>{notice.views}</td>
-                  <td>
-                    {notice.fixed ? <span style={{color:'red', fontWeight:'bold'}}>고정</span> : '-'}
-                  </td>
-                  
-                  {localStorage.getItem('adminRole') === 'master' && (
-                    <td>
-                      <button 
-                        className="btn-modify" 
-                        onClick={() => navigate(`/admin/notices/edit/${notice.id}`)}
-                      >
-                        수정
-                      </button>
-                      <button 
-                        className="btn-delete" 
-                        onClick={() => handleDelete(notice.id)}
-                      >
-                        삭제
-                      </button>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </>
+    <div className="admin-notice-list">
+      <PageHeader
+        title="공지사항 관리"
+        actions={
+          <Button as={Link} to="/admin/notices/write">
+            <Plus size={18} aria-hidden="true" /> 새 공지
+          </Button>
+        }
+      />
+      <ResponsiveTable
+        breakpoint="lg"
+        columns={columns}
+        rows={notices}
+        rowKey={(n) => n.id}
+        empty="등록된 공지사항이 없습니다."
+        rowProps={(n) => ({ 'data-private': n.is_public ? undefined : 'true' })}
+      />
+    </div>
   );
 }
 

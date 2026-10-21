@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios'; // axios 추가
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Calendar, User, Eye, Paperclip, ChevronDown } from 'lucide-react';
+import { Spinner } from '@/components/ui';
+import LucianIcon from '@/components/icons/LucianIcon';
+import { formatNoticeDate, getFileExt } from '@/lib/notice';
 import './NoticeDetailPage.css';
 
 function NoticeDetailPage() {
@@ -55,7 +59,7 @@ function NoticeDetailPage() {
             href={part} 
             target="_blank" 
             rel="noopener noreferrer"
-            style={{ color: '#3498db', textDecoration: 'underline', fontWeight: '500' }}
+            className="content-link"
           >
             {part}
           </a>
@@ -70,84 +74,83 @@ function NoticeDetailPage() {
     return /\.(jpg|jpeg|png|gif|webp)$/i.test(filename);
   };
 
-  if (loading) return <div style={{ padding: '3rem', textAlign: 'center' }}>로딩 중...</div>;
+  if (loading) return <Spinner />;
   if (!notice) return null;
 
   // 배포 환경 도메인
   const BASE_URL = import.meta.env.PROD ? 'https://trip-api.cukeng.kr' : '';
 
   return (
-    <div className="wrapper">
-      <div className="content container notice-detail-container">
-        
-        {/* 1. 게시글 헤더 */}
-        <div className="post-header">
-            <h2 className="post-title">{notice.title}</h2>
-            <div className="post-info">
-                <div className="info-item"><span>작성자</span> {notice.author}</div>
-                <div className="info-item"><span>작성일</span> {notice.date}</div>
-                <div className="info-item"><span>조회수</span> {notice.views}</div>
-            </div>
-        </div>
+    <div className="notice-detail">
+      <div className="notice-detail__inner">
 
-        {/* 2. [수정] 첨부파일 영역 (접이식) */}
+        {/* 1. 게시글 헤더 */}
+        <header className="post-header">
+          <h1 className="post-title">{notice.title}</h1>
+          <div className="post-info">
+            <div className="info-item"><User size={14} aria-hidden="true" /><span className="ui-sr-only">작성자</span> {notice.author}</div>
+            <div className="info-item"><Calendar size={14} aria-hidden="true" /><span className="ui-sr-only">작성일</span> {formatNoticeDate(notice.date)}</div>
+            <div className="info-item"><Eye size={14} aria-hidden="true" /><span className="ui-sr-only">조회수</span> {notice.views}</div>
+          </div>
+        </header>
+
+        {/* 2. 첨부파일 영역 (접이식, 기본 접힘) */}
         {notice.files && notice.files.length > 0 ? (
-            <div className="post-attachments-wrapper">
-                <button 
-                    className={`attachment-toggle-btn ${isFilesOpen ? 'active' : ''}`}
-                    onClick={() => setIsFilesOpen(!isFilesOpen)}
-                >
-                    <span className="attach-label">
-                        📄 첨부파일 ({notice.files.length}개)
-                    </span>
-                    <span className={`arrow-icon ${isFilesOpen ? 'up' : 'down'}`}>
-                        {isFilesOpen ? '▲' : '▼'}
-                    </span>
-                </button>
-                
-                {/* 열림 상태일 때만 목록 표시 */}
-                {isFilesOpen && (
-                    <div className="attachment-list">
-                        {notice.files.map((file) => (
-                            <a 
-                                key={file.id}
-                                href={`${BASE_URL}/api/notices/download/${notice.id}/${file.filename}`} 
-                                className="attach-link"
-                                download 
-                            >
-                                📄 {file.filename} (다운로드)
-                            </a>
-                        ))}
-                    </div>
-                )}
-            </div>
+          <div className="post-attachments-wrapper">
+            <button
+              type="button"
+              className="attachment-toggle-btn"
+              aria-expanded={isFilesOpen}
+              aria-controls="notice-attachment-list"
+              onClick={() => setIsFilesOpen(!isFilesOpen)}
+            >
+              <span className="attach-label">
+                <Paperclip size={16} aria-hidden="true" />
+                첨부파일 {notice.files.length}개
+              </span>
+              <ChevronDown className="chevron" size={18} aria-hidden="true" />
+            </button>
+
+            {isFilesOpen && (
+              <div className="attachment-list" id="notice-attachment-list">
+                {notice.files.map((file) => (
+                  <a
+                    key={file.id}
+                    href={`${BASE_URL}/api/notices/download/${notice.id}/${file.filename}`}
+                    className="attach-link"
+                    download
+                  >
+                    <span className="attach-ext">{getFileExt(file.filename)}</span>
+                    <span className="attach-name">{file.filename}</span>
+                    <span className="lucian-dl"><LucianIcon name="download" size={20} state="idle" /></span>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
         ) : (
-             <div className="post-attachments no-files">
-                <span className="attach-label">첨부파일 </span>
-                <span>없음</span>
-             </div>
+          <div className="post-attachments no-files">
+            <Paperclip size={16} aria-hidden="true" />
+            <span>첨부파일 없음</span>
+          </div>
         )}
 
         {/* 3. 게시글 본문 */}
         <div className="post-content">
-            {/* 기존: {notice.content} */}
-            {/* 변경: 함수를 통해 렌더링 */}
-            {renderContent(notice.content)}
+          {renderContent(notice.content)}
         </div>
 
-        {/* [NEW] 3-1. 이미지 미리보기 영역 (첨부파일 중 이미지인 것만 추출) */}
+        {/* 3-1. 이미지 미리보기 영역 (첨부파일 중 이미지인 것만 추출) */}
         {notice.files && notice.files.filter(f => isImageFile(f.filename)).length > 0 && (
           <div className="post-image-grid">
             {notice.files
               .filter(file => isImageFile(file.filename))
               .map((file, idx) => (
                 <div key={file.id || idx} className="grid-item">
-                  <img 
-                        src={`${BASE_URL}/api/notices/download/${notice.id}/${file.filename}`} 
-                        alt={`첨부 이미지 ${idx + 1}`} 
-                        loading="lazy"
-                        /*onClick={() => window.open(`${BASE_URL}/api/notices/download/${notice.id}/${file.filename}`, '_blank')}*/
-                        style={{ cursor: 'pointer' }}
+                  <img
+                    src={`${BASE_URL}/api/notices/download/${notice.id}/${file.filename}`}
+                    alt={`첨부 이미지 ${idx + 1}`}
+                    loading="lazy"
                   />
                 </div>
               ))
@@ -157,9 +160,9 @@ function NoticeDetailPage() {
 
         {/* 4. 하단 버튼 */}
         <div className="btn-area">
-            <button className="list-btn" onClick={() => navigate('/notices')}>
-                목록으로
-            </button>
+          <button type="button" className="list-btn" onClick={() => navigate('/notices')}>
+            목록으로
+          </button>
         </div>
 
       </div>
