@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import './components/ui/ui.css'
 import App from './App.jsx'
 import axios from 'axios' // axios 임포트 확인!
 

@@ -1,3 +1,5 @@
+@import './styles/tokens.css';
+
 /* src/index.css */
 /* ▼▼▼ 1. 폰트 파일 연결 (파일 이름 확인 필수!) ▼▼▼ */
 /* Regular (일반 굵기) */
@@ -16,19 +18,19 @@
 }
 
 :root {
-    --main-navy: #001f3f;
-    --second-navy: #004085;
-    --light-sky-blue: #A9D0F5;
+    --main-navy: var(--color-navy-900);
+    --second-navy: var(--color-navy-700);
+    --light-sky-blue: var(--color-sky);
     --accent-blue: #3498db;
-    --saegil-blue: #3986c6;
-    --background-color: #f8f9fa;
-    --text-color: #333;
+    --saegil-blue: var(--color-saegil);
+    --background-color: var(--color-bg);
+    --text-color: var(--color-text);
     --light-gray: #e9ecef;
-    --white: #ffffff;
+    --white: var(--color-surface);
     --danger: #e74c3c;
     --success: #2ecc71;
     --font-family: 'Pretendard GOV Variable', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-    --border-radius: 12px;
+    --border-radius: var(--radius-card);
     --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     --radius: 0.625rem;
     --background: oklch(1 0 0);
@@ -108,32 +110,34 @@ button { font-family: inherit; cursor: pointer; }
     flex: 1;
     width: 100%;
     min-width: 0; 
-    padding: 0 2rem; 
     margin: 0 auto;
 }
 
-/* 공통 컨테이너 (페이지별 박스) */
+/* 공통 컨테이너 (페이지별 박스) - 모바일 우선 */
 .container {
-    width: auto;
-    max-width: 100%; 
-    margin: 2rem; 
-    padding: 2rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 1rem 0;
+    padding: 1.5rem 1rem;
     background-color: var(--white);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     box-sizing: border-box;
 }
 
-/* 모바일 대응 (768px 이하) */
-@media (max-width: 768px) {
+.content {
+    padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
     .content {
-        padding: 0 1rem; /* 여백 축소 */
+        padding: 0 2rem;
     }
 
-    .container { 
-        margin: 1rem 0; 
-        padding: 1.5rem 1rem; /* 내부 여백 축소 */
-        width: 100%;
+    .container {
+        width: auto;
+        margin: 2rem;
+        padding: 2rem;
     }
 }
 
