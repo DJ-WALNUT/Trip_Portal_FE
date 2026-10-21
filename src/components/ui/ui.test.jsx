@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { Badge, Button, Toggle, ResponsiveTable } from '@/components/ui'
 
 describe('ui components', () => {
@@ -46,5 +48,12 @@ describe('ui components', () => {
     const cols = [{ key: 'n', header: '이름', primary: true, render: (r) => <b>{r.n}!</b> }]
     render(<ResponsiveTable columns={cols} rows={rows} rowKey={(r) => r.id} />)
     expect(screen.getAllByText('a!')).toHaveLength(2)
+  })
+
+  it('ui.css has no selector repeating a ui- root as its own descendant', () => {
+    // vitest runs with css:false, so ?raw yields '' and import.meta.url is not a file URL; read relative to the project root (cwd)
+    const css = readFileSync(resolve('src/components/ui/ui.css'), 'utf-8')
+    expect(css.length).toBeGreaterThan(500)
+    expect(css).not.toMatch(/\.ui-([a-z-]+)[^{,\n]*\s\.ui-\1(?![\w-])/)
   })
 })

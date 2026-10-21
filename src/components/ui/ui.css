@@ -1,5 +1,5 @@
 /* 공통 UI 컴포넌트 (모바일 우선) */
-.ui-card, .ui-badge, .ui-rtable .rtable__cards li { overflow-wrap: anywhere; min-width: 0; }
+.ui-card, .ui-badge, .rtable__cards li { overflow-wrap: anywhere; min-width: 0; }
 
 :focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
 
@@ -102,10 +102,10 @@
 .ui-rtable .rtable__card-row dd { text-align: right; min-width: 0; }
 .ui-rtable .rtable__empty { padding: var(--space-4) 0; }
 @media (min-width: 768px) {
-  .ui-rtable.rtable--md .ui-rtable .rtable__table { display: table; }
-  .ui-rtable.rtable--md .ui-rtable .rtable__cards { display: none; }
+  .ui-rtable.rtable--md .rtable__table { display: table; }
+  .ui-rtable.rtable--md .rtable__cards { display: none; }
 }
 @media (min-width: 1024px) {
-  .ui-rtable.rtable--lg .ui-rtable .rtable__table { display: table; }
-  .ui-rtable.rtable--lg .ui-rtable .rtable__cards { display: none; }
+  .ui-rtable.rtable--lg .rtable__table { display: table; }
+  .ui-rtable.rtable--lg .rtable__cards { display: none; }
 }
