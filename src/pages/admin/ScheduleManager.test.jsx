@@ -79,4 +79,12 @@ describe('ScheduleManager', () => {
     fireEvent.click(table(container).getByText('저장'))
     await waitFor(() => expect(window.alert).toHaveBeenCalledWith('저장 실패'))
   })
+
+  it('shows server auth message when delete is unauthorized', async () => {
+    axios.delete.mockRejectedValue({ response: { status: 401, data: { message: '로그인이 필요합니다.' } } })
+    const { container } = render(<ScheduleManager />)
+    await screen.findAllByText('중간고사')
+    fireEvent.click(table(container).getByText('삭제'))
+    await waitFor(() => expect(window.alert).toHaveBeenCalledWith('로그인이 필요합니다.'))
+  })
 })

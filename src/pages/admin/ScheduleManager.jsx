@@ -3,6 +3,9 @@ import axios from 'axios'
 import { Card, Button, ResponsiveTable } from '@/components/ui'
 import './AdminSiteInfo.css'
 
+const authMessage = (err) =>
+  [401, 403].includes(err?.response?.status) ? err.response.data?.message : undefined
+
 const NEW_ID = 'new'
 const EMPTY = { id: NEW_ID, name: '', start: '', end: '' }
 
@@ -51,7 +54,7 @@ function ScheduleManager() {
       await load()
     } catch (err) {
       if (err?.response?.status === 400) setErrors(err.response.data?.errors || {})
-      else alert('저장 실패')
+      else alert(authMessage(err) || '저장 실패')
     } finally {
       setBusy(false)
     }
@@ -63,8 +66,8 @@ function ScheduleManager() {
       await axios.delete(`/api/admin/schedule/${row.id}`)
       if (editing?.id === row.id) setEditing(null)
       await load()
-    } catch {
-      alert('삭제 실패')
+    } catch (err) {
+      alert(authMessage(err) || '삭제 실패')
     }
   }
 

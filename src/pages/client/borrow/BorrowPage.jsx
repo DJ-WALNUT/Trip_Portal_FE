@@ -11,7 +11,7 @@ import './BorrowPage.css'; // 스타일 파일
 
 function BorrowPage() {
   const navigate = useNavigate();
-  const { info } = useSiteInfo();
+  const { info, refresh } = useSiteInfo();
   const rentalEnabled = info['rental.enabled'];
   const returnDays = info['rental.return_days'];
 
@@ -158,7 +158,12 @@ function BorrowPage() {
       }
     } catch (error) {
       console.error("신청 에러:", error);
-      alert("서버 통신 중 오류가 발생했습니다.");
+      if (error?.response?.status === 403 && error.response.data?.message) {
+        alert(error.response.data.message);
+        refresh();
+      } else {
+        alert("서버 통신 중 오류가 발생했습니다.");
+      }
     } finally {
       submittingRef.current = false;
       setSubmitting(false);

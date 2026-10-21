@@ -16,8 +16,8 @@ const SchoolLinks = () => {
   const { info } = useSiteInfo();
   return (
     <nav className="school-links" aria-label="학교 바로가기">
-      {info['links.school'].map(({ label, url }) => (
-        <a key={url} href={url} target="_blank" rel="noreferrer" className="school-chip">{label}</a>
+      {info['links.school'].map(({ label, url }, i) => (
+        <a key={`${i}-${url}`} href={url} target="_blank" rel="noreferrer" className="school-chip">{label}</a>
       ))}
     </nav>
   );

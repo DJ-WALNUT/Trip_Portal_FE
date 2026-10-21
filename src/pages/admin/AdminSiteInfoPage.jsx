@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useSiteInfo } from '@/context/SiteInfoContext'
-import { PageHeader, Card, Field, Toggle, Button, BottomBar, Spinner } from '@/components/ui'
+import { PageHeader, Card, Field, Toggle, Button, BottomBar, Spinner, EmptyState } from '@/components/ui'
 import SchoolLinksEditor from './SchoolLinksEditor'
 import ScheduleManager from './ScheduleManager'
 import './AdminCommon.css'
@@ -21,6 +21,8 @@ const KEYS = [
 const idOf = (key) => `site-info-${key}`
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 const clone = (v) => JSON.parse(JSON.stringify(v))
+const AUTH_MSG = (err) =>
+  [401, 403].includes(err?.response?.status) ? err.response.data?.message : undefined
 const pick = (data) => Object.fromEntries(KEYS.filter((k) => k in data).map((k) => [k, clone(data[k])]))
 
 function AdminSiteInfoPage() {
@@ -31,6 +33,8 @@ function AdminSiteInfoPage() {
   const [errors, setErrors] = useState({})
   const [saving, setSaving] = useState(false)
   const savingRef = useRef(false)
+  const [loadError, setLoadError] = useState(false)
+  const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
     if (localStorage.getItem('adminRole') !== 'master') {
@@ -39,6 +43,7 @@ function AdminSiteInfoPage() {
       return undefined
     }
     let alive = true
+    setLoadError(false)
     axios
       .get('/api/site-info')
       .then((res) => {
@@ -48,12 +53,12 @@ function AdminSiteInfoPage() {
         setDraft(clone(data))
       })
       .catch(() => {
-        if (alive) alert('불러오기 실패')
+        if (alive) setLoadError(true)
       })
     return () => {
       alive = false
     }
-  }, [navigate])
+  }, [navigate, attempt])
 
   const changedKeys = useMemo(
     () => (original && draft ? KEYS.filter((k) => k in original && !same(draft[k], original[k])) : []),
@@ -70,6 +75,17 @@ function AdminSiteInfoPage() {
       el.focus?.()
     }
   }, [errors])
+
+  if (!draft && loadError) {
+    return (
+      <div className="admin-site-info">
+        <PageHeader title="정보 관리" />
+        <EmptyState title="정보를 불러오지 못했습니다.">
+          <Button onClick={() => setAttempt((n) => n + 1)}>다시 시도</Button>
+        </EmptyState>
+      </div>
+    )
+  }
 
   if (!draft) {
     return (
@@ -103,7 +119,7 @@ function AdminSiteInfoPage() {
       refresh()
     } catch (err) {
       if (err?.response?.status === 400) setErrors(err.response.data?.errors || {})
-      else alert('저장 실패')
+      else alert(AUTH_MSG(err) || '저장 실패')
     } finally {
       savingRef.current = false
       setSaving(false)

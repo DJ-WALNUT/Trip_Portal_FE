@@ -106,4 +106,26 @@ describe('AdminSiteInfoPage', () => {
     fireEvent.click(screen.getByLabelText('1번째 링크 삭제'))
     expect(screen.getByText('저장하지 않은 변경 1개')).toBeInTheDocument()
   })
+
+  it('shows in-page error with retry when initial load fails', async () => {
+    axios.get.mockImplementation((url) =>
+      url === '/api/site-info' ? Promise.reject(new Error('x')) : Promise.resolve({ data: [] })
+    )
+    setup()
+    expect(await screen.findByText('정보를 불러오지 못했습니다.')).toBeInTheDocument()
+    expect(window.alert).not.toHaveBeenCalled()
+    axios.get.mockImplementation((url) =>
+      Promise.resolve({ data: url === '/api/site-info' ? { status: 'success', data: structuredClone(SERVER) } : [] })
+    )
+    fireEvent.click(screen.getByText('다시 시도'))
+    expect(await screen.findByLabelText('히어로 제목')).toBeInTheDocument()
+  })
+
+  it('shows server auth message on 401/403 save failure', async () => {
+    axios.put.mockRejectedValue({ response: { status: 403, data: { message: '마스터 권한이 필요합니다.' } } })
+    setup()
+    fireEvent.change(await screen.findByLabelText('히어로 제목'), { target: { value: '바뀜' } })
+    fireEvent.click(screen.getByText('저장'))
+    await waitFor(() => expect(window.alert).toHaveBeenCalledWith('마스터 권한이 필요합니다.'))
+  })
 })

@@ -7,7 +7,7 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import BorrowPage from './BorrowPage'
 import dayjs from '@/lib/dayjs'
-import { setSiteInfo, resetSiteInfo } from '@/test/mockSiteInfo'
+import { setSiteInfo, resetSiteInfo, mockRefresh } from '@/test/mockSiteInfo'
 
 vi.mock('axios')
 vi.mock('@/context/SiteInfoContext', () => import('@/test/mockSiteInfo').then((m) => m.contextModule))
@@ -20,7 +20,7 @@ const ITEMS = [
 ]
 const DEPTS = ['컴퓨터공학과', '전자공학과']
 
-let postResolve
+let postResolve, postReject
 beforeEach(() => {
   vi.clearAllMocks()
   resetSiteInfo()
@@ -28,7 +28,7 @@ beforeEach(() => {
   window.alert = vi.fn()
   axios.get.mockImplementation((url) =>
     Promise.resolve({ data: { status: 'success', data: url === '/api/items' ? ITEMS : DEPTS } }))
-  axios.post.mockImplementation(() => new Promise((res) => { postResolve = res }))
+  axios.post.mockImplementation(() => new Promise((res, rej) => { postResolve = res; postReject = rej }))
 })
 
 function SuccessProbe() {
@@ -151,6 +151,17 @@ describe('BorrowPage wizard', () => {
     fireEvent.click(btn)
     await waitFor(() => expect(screen.getByRole('button', { name: /신청 중|대여 신청하기/ })).toBeDisabled())
     await act(async () => { postResolve({ data: { status: 'fail', message: 'x' } }) })
+  })
+
+  it('403 on submit alerts server message and refreshes site info', async () => {
+    setup(); await toForm(); await fill()
+    fireEvent.click(screen.getByRole('button', { name: /대여 신청하기/ }))
+    axios.post.mockClear()
+    await act(async () => {
+      postReject({ response: { status: 403, data: { status: 'fail', message: '현재 대여 신청을 받지 않습니다.' } } })
+    })
+    expect(window.alert).toHaveBeenCalledWith('현재 대여 신청을 받지 않습니다.')
+    expect(mockRefresh).toHaveBeenCalledTimes(1)
   })
 
   it('guards double submit event via ref', async () => {
