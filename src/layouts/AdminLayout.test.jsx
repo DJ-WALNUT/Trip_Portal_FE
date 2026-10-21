@@ -145,4 +145,14 @@ describe('AdminLayout', () => {
     const desktop = css.slice(css.indexOf('@media (min-width: 1024px)'))
     expect(desktop).toMatch(/\.admin-sidebar\s*\{[^}]*visibility:\s*visible/)
   })
+
+  it('mobile drawer stacks above the fixed bottom bar', () => {
+    const layoutCss = readFileSync(resolve(HERE, 'AdminLayout.css'), 'utf-8')
+    const uiCss = readFileSync(resolve(HERE, '../components/ui/ui.css'), 'utf-8')
+    const zOf = (css, selector) => {
+      const rule = css.match(new RegExp(`^\\s*${selector}\\s*\\{[^}]*\\}`, 'm'))
+      return Number(rule[0].match(/z-index:\s*(\d+)/)[1])
+    }
+    expect(zOf(layoutCss, '\\.admin-drawer')).toBeGreaterThan(zOf(uiCss, '\\.ui-bottombar'))
+  })
 })
