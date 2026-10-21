@@ -49,7 +49,7 @@ function SuccessPage() {
 
         <div className="success-actions">
           <Button as={Link} to="/check" block>신청 확인하기</Button>
-          <Button as={Link} to="/" variant="secondary" block>메인으로 돌아가기</Button>
+          <Button as={Link} to="/" variant="ghost" block>메인으로 돌아가기</Button>
         </div>
       </div>
     </div>

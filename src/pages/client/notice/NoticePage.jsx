@@ -75,9 +75,10 @@ function NoticePage() {
           {isNewNotice(n.date) && <Badge tone="new">NEW</Badge>}
           <Link to={`/notices/${n.id}`} className="board-link">{n.title}</Link>
           {n.files && n.files.length > 0 && (
-            <span className="notice-attach" aria-label={`첨부파일 ${n.files.length}개`}>
+            <span className="notice-attach">
               <Paperclip size={14} aria-hidden="true" />
-              {n.files.length}
+              <span aria-hidden="true">{n.files.length}</span>
+              <span className="ui-sr-only">{`첨부파일 ${n.files.length}개`}</span>
             </span>
           )}
         </span>

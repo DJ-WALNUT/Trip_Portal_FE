@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import dayjs from '../../../lib/dayjs';
+import { getBorrowToneFromBorrowedAt } from '@/lib/borrowStatus';
 import { ResponsiveTable, Button, PageHeader } from '@/components/ui';
 import HandlerModal from './HandlerModal';
 import '../AdminCommon.css';
@@ -69,11 +70,8 @@ function AdminReturnPage() {
     }
   };
 
-  // 대여일이 연체 기준일(4일 전)보다 이전이거나 같으면 연체
-  const isOverdue = (item) => {
-    const rentalDay = dayjs(item.date).tz().startOf('day');
-    return rentalDay.isSame(overdueLimit) || rentalDay.isBefore(overdueLimit);
-  };
+  // 연체 = 대여일 + 4일(기한)의 다음 날부터 (상태 배지와 같은 규칙)
+  const isOverdue = (item) => getBorrowToneFromBorrowedAt('미반납', item.date, todayKST) === 'overdue';
 
   const columns = [
     {
@@ -122,6 +120,7 @@ function AdminReturnPage() {
         columns={columns}
         rows={filteredRentals}
         rowKey={(item, i) => item.id ?? i}
+        rowProps={(item) => (isOverdue(item) ? { 'data-overdue': 'true' } : {})}
         empty="검색 결과가 없거나 미반납 건이 없습니다."
       />
 

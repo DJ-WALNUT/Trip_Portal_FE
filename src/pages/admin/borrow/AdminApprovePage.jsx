@@ -83,8 +83,8 @@ function AdminApprovePage() {
       header: '관리',
       render: (req) => (
         <div className="borrow-actions">
-          <Button size="sm" onClick={() => openApproveModal(req.id)}>승인</Button>
-          <Button size="sm" variant="danger" onClick={() => handleDelete(req.id)}>삭제</Button>
+          <Button onClick={() => openApproveModal(req.id)}>승인</Button>
+          <Button variant="danger" onClick={() => handleDelete(req.id)}>삭제</Button>
         </div>
       ),
     },

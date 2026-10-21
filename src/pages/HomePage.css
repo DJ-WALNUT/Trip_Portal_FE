@@ -295,7 +295,7 @@
 
 /* --- 3. 점검 화면 --- */
 .maintenance-section {
-  padding: var(--space-8) 0;
+  padding-block: var(--space-8);
   display: flex;
   justify-content: center;
   align-items: center;

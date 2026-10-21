@@ -88,9 +88,9 @@ function NoticeDetailPage() {
         <header className="post-header">
           <h1 className="post-title">{notice.title}</h1>
           <div className="post-info">
-            <div className="info-item"><User size={14} aria-hidden="true" /><span className="sr-only">작성자</span> {notice.author}</div>
-            <div className="info-item"><Calendar size={14} aria-hidden="true" /><span className="sr-only">작성일</span> {formatNoticeDate(notice.date)}</div>
-            <div className="info-item"><Eye size={14} aria-hidden="true" /><span className="sr-only">조회수</span> {notice.views}</div>
+            <div className="info-item"><User size={14} aria-hidden="true" /><span className="ui-sr-only">작성자</span> {notice.author}</div>
+            <div className="info-item"><Calendar size={14} aria-hidden="true" /><span className="ui-sr-only">작성일</span> {formatNoticeDate(notice.date)}</div>
+            <div className="info-item"><Eye size={14} aria-hidden="true" /><span className="ui-sr-only">조회수</span> {notice.views}</div>
           </div>
         </header>
 
