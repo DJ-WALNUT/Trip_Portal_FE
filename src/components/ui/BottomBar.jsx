@@ -1,3 +1,3 @@
 export function BottomBar({ children }) {
-  return <div className="bottom-bar">{children}</div>
+  return <div className="ui-bottombar bottom-bar">{children}</div>
 }

@@ -7,6 +7,8 @@ describe('ui components', () => {
   it('Badge renders tone class', () => {
     render(<Badge tone="overdue">미반납</Badge>)
     expect(screen.getByText('미반납').className).toContain('badge--overdue')
+    expect(screen.getByText('미반납').className).toContain('ui-badge')
+    expect(screen.getByText('미반납').classList.contains('badge')).toBe(true)
   })
 
   it('Button defaults to type=button', () => {

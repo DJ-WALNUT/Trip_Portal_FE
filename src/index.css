@@ -111,6 +111,7 @@ button { font-family: inherit; cursor: pointer; }
     width: 100%;
     min-width: 0; 
     margin: 0 auto;
+    padding: 0 1rem;
 }
 
 /* 공통 컨테이너 (페이지별 박스) - 모바일 우선 */
@@ -123,10 +124,6 @@ button { font-family: inherit; cursor: pointer; }
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     box-sizing: border-box;
-}
-
-.content {
-    padding: 0 1rem;
 }
 
 @media (min-width: 768px) {

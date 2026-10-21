@@ -4,7 +4,7 @@ export function ResponsiveTable({ columns, rows, rowKey, empty = null, breakpoin
   const primary = columns.find((c) => c.primary) || columns[0]
   const others = columns.filter((c) => c !== primary)
   return (
-    <div className={`rtable rtable--${breakpoint}`}>
+    <div className={`ui-rtable rtable rtable--${breakpoint}`}>
       <table className="rtable__table">
         <thead>
           <tr>{columns.map((c) => <th key={c.key} scope="col">{c.header}</th>)}</tr>
