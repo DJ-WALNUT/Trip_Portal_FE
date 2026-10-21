@@ -17,3 +17,23 @@
 .borrow-overdue { color: var(--tone-overdue-fg); font-weight: 700; }
 .modal-content[role="dialog"] { text-align: left; }
 .modal-content[role="dialog"] .modal-actions .ui-btn { flex: 1; }
+.stock-add {
+  margin-bottom: var(--space-6); padding: var(--space-4);
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+}
+.stock-add__title { margin: 0 0 var(--space-3); font-size: var(--fs-body); font-weight: 700; color: var(--color-text); }
+.stock-add__form { display: grid; gap: 0 var(--space-4); grid-template-columns: 1fr; align-items: end; }
+.stock-add__form .ui-btn { margin-bottom: var(--space-4); }
+@media (min-width: 1024px) { .stock-add__form { grid-template-columns: repeat(3, 1fr) auto; } }
+.stock-name { display: inline-flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
+.stock-input {
+  width: 96px; min-height: 44px; padding: 0 var(--space-3);
+  border: 1px solid var(--color-border); border-radius: var(--radius-control);
+  background: var(--color-surface); color: var(--color-text); font: inherit;
+}
+.stock-input:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
+.stock-dirty { margin: 0 0 var(--space-3); font-weight: 700; color: var(--color-text); }
+.admin-stock-page tr[data-dirty="true"] > td { background: var(--tone-pending-bg); }
+.admin-stock-page li[data-dirty="true"] { box-shadow: inset 4px 0 0 var(--color-saegil); }
+.stock-save { margin-top: var(--space-4); }

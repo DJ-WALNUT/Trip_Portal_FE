@@ -1,4 +1,4 @@
-export function ResponsiveTable({ columns, rows, rowKey, empty = null, breakpoint = 'md' }) {
+export function ResponsiveTable({ columns, rows, rowKey, empty = null, breakpoint = 'md', rowProps }) {
   if (!rows || rows.length === 0) return <div className="rtable__empty">{empty}</div>
   const cell = (col, row) => (col.render ? col.render(row) : row[col.key])
   const primary = columns.find((c) => c.primary) || columns[0]
@@ -11,7 +11,7 @@ export function ResponsiveTable({ columns, rows, rowKey, empty = null, breakpoin
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={rowKey(row, i)}>
+            <tr key={rowKey(row, i)} {...(rowProps ? rowProps(row) : {})}>
               {columns.map((c) => <td key={c.key}>{cell(c, row)}</td>)}
             </tr>
           ))}
@@ -19,7 +19,7 @@ export function ResponsiveTable({ columns, rows, rowKey, empty = null, breakpoin
       </table>
       <ul className="rtable__cards">
         {rows.map((row, i) => (
-          <li key={rowKey(row, i)}>
+          <li key={rowKey(row, i)} {...(rowProps ? rowProps(row) : {})}>
             <div className="rtable__card-title">{cell(primary, row)}</div>
             <dl className="rtable__card-body">
               {others.map((c) => (
