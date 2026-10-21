@@ -1,6 +1,6 @@
 /* src/components/Header.css */
 
-/* 헤더 전체 틀 (사용자 Header + AdminHeader 공용) */
+/* 헤더 전체 틀 (사용자 Header) */
 .header {
     position: fixed;
     background: linear-gradient(135deg, var(--color-navy-900), var(--color-navy-700));
@@ -276,73 +276,5 @@
 
     .site-header .hamburger-btn {
         display: none;
-    }
-}
-
-/* 모바일 반응형 (768px 이하) */
-/* 관리자 헤더(AdminHeader) 전용 — 삭제 예정 */
-@media (max-width: 920px) {
-    .admin-header .header-content {
-        padding: 0 1.5rem;
-    }
-
-    /* PC 메뉴 숨김 -> 모바일 메뉴로 전환 */
-    .admin-header .main-nav {
-        display: none; 
-        position: absolute;
-        top: 70px; 
-        left: 0;
-        width: 100%;
-        background-color: var(--main-navy);
-        flex-direction: column;
-        padding: 1rem 0;
-        margin: 0;
-        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    }
-
-    /* 관리자 페이지 모바일 메뉴 배경색 오버라이드 */
-    .header.admin-header .main-nav {
-        background-color: #333 !important;
-        border-top: 1px solid #444;
-    }
-
-    .admin-header .hamburger-btn {
-        display: block;
-        margin-left: auto; 
-    }
-
-    .admin-header .main-nav.active {
-        display: flex;
-    }
-
-    .admin-header .main-nav ul {
-        flex-direction: column;
-        gap: 1.5rem;
-        align-items: center;
-        width: 100%;
-    }
-
-    /* --- 모바일 드롭다운 (아코디언) --- */
-    .admin-header .dropdown-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    /* 모바일에서도 우선순위 유지 */
-    .admin-header .main-nav .dropdown-menu {
-        position: static; 
-        transform: none;
-        background-color: rgba(0,0,0,0.2); 
-        width: 100%;
-        box-shadow: none;
-        margin-top: 10px;
-        padding: 0;
-    }
-
-    .admin-header .dropdown-menu a {
-        padding: 15px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 }
