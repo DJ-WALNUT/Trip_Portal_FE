@@ -1,91 +1,40 @@
-.check-header {
-    text-align: center;
-    margin-bottom: 2rem;
+.check-page {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-4) var(--space-16);
+  box-sizing: border-box;
 }
+
+.check-header {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+.check-header h2 { color: var(--color-navy-900); font-size: var(--fs-title); margin: var(--space-2) 0; }
+.check-header p { color: var(--color-text-muted); word-break: keep-all; }
 
 .check-form {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    max-width: 600px;
-    margin: 0 auto 2rem auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 640px;
+  margin: 0 auto var(--space-8);
 }
+.check-form__submit { min-height: 44px; }
 
-.check-form input {
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    flex: 1;
-}
+.check-result { max-width: 640px; margin: 0 auto; }
+.check-result__title { color: var(--color-navy-900); font-size: var(--fs-sub); margin: 0; }
+.check-result__sub { color: var(--color-text-muted); margin: var(--space-1) 0 var(--space-4); }
 
-.check-form button {
-    width: auto;
-    padding: 0 2rem;
-    white-space: nowrap;
-}
+.check-records { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.check-record__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.check-record__items { color: var(--color-navy-900); font-size: var(--fs-sub); word-break: keep-all; }
+.check-record__meta { margin: var(--space-3) 0 0; display: grid; gap: var(--space-2); }
+.check-record__meta div { display: flex; justify-content: space-between; gap: var(--space-3); font-size: var(--fs-body); }
+.check-record__meta dt { color: var(--color-text-muted); }
+.check-record__meta dd { margin: 0; color: var(--color-text); }
 
-.divider {
-    border: 0;
-    height: 1px;
-    background: #eee;
-    margin: 2rem 0;
-}
-
-/* 결과 메시지 */
-.message {
-    padding: 1rem;
-    border-radius: 8px;
-    text-align: center;
-    margin-top: 1rem;
-}
-.message.error { background-color: #fce8e6; color: #d93025; }
-.message.info { background-color: #e8f0fe; color: #1a73e8; }
-
-/* 사용자 정보 박스 */
-.user-info-box {
-    background-color: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    border-left: 5px solid var(--main-navy);
-}
-
-/* 테이블 스타일 */
-.table-responsive {
-    overflow-x: auto;
-}
-
-.history-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 500px; /* 모바일에서 너무 찌그러지지 않게 */
-}
-
-.history-table th, .history-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-
-.history-table th {
-    background-color: #f1f3f5;
-    color: #495057;
-    font-weight: 600;
-}
-
-/* 상태 뱃지 */
-.status-badge {
-    padding: 0.3rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: bold;
-}
-.status-pending { background-color: #fff3cd; color: #856404; } /* 신청 (노랑) */
-.status-warning { background-color: #fce8e6; color: #d93025; } /* 미반납 (빨강) */
-.status-success { background-color: #d4edda; color: #155724; } /* 반납완료 (초록) */
-
-/* 모바일 대응 */
-@media (max-width: 768px) {
-    .check-form { flex-direction: column; }
-    .check-form button { width: 100%; padding: 0.8rem; }
+@media (min-width: 768px) {
+  .check-page { padding-inline: var(--space-6); }
+  .check-form { flex-direction: row; align-items: flex-end; gap: var(--space-3); }
+  .check-form .ui-field { flex: 1; margin-bottom: 0; }
+  .check-form__submit { flex: none; padding-inline: var(--space-8); }
 }
