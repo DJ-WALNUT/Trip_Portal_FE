@@ -6,6 +6,7 @@ export const ADMIN_NAV = [
   {
     group: '콘텐츠',
     items: [
+      { to: '/admin/site-info', label: '정보 관리', icon: 'settings', masterOnly: true },
       { to: '/admin/notices', label: '공지사항', icon: 'megaphone' },
       { to: '/admin/instagram', label: '인스타 관리', icon: 'camera', masterOnly: true },
       { to: '/admin/teaser', label: '티저 이벤트', icon: 'sparkle', masterOnly: true },

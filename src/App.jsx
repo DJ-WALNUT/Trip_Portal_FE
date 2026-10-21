@@ -33,6 +33,7 @@ import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminNoticeListPage from './pages/admin/AdminNoticeListPage';
 import AdminNoticeWritePage from './pages/admin/AdminNoticeWritePage';
 import AdminInstagramPage from './pages/admin/AdminInstagramPage';
+import AdminSiteInfoPage from './pages/admin/AdminSiteInfoPage';
 import AdminApprovePage from './pages/admin/borrow/AdminApprovePage';
 import AdminReturnPage from './pages/admin/borrow/AdminReturnPage';
 import AdminStockPage from './pages/admin/borrow/AdminStockPage';
@@ -139,6 +140,7 @@ function App() {
               <Route path="/admin/notices/write" element={<AdminNoticeWritePage />} />
               <Route path="/admin/notices/edit/:id" element={<AdminNoticeWritePage />} />
               <Route path="/admin/instagram" element={<AdminInstagramPage />} />
+              <Route path="/admin/site-info" element={<AdminSiteInfoPage />} />
               <Route path="/admin/borrow/approve" element={<AdminApprovePage />} />
               <Route path="/admin/borrow/return" element={<AdminReturnPage />} />
               <Route path="/admin/borrow/stock" element={<AdminStockPage />} />
