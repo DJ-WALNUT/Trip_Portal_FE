@@ -1,0 +1,144 @@
+/* 약관/크레딧 페이지 공통 (루트 클래스 하위로 스코프) */
+.terms-page,
+.credits-page,
+.refusal-page {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: var(--space-4) var(--space-4) var(--space-12);
+}
+@media (min-width: 768px) {
+  .terms-page,
+  .credits-page,
+  .refusal-page { padding-inline: var(--space-6); }
+}
+
+/* 장문 읽기 폭 */
+.terms-page__body {
+  max-width: 720px;
+  margin-inline: auto;
+  color: var(--gray-600);
+  font-size: var(--fs-body);
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.terms-page__body h3 {
+  margin: var(--space-8) 0 var(--space-3);
+  font-size: var(--fs-sub);
+  font-weight: 700;
+  color: var(--color-navy-900);
+  padding-left: var(--space-3);
+  border-left: 4px solid var(--color-saegil);
+}
+.terms-page__body p { margin: 0 0 var(--space-3); }
+.terms-page__body li { margin: 0 0 var(--space-1) var(--space-5); }
+.terms-page__body--disc li { list-style-type: disc; }
+.terms-page__body strong { color: var(--gray-800); }
+
+/* 이메일 무단수집 거부 */
+.refusal-page__main {
+  max-width: 800px;
+  margin-inline: auto;
+  text-align: center;
+}
+.refusal-page__icon { display: inline-flex; color: var(--color-navy-700); margin-bottom: var(--space-3); }
+.refusal-page__lead {
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin: 0 0 var(--space-6);
+  word-break: keep-all;
+}
+.refusal-page__law {
+  text-align: left;
+  background: var(--gray-50);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+}
+.refusal-page__law-title {
+  color: var(--color-navy-900);
+  font-weight: 700;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px dashed var(--gray-300);
+  word-break: keep-all;
+}
+.refusal-page__law ol { margin: 0; padding-left: var(--space-5); }
+.refusal-page__law li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--gray-600);
+  margin-bottom: var(--space-2);
+  word-break: keep-all;
+}
+.refusal-page__date { margin-top: var(--space-6); color: var(--gray-500); font-size: 14px; }
+
+/* 크레딧 */
+.credits-page__hero {
+  text-align: center;
+  padding: var(--space-8) 0;
+  border-bottom: 1px dashed var(--color-border);
+  margin-bottom: var(--space-8);
+}
+.credits-page__hero-title {
+  margin: 0 0 var(--space-3);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-navy-900);
+}
+.credits-page__hero-sub { color: var(--color-navy-900); margin: 0 0 var(--space-3); font-size: var(--fs-sub); }
+.credits-page__hero-desc { max-width: 600px; margin: 0 auto; color: var(--gray-600); line-height: 1.6; word-break: keep-all; }
+.credits-page__members {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-12);
+}
+@media (min-width: 768px) { .credits-page__members { grid-template-columns: repeat(2, 1fr); } }
+.credits-page__member {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+.credits-page__icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--gray-100);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--space-2);
+}
+.credits-page__role { font-size: 13px; font-weight: 700; color: var(--color-saegil); text-transform: uppercase; letter-spacing: 1px; }
+.credits-page__name { margin: 0; font-size: var(--fs-sub); color: var(--color-navy-900); }
+.credits-page__desc { margin: 0; font-size: 14px; color: var(--gray-500); white-space: pre-wrap; word-break: keep-all; line-height: 1.5; }
+.credits-page__tech { margin-bottom: var(--space-12); }
+.credits-page__tech-heading { text-align: center; color: var(--gray-500); margin: 0 0 var(--space-6); text-transform: uppercase; font-size: 13px; letter-spacing: 2px; }
+.credits-page__tech-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-6); }
+@media (min-width: 768px) { .credits-page__tech-grid { grid-template-columns: repeat(3, 1fr); } }
+.credits-page__tech-cat { text-align: center; }
+.credits-page__tech-title { display: flex; align-items: center; justify-content: center; gap: var(--space-2); font-weight: 700; color: var(--gray-600); margin-bottom: var(--space-3); }
+.credits-page__tag {
+  display: inline-block; margin: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--gray-100); border: 1px solid var(--color-border);
+  color: var(--color-navy-900); font-size: 14px; font-weight: 600;
+}
+.credits-page__links { display: flex; flex-direction: column; gap: var(--space-3); padding-bottom: var(--space-8); }
+@media (min-width: 768px) { .credits-page__links { flex-direction: row; justify-content: center; } }
+.credits-page__link {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 44px; padding: var(--space-3) var(--space-6);
+  background: var(--color-navy-900); color: #fff;
+  border-radius: var(--radius-pill); font-weight: 700; text-decoration: none;
+  box-shadow: var(--shadow-md); transition: background .2s;
+}
+.credits-page__link:hover { background: var(--color-navy-700); }
+.credits-page__copy { text-align: center; color: var(--gray-400); font-size: 13px; margin: 0; }

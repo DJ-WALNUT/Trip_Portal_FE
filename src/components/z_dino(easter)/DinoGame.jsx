@@ -40,6 +40,7 @@ const DinoGame = ({ isOpen, onClose }) => {
   const containerRef = useRef(null);
   const dinoRef = useRef(null);
   const obstacleRef = useRef(null);
+  const loopRef = useRef(null);
 
   // 물리 엔진 상태 변수
   const gameState = useRef({
@@ -85,6 +86,23 @@ const DinoGame = ({ isOpen, onClose }) => {
       gameState.current.isJumping = true;
       gameState.current.dinoVelocity = JUMP_STRENGTH;
     }
+  }, []);
+
+  // 게임 오버 처리
+  const handleGameOver = useCallback(() => {
+    setIsGameOver(true);
+    cancelAnimationFrame(requestRef.current);
+    
+    const finalScore = Math.floor(gameState.current.score);
+    setScore(finalScore);
+
+    setHighScore(prev => {
+      if (finalScore > prev) {
+        localStorage.setItem(STORAGE_KEY, encryptScore(finalScore));
+        return finalScore;
+      }
+      return prev;
+    });
   }, []);
 
   // === [핵심] 게임 루프 (60FPS) ===
@@ -171,8 +189,12 @@ const DinoGame = ({ isOpen, onClose }) => {
       }
     }
 
-    requestRef.current = requestAnimationFrame(gameLoop);
-  }, [isPlaying, isGameOver, score]);
+    requestRef.current = requestAnimationFrame(loopRef.current);
+  }, [isPlaying, isGameOver, score, handleGameOver]);
+
+  useEffect(() => {
+    loopRef.current = gameLoop;
+  }, [gameLoop]);
 
   // 루프 실행기
   useEffect(() => {
@@ -182,27 +204,14 @@ const DinoGame = ({ isOpen, onClose }) => {
     return () => cancelAnimationFrame(requestRef.current);
   }, [isPlaying, isGameOver, gameLoop]);
 
-  // 게임 오버 처리
-  const handleGameOver = () => {
-    setIsGameOver(true);
-    cancelAnimationFrame(requestRef.current);
-    
-    const finalScore = Math.floor(gameState.current.score);
-    setScore(finalScore);
-
-    setHighScore(prev => {
-      if (finalScore > prev) {
-        localStorage.setItem(STORAGE_KEY, encryptScore(finalScore));
-        return finalScore;
-      }
-      return prev;
-    });
-  };
-
   // 키보드 컨트롤
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!isOpen) return;
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
       if (e.code === 'Space' || e.code === 'ArrowUp') {
         e.preventDefault();
         if (!isPlaying) startGame();
@@ -212,7 +221,7 @@ const DinoGame = ({ isOpen, onClose }) => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isPlaying, isGameOver, jump, startGame]);
+  }, [isOpen, isPlaying, isGameOver, jump, startGame, onClose]);
 
   if (!isOpen) return null;
 
@@ -224,7 +233,7 @@ const DinoGame = ({ isOpen, onClose }) => {
             <span className="badge">이스터에그</span>
             <h3>달려라 엔지니!</h3>
           </div>
-          <button className="close-btn" onClick={onClose}>
+          <button type="button" className="close-btn" aria-label="닫기" onClick={onClose}>
             <X size={24} />
           </button>
         </div>
@@ -268,7 +277,7 @@ const DinoGame = ({ isOpen, onClose }) => {
               ref={obstacleRef}
               className="obstacle"
             >
-              <Bug size={34} color="#e74c3c" strokeWidth={2.5} />
+              <Bug size={34} color="var(--tone-overdue-fg)" strokeWidth={2.5} />
             </div>
           )}
         </div>
