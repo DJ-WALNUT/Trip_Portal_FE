@@ -32,7 +32,12 @@ const DinoGame = ({ isOpen, onClose }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
+  const [highScore, setHighScore] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? decryptScore(saved) : 0;
+    } catch { return 0; }
+  });
   const [dinoSprite, setDinoSprite] = useState(DINO_RUN_1);
 
   // === Refs (게임 루프 내부 변수 - 렌더링 유발 X) ===
@@ -53,12 +58,6 @@ const DinoGame = ({ isOpen, onClose }) => {
     score: 0,           // 내부 점수 (소수점 포함)
     tick: 0             // 애니메이션 프레임 카운터
   });
-
-  // 초기 로드
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) setHighScore(decryptScore(saved));
-  }, []);
 
   // 게임 시작/재시작
   const startGame = useCallback(() => {
