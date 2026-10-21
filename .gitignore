@@ -30,3 +30,7 @@ env/
 *.njsproj
 *.sln
 *.sw?
+
+# Local tooling
+.superpowers/
+tools/local-backend/.venv/
