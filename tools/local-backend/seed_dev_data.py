@@ -5,6 +5,7 @@ BE 경로 기본값은 프론트 저장소 루트 기준 ../Trip_Portal_BE (어�
 BE 저장소의 data/ 폴더(git 무시 대상)에만 파일을 만든다.
 """
 import argparse
+import os
 import sqlite3
 import sys
 from datetime import datetime, timedelta, timezone
@@ -121,23 +122,41 @@ def main():
     existing = [f for f in FILES if (data / f).exists()]
     if existing and not args.force:
         sys.exit(f"이미 존재하는 파일: {', '.join(existing)}\n덮어쓰려면 --force 를 사용하세요.")
-    for f in existing:
-        (data / f).unlink()
 
-    stock().to_excel(data / "stuff_ongoing.xlsx", index=False)
-    borrow_log().to_excel(data / "borrow_log.xlsx", index=False)
-    pd.DataFrame({"학과명": ["컴퓨터공학과", "전자공학과", "기계공학과", "화학공학과", "건축학과", "경영학과"]}
-                 ).to_excel(data / "major.xlsx", index=False)
-    pd.DataFrame([
-        ("A", "공학관", "공과대학 강의동입니다."),
-        ("B", "학생회관", "학생회실과 동아리방이 있는 건물입니다."),
-    ], columns=["building_id", "building_name", "description"]).to_excel(data / "building_info.xlsx", index=False)
-    pd.DataFrame([
-        ("A", "공학관 열람실", "공학관 2층", "조용히 공부할 수 있는 열람실입니다.", ""),
-        ("B", "학생회실", "학생회관 1층", "물품 대여를 진행하는 학생회실입니다.", ""),
-    ], columns=["building_id", "facility_name", "location", "description", "image_file"]
-    ).to_excel(data / "facility_info.xlsx", index=False)
-    sqlite_seed(data / "database.db")
+    # 1) 아무것도 지우기 전에, 기존 파일을 모두 교체할 수 있는지 확인한다(잠겨 있으면 이름 변경이 실패).
+    for f in existing:
+        src, probe = data / f, data / (f + ".probe")
+        try:
+            os.replace(src, probe)
+            os.replace(probe, src)
+        except OSError as e:
+            if probe.exists() and not src.exists():
+                os.replace(probe, src)
+            sys.exit(f"{f} 을(를) 교체할 수 없습니다 ({e}).\n백엔드(app.py)를 먼저 종료하세요. 아무 파일도 변경하지 않았습니다.")
+
+    # 2) 같은 폴더의 임시 이름으로 모두 만든 뒤 os.replace 로 한 번에 제자리에 교체한다.
+    tmp = {f: data / (f + ".tmp" + Path(f).suffix) for f in FILES}
+    try:
+        stock().to_excel(tmp["stuff_ongoing.xlsx"], index=False)
+        borrow_log().to_excel(tmp["borrow_log.xlsx"], index=False)
+        pd.DataFrame({"학과명": ["컴퓨터공학과", "전자공학과", "기계공학과", "화학공학과", "건축학과", "경영학과"]}
+                     ).to_excel(tmp["major.xlsx"], index=False)
+        pd.DataFrame([
+            ("A", "공학관", "공과대학 강의동입니다."),
+            ("B", "학생회관", "학생회실과 동아리방이 있는 건물입니다."),
+        ], columns=["building_id", "building_name", "description"]).to_excel(tmp["building_info.xlsx"], index=False)
+        pd.DataFrame([
+            ("A", "공학관 열람실", "공학관 2층", "조용히 공부할 수 있는 열람실입니다.", ""),
+            ("B", "학생회실", "학생회관 1층", "물품 대여를 진행하는 학생회실입니다.", ""),
+        ], columns=["building_id", "facility_name", "location", "description", "image_file"]
+        ).to_excel(tmp["facility_info.xlsx"], index=False)
+        sqlite_seed(tmp["database.db"])
+        for f in FILES:
+            os.replace(tmp[f], data / f)
+    finally:
+        for t in tmp.values():
+            if t.exists():
+                t.unlink()
     print(f"시드 완료: {data}")
 
 
