@@ -11,6 +11,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from './components/ProtectedRoute';
+import { SiteInfoProvider } from './context/SiteInfoContext';
 
 import HomePage from './pages/HomePage';
 import NoticePage from './pages/client/notice/NoticePage';
@@ -101,6 +102,7 @@ function App() {
 
   return (
     <Router>
+      <SiteInfoProvider>
       <ScrollToTop />
       <DinoGame isOpen={showGame} onClose={() => setShowGame(false)} />
       <div className="wrapper">
@@ -150,6 +152,7 @@ function App() {
 
         <SiteFooter onClick={handleMobileEasterEgg} />
       </div>
+      </SiteInfoProvider>
     </Router>
   );
 }
