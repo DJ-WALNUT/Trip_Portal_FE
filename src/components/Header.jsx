@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown, Megaphone, Package, Map, Network, GraduationCap, ExternalLink } from 'lucide-react';
-import { RENTAL_ENABLED } from '../config/features';
+import { useSiteInfo } from '@/context/SiteInfoContext';
 import './Header.css';
 
 function Header() {
+  const { info } = useSiteInfo();
+  const external = info['links.external'];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); //드롭다운 상태
 
@@ -101,7 +103,7 @@ function Header() {
                 <Package size={18} aria-hidden="true" />대여사업 <ChevronDown size={16} className="arrow" aria-hidden="true" />
               </a>
               <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
-                {RENTAL_ENABLED ? (
+                {info['rental.enabled'] ? (
                   <li><Link to="/borrow" onClick={closeMenu}>대여 신청</Link></li>
                 ) : (
                   <li>
@@ -123,8 +125,8 @@ function Header() {
             <li><Link to="/organ" onClick={closeMenu}><Network size={18} aria-hidden="true" />조직도</Link></li>
             <li><Link to="/departments" onClick={closeMenu}><GraduationCap size={18} aria-hidden="true" />단과대 및 학과</Link></li>
             <li>
-              <a href="https://2025saegil.cukeng.kr" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
-                <ExternalLink size={18} aria-hidden="true" />2025 새길
+              <a href={external.url} target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
+                <ExternalLink size={18} aria-hidden="true" />{external.label}
               </a>
             </li>
           </ul>

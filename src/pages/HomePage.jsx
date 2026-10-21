@@ -8,24 +8,20 @@ import DomeGallery from '../components/DomeGallery';
 import { Card, Badge, Button } from '@/components/ui';
 import LucianIcon from '@/components/icons/LucianIcon';
 import { isNewNotice } from '@/lib/notice';
-import { RENTAL_ENABLED } from '@/config/features';
+import { useSiteInfo } from '@/context/SiteInfoContext';
+import MultilineText from '@/components/MultilineText';
 import './HomePage.css';
 
-const SCHOOL_LINKS = [
-  { href: 'https://www.catholic.ac.kr', label: '학교 홈페이지' },
-  { href: 'https://www.catholic.ac.kr/ko/support/calendar2024_list.do', label: '학사일정' },
-  { href: 'https://uportal.catholic.ac.kr', label: '트리니티' },
-  { href: 'https://e-cyber.catholic.ac.kr', label: '사이버캠퍼스' },
-  { href: 'https://www.catholic.ac.kr/ko/support/absence_notification.do', label: '공결허가원' },
-];
-
-const SchoolLinks = () => (
-  <nav className="school-links" aria-label="학교 바로가기">
-    {SCHOOL_LINKS.map(({ href, label }) => (
-      <a key={href} href={href} target="_blank" rel="noreferrer" className="school-chip">{label}</a>
-    ))}
-  </nav>
-);
+const SchoolLinks = () => {
+  const { info } = useSiteInfo();
+  return (
+    <nav className="school-links" aria-label="학교 바로가기">
+      {info['links.school'].map(({ label, url }) => (
+        <a key={url} href={url} target="_blank" rel="noreferrer" className="school-chip">{label}</a>
+      ))}
+    </nav>
+  );
+};
 
 const BASE_URL = import.meta.env.PROD ? 'https://trip-api.cukeng.kr' : '';
 const getFullImgUrl = (url) => {
@@ -92,6 +88,7 @@ const calculateDDay = (scheduleList) => {
 };
 
 function HomePage() {
+  const { info: siteInfo } = useSiteInfo();
   // --- 1. 상태 관리 ---
   const [notices, setNotices] = useState([]); // 공지사항
   const [instaPosts, setInstaPosts] = useState([]); // 인스타그램
@@ -188,11 +185,10 @@ function HomePage() {
           <span className="maintenance-icon"><LucianIcon name="wrench" size={48} /></span>
           <h2>여정은 지금 점검 중!</h2>
           <p>
-            보다 안정적인 서비스를 위해 <br />서버를 점검하고 있습니다.<br />
-            <strong>매일 05:00 ~ 06:00</strong>은 정기 점검 시간입니다.
+            <MultilineText text={siteInfo['maintenance.notice']} />
           </p>
           <div className="maintenance-info">
-            <p>이용 가능 서비스:<br />학교페이지 바로가기, 조직도 열람,<br />단과대 및 학과 편성</p>
+            <p><MultilineText text={siteInfo['maintenance.available']} /></p>
           </div>
           {/* 점검 중에도 학교 바로가기 링크는 유지 */}
           <SchoolLinks />
@@ -220,11 +216,11 @@ function HomePage() {
         {/* 2. 콘텐츠: 문구 + 바로가기 버튼 */}
         <div className="hero-content">
           <div className="catch-phrase">
-            <p className="hero-sub-text">제4대 공과대학 학생회 [여정]</p>
-            <h1 className="hero-main-title">변화를 새길, 우리의 여정!</h1>
+            <p className="hero-sub-text">{siteInfo['home.hero_sub']}</p>
+            <h1 className="hero-main-title">{siteInfo['home.hero_title']}</h1>
           </div>
           <div className="hero-actions">
-            {RENTAL_ENABLED ? (
+            {siteInfo['rental.enabled'] ? (
               <Button as={Link} to="/borrow" className="hero-action">
                 <LucianIcon name="box" size={28} /><span>대여 신청</span>
               </Button>
@@ -312,7 +308,7 @@ function HomePage() {
                 aria-label="인스타그램 게시물 열기"
               />
               <div className="home-sns-header">
-                <span className="sns-id">@cuk_engineering</span>
+                <span className="sns-id">@{siteInfo['sns.instagram']}</span>
               </div>
               <div className="sns-pagination-control">
                 <button type="button" onClick={handlePrev} className="arrow-btn" aria-label="이전 게시물">

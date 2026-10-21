@@ -35,6 +35,11 @@ describe('getBorrowToneFromBorrowedAt', () => {
     expect(getBorrowToneFromBorrowedAt('미반납', '2026-10-19 09:00:00', today)).toBe('ongoing')
   })
 
+  it('반납 기간 인자를 받으면 그 일수로 기한을 계산한다', () => {
+    expect(getBorrowToneFromBorrowedAt('미반납', '2026-10-11 09:00:00', today, 14)).toBe('ongoing')
+    expect(getBorrowToneFromBorrowedAt('미반납', '2026-10-11 09:00:00', today, 4)).toBe('overdue')
+  })
+
   it('신청·반납완료 상태는 대여일과 무관하게 처리한다', () => {
     expect(getBorrowToneFromBorrowedAt('신청', '2026-10-01 09:00:00', today)).toBe('pending')
     expect(getBorrowToneFromBorrowedAt('반납완료', '2026-10-01 09:00:00', today)).toBe('done')

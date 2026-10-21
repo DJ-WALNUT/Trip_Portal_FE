@@ -5,11 +5,14 @@ import dayjs from '../../../lib/dayjs';
 import { getBorrowToneFromBorrowedAt } from '@/lib/borrowStatus';
 import { ResponsiveTable, Button, PageHeader } from '@/components/ui';
 import HandlerModal from './HandlerModal';
+import { useSiteInfo } from '@/context/SiteInfoContext';
 import '../AdminCommon.css';
 import './AdminBorrow.css';
 
 function AdminReturnPage() {
   const navigate = useNavigate();
+  const { info } = useSiteInfo();
+  const returnDays = info['rental.return_days'];
   const [rentals, setRentals] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
   const [selectedId, setSelectedId] = useState(null);
@@ -18,8 +21,8 @@ function AdminReturnPage() {
 
   // 한국 시간 기준 오늘 00:00:00
   const todayKST = dayjs().tz().startOf('day');
-  // 오늘로부터 4일 전 계산
-  const overdueLimit = todayKST.subtract(4, 'day');
+  // 오늘로부터 반납 기간(일) 전 계산
+  const overdueLimit = todayKST.subtract(returnDays, 'day');
   // 날짜 포맷 함수 (YYYY-MM-DD)
   const formatDate = (dateObj) => {
     return dateObj.format('YYYY-MM-DD');
@@ -70,8 +73,8 @@ function AdminReturnPage() {
     }
   };
 
-  // 연체 = 대여일 + 4일(기한)의 다음 날부터 (상태 배지와 같은 규칙)
-  const isOverdue = (item) => getBorrowToneFromBorrowedAt('미반납', item.date, todayKST) === 'overdue';
+  // 연체 = 대여일 + 반납 기간(기한)의 다음 날부터 (상태 배지와 같은 규칙)
+  const isOverdue = (item) => getBorrowToneFromBorrowedAt('미반납', item.date, todayKST, returnDays) === 'overdue';
 
   const columns = [
     {
@@ -101,7 +104,7 @@ function AdminReturnPage() {
 
       <div className="borrow-dates">
         <div>오늘 날짜: <span>{formatDate(todayKST)}</span></div>
-        <div>반납 기한 만료일 (4일 전): <span className="borrow-dates__due">{formatDate(overdueLimit)}</span></div>
+        <div>반납 기한 만료일 ({returnDays}일 전): <span className="borrow-dates__due">{formatDate(overdueLimit)}</span></div>
       </div>
 
       <div className="admin-search">

@@ -2,9 +2,12 @@ import React from 'react';
 import { useLocation, Navigate, Link } from 'react-router-dom';
 import { Button, Card } from '@/components/ui';
 import LucianIcon from '@/components/icons/LucianIcon';
+import MultilineText from '@/components/MultilineText';
+import { useSiteInfo } from '@/context/SiteInfoContext';
 import './SuccessPage.css';
 
 function SuccessPage() {
+  const { info } = useSiteInfo();
   const location = useLocation();
   // BorrowPage에서 보내준 데이터 받기
   const { items, date, returnDate } = location.state || {};
@@ -25,12 +28,11 @@ function SuccessPage() {
 
         <Card className="success-card">
           <p className="success-guide">
-            <strong>공대방(N507)에 방문하여</strong><br />담당자 확인 후 물품을 수령해주세요!
+            <strong>{info['contact.room']}에 방문하여</strong><br />담당자 확인 후 물품을 수령해주세요!
           </p>
 
           <p className="warning-text">
-            ※ 신청 시각 기준 24시간이 지나면 자동으로 신청이 취소되오니,<br />
-            참고하여 수령해주시길 바랍니다.
+            <MultilineText text={info['rental.cancel_notice']} />
           </p>
 
           <p className="date-info">대여일: {date}</p>
@@ -43,7 +45,7 @@ function SuccessPage() {
           </ul>
 
           <p className="return-info">
-            <strong>{returnDate}</strong> 까지 공대방(N507)으로 반납해주세요.
+            <strong>{returnDate}</strong> 까지 {info['contact.room']}으로 반납해주세요.
           </p>
         </Card>
 
