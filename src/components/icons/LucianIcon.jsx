@@ -15,6 +15,7 @@ import '@/vendor/lucian-icons/history.js'
 import '@/vendor/lucian-icons/home.js'
 import '@/vendor/lucian-icons/calendar.js'
 import '@/vendor/lucian-icons/graduation.js'
+import '@/vendor/lucian-icons/settings.js'
 import { useEffect, useRef } from 'react'
 
 export default function LucianIcon({

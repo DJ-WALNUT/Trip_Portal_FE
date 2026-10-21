@@ -4,14 +4,10 @@ import { MemoryRouter } from 'react-router-dom'
 import axios from 'axios'
 import dayjs from '@/lib/dayjs'
 import HomePage from './HomePage'
+import { setSiteInfo, resetSiteInfo } from '@/test/mockSiteInfo'
 
 vi.mock('axios')
-const flags = vi.hoisted(() => ({ RENTAL_ENABLED: true }))
-vi.mock('@/config/features', () => ({
-  get RENTAL_ENABLED() {
-    return flags.RENTAL_ENABLED
-  },
-}))
+vi.mock('@/context/SiteInfoContext', () => import('@/test/mockSiteInfo').then((m) => m.contextModule))
 vi.mock('@/components/DomeGallery', () => ({ default: () => <div data-testid="dome" /> }))
 vi.mock('@/components/FloatingSNS', () => ({ default: () => null }))
 vi.mock('@/components/icons/LucianIcon', () => ({ default: (p) => <span data-icon={p.name} /> }))
@@ -40,7 +36,7 @@ const SCHOOL = [
 describe('HomePage', () => {
   beforeEach(() => {
     vi.resetAllMocks()
-    flags.RENTAL_ENABLED = true
+    resetSiteInfo()
     axios.get.mockImplementation((url) => {
       if (url === '/api/notices') return Promise.resolve({ data: notices })
       return Promise.resolve({ data: [] })
@@ -72,6 +68,29 @@ describe('HomePage', () => {
     })
   })
 
+  const TWO = [
+    { label: '링크A', url: 'https://a.example.com' },
+    { label: '링크B', url: 'https://b.example.com' },
+  ]
+
+  it('school links come from links.school', async () => {
+    setSiteInfo({ 'links.school': TWO })
+    renderHome()
+    await screen.findByText('오늘 공지')
+    const nav = screen.getByRole('navigation', { name: '학교 바로가기' })
+    expect(within(nav).getAllByRole('link')).toHaveLength(2)
+    expect(within(nav).getByRole('link', { name: '링크B' })).toHaveAttribute('href', 'https://b.example.com')
+  })
+
+  it('hero text and instagram id come from site info', async () => {
+    setSiteInfo({ 'home.hero_title': '새 제목', 'home.hero_sub': '새 부제', 'sns.instagram': 'my.insta' })
+    renderHome()
+    await screen.findByText('오늘 공지')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('새 제목')
+    expect(screen.getByText('새 부제')).toBeInTheDocument()
+    expect(screen.getByText('@my.insta')).toBeInTheDocument()
+  })
+
   it('notice badges', async () => {
     renderHome()
     const pinned = (await screen.findByText('고정 공지')).closest('li')
@@ -92,8 +111,25 @@ describe('HomePage', () => {
     expect(screen.queryByTestId('dome')).not.toBeInTheDocument()
   })
 
+  it('maintenance view uses site info for school links and notice text', async () => {
+    setSiteInfo({
+      'links.school': TWO,
+      'maintenance.notice': '점검 문구1\n점검 문구2',
+      'maintenance.available': '가능 서비스A\n가능 서비스B',
+    })
+    axios.get.mockImplementation((url) =>
+      url === '/api/notices' ? Promise.reject(new Error('down')) : Promise.resolve({ data: [] })
+    )
+    renderHome()
+    await waitFor(() => expect(screen.getByText('여정은 지금 점검 중!')).toBeInTheDocument())
+    const nav = screen.getByRole('navigation', { name: '학교 바로가기' })
+    expect(within(nav).getAllByRole('link')).toHaveLength(2)
+    expect(screen.getByText(/점검 문구1/)).toBeInTheDocument()
+    expect(screen.getByText(/가능 서비스B/)).toBeInTheDocument()
+  })
+
   it('rental disabled: 대여 신청 quick action is not a link and aria-disabled', async () => {
-    flags.RENTAL_ENABLED = false
+    setSiteInfo({ 'rental.enabled': false })
     const { container } = renderHome()
     await screen.findByText('오늘 공지')
     expect(screen.queryByRole('link', { name: /대여 신청/ })).not.toBeInTheDocument()

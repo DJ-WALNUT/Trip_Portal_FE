@@ -1,7 +1,10 @@
 import React from 'react';
+import { useSiteInfo } from '@/context/SiteInfoContext';
+import { instagramUrl } from '@/lib/siteInfo';
 import './FloatingSNS.css';
 
 function FloatingSNS() {
+  const { info } = useSiteInfo();
   return (
     <div className="floating-sns">
       <div className="sns-header" style={{textShadow: '0 0 0'}}>
@@ -13,15 +16,15 @@ function FloatingSNS() {
       </div>
       
       <div className="sns-links">
-        <a href="https://www.instagram.com/cuk.engineering" target="_blank" rel="noopener noreferrer" className="sns-item">
+        <a href={instagramUrl(info['sns.instagram'])} target="_blank" rel="noopener noreferrer" className="sns-item">
           <img src="/images/brand_logo/icon_instagram.png" alt="인스타그램" className="img" />
           <span>인스타</span>
         </a>
-        <a href="https://linktr.ee/cuk_engineering" target="_blank" rel="noopener noreferrer" className="sns-item">
+        <a href={info['sns.linktree']} target="_blank" rel="noopener noreferrer" className="sns-item">
           <img src="/images/brand_logo/icon_linktree.png" alt="링크트리" className="img" />
           <span>링크트리</span>
         </a>
-        <a href="https://pf.kakao.com/_xcyDGn" target="_blank" rel="noopener noreferrer" className="sns-item">
+        <a href={info['sns.kakao']} target="_blank" rel="noopener noreferrer" className="sns-item">
           <img src="/images/brand_logo/icon_kakaotalk.png" alt="카카오톡" className="img" />
           <span>카카오톡</span>
         </a>

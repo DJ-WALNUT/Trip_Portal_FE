@@ -99,7 +99,7 @@
 
 .hero-actions .ui-btn.hero-action:hover { background: #fff; border-color: var(--color-saegil); }
 
-/* RENTAL_ENABLED=false: 대여 신청 바로가기 비활성 (회색, 클릭/이동 불가) */
+/* rental.enabled 설정이 꺼진 경우: 대여 신청 바로가기 비활성 (회색, 클릭/이동 불가) */
 .hero-actions .ui-btn.hero-action--disabled,
 .hero-actions .ui-btn.hero-action--disabled:hover {
   background: rgba(240, 240, 240, 0.9);

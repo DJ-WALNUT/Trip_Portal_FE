@@ -5,10 +5,12 @@ import { ResponsiveTable, Badge, Button, PageHeader } from '@/components/ui';
 import { getBorrowToneFromBorrowedAt } from '@/lib/borrowStatus';
 import LucianIcon from '@/components/icons/LucianIcon';
 import '../AdminCommon.css';
+import { useSiteInfo } from '@/context/SiteInfoContext';
 import './AdminBorrow.css';
 
 function AdminLogPage() {
   const navigate = useNavigate();
+  const { info } = useSiteInfo();
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ function AdminLogPage() {
       key: 'status',
       header: '상태',
       render: (log) => (
-        <Badge tone={getBorrowToneFromBorrowedAt(log['대여현황'], log['대여시각'])}>{log['대여현황']}</Badge>
+        <Badge tone={getBorrowToneFromBorrowedAt(log['대여현황'], log['대여시각'], undefined, info['rental.return_days'])}>{log['대여현황']}</Badge>
       ),
     },
     { key: 'borrowed', header: '대여일', render: (log) => log['대여시각'] },

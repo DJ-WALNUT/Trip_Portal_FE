@@ -4,10 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAdmin } from '@/layouts/AdminContext';
 import { ResponsiveTable, Toggle, Card, Badge, PageHeader, Spinner } from '@/components/ui';
 import { getBorrowToneFromBorrowedAt } from '@/lib/borrowStatus';
+import { useSiteInfo } from '@/context/SiteInfoContext';
 import './AdminDashboardPage.css';
 
 function AdminDashboardPage() {
   const navigate = useNavigate();
+  const { info } = useSiteInfo();
   const [stats, setStats] = useState({ today_count: 0, recent_logs: [] });
   const [loading, setLoading] = useState(true);
   const [isSnowfallOn, setIsSnowfallOn] = useState(false);
@@ -81,7 +83,7 @@ function AdminDashboardPage() {
       key: 'status',
       header: '상태',
       render: (log) => (
-        <Badge tone={getBorrowToneFromBorrowedAt(log['대여현황'], log['대여시각'])}>{log['대여현황']}</Badge>
+        <Badge tone={getBorrowToneFromBorrowedAt(log['대여현황'], log['대여시각'], undefined, info['rental.return_days'])}>{log['대여현황']}</Badge>
       ),
     },
   ];

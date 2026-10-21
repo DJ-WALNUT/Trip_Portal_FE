@@ -8,9 +8,11 @@ import {
 } from 'lucide-react';
 import { PageHeader, Card, EmptyState } from '@/components/ui';
 import LucianIcon from '@/components/icons/LucianIcon';
+import { useSiteInfo } from '@/context/SiteInfoContext';
 import './DepartmentPage.css';
 
 const DepartmentPage = () => {
+  const { info } = useSiteInfo();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('All');
 
@@ -29,7 +31,7 @@ const DepartmentPage = () => {
       category: "공학",
       name: "공과대학",
       icon: <Cpu size={18} />,
-      instas: ["cuk.engineering"],
+      instas: [info['sns.instagram']],
       departments: [
         { name: "공과대학 선거관리위원회", id: "cuk_engineering_vote" },
         { name: "데이터사이언스학과", id: "cuk_datascience" },

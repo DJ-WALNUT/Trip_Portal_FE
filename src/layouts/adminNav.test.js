@@ -14,3 +14,10 @@ describe('getAdminNav', () => {
     expect(getAdminNav(null)).toEqual(getAdminNav('sub'))
   })
 })
+
+describe('site-info nav', () => {
+  it('shows 정보 관리 only to master', () => {
+    expect(labels('master')).toContain('정보 관리')
+    expect(labels('sub')).not.toContain('정보 관리')
+  })
+})

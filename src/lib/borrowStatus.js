@@ -16,11 +16,11 @@ export function getBorrowTone(status, dueDate, today = dayjs().tz()) {
   return todayKey > dueKey ? 'overdue' : 'ongoing'
 }
 
-// 관리자 목록용: 기한 = 대여일 + 4일 (백엔드 check_status와 동일 규칙)
-export function getBorrowToneFromBorrowedAt(status, borrowedAt, today) {
+// 관리자 목록용: 기한 = 대여일 + 반납 기간(기본 4일, 백엔드 check_status와 동일 규칙)
+export function getBorrowToneFromBorrowedAt(status, borrowedAt, today = dayjs().tz(), returnDays = BORROW_PERIOD_DAYS) {
   const borrowed = parseSeoul(borrowedAt)
   const dueDate = borrowed
-    ? borrowed.add(BORROW_PERIOD_DAYS, 'day').format('YYYY-MM-DD')
+    ? borrowed.add(returnDays, 'day').format('YYYY-MM-DD')
     : ''
   return getBorrowTone(status, dueDate, today)
 }

@@ -151,7 +151,7 @@
     color: white;
 }
 
-/* 비활성화된 메뉴 항목 (RENTAL_ENABLED=false: 대여 신청 일시 중단) */
+/* 비활성화된 메뉴 항목 (rental.enabled 설정이 꺼진 경우: 대여 신청 일시 중단) */
 .main-nav a.disabled-link,
 .main-nav a.disabled-link:hover {
     background-color: transparent;

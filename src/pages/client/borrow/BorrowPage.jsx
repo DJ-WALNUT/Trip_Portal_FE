@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import dayjs from '../../../lib/dayjs';
-import { Spinner } from '@/components/ui';
+import { Spinner, EmptyState } from '@/components/ui';
+import { useSiteInfo } from '@/context/SiteInfoContext';
 import StepIndicator from './StepIndicator';
 import BorrowItemStep from './BorrowItemStep';
 import BorrowFormStep from './BorrowFormStep';
@@ -10,6 +11,9 @@ import './BorrowPage.css'; // 스타일 파일
 
 function BorrowPage() {
   const navigate = useNavigate();
+  const { info, refresh } = useSiteInfo();
+  const rentalEnabled = info['rental.enabled'];
+  const returnDays = info['rental.return_days'];
 
   // --- 상태 관리 (State) ---
   const [items, setItems] = useState([]); // 전체 물품 리스트
@@ -34,6 +38,7 @@ function BorrowPage() {
 
   // --- 1. 데이터 가져오기 (API 연동) ---
   useEffect(() => {
+    if (!rentalEnabled) return;
     axios.get('/api/items') // Proxy 덕분에 http://192.168.0.50:5050/api/items 로 요청됨
       .then(response => {
         if(response.data.status === 'success') {
@@ -55,7 +60,7 @@ function BorrowPage() {
         }
       })
       .catch(err => console.error("학과 로드 실패:", err));
-  }, []);
+  }, [rentalEnabled]);
 
   // 2단계에서만 브라우저 뒤로가기(popstate)를 1단계 복귀로 처리한다
   useEffect(() => {
@@ -133,8 +138,8 @@ function BorrowPage() {
       if (response.data.status === 'success') {
         // 1. 한국 시간 기준 오늘(신청일)
         const todayKST = dayjs().tz().startOf('day');
-        // 2. 한국 시간 기준 4일 뒤(반납 예정일)
-        const returnDayKST = todayKST.add(4, 'day');
+        // 2. 한국 시간 기준 반납 기간 뒤(반납 예정일)
+        const returnDayKST = todayKST.add(returnDays, 'day');
         // 3. 날짜 포맷 함수 (YYYY-MM-DD)
         const formatDate = (dObj) => dObj.format('YYYY-MM-DD');
 
@@ -143,7 +148,7 @@ function BorrowPage() {
           state: {
             items: Array.from(cart),
             date: formatDate(todayKST),      // 오늘 날짜
-            returnDate: formatDate(returnDayKST) // 4일 뒤 날짜
+            returnDate: formatDate(returnDayKST) // 반납 예정일
           },
           replace: true
         });
@@ -153,12 +158,19 @@ function BorrowPage() {
       }
     } catch (error) {
       console.error("신청 에러:", error);
-      alert("서버 통신 중 오류가 발생했습니다.");
+      if (error?.response?.status === 403 && error.response.data?.message) {
+        alert(error.response.data.message);
+        refresh();
+      } else {
+        alert("서버 통신 중 오류가 발생했습니다.");
+      }
     } finally {
       submittingRef.current = false;
       setSubmitting(false);
     }
   };
+
+  if (!rentalEnabled) return <div className="borrow-page"><EmptyState title="현재 대여 신청을 받지 않습니다." /></div>;
 
   if (loading) return <div className="borrow-page"><Spinner /></div>;
 

@@ -3,13 +3,9 @@ import { render, screen, within, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import Header from './Header';
+import { setSiteInfo, resetSiteInfo } from '@/test/mockSiteInfo';
 
-const flags = vi.hoisted(() => ({ RENTAL_ENABLED: true }));
-vi.mock('../config/features', () => ({
-  get RENTAL_ENABLED() {
-    return flags.RENTAL_ENABLED;
-  },
-}));
+vi.mock('@/context/SiteInfoContext', () => import('@/test/mockSiteInfo').then((m) => m.contextModule));
 
 const setup = () =>
   render(
@@ -19,6 +15,7 @@ const setup = () =>
   );
 
 describe('Header', () => {
+  afterEach(resetSiteInfo);
 
   it('keeps all menu links', () => {
     setup();
@@ -85,13 +82,18 @@ describe('Header', () => {
     expect(link).toHaveFocus();
   });
 
-  describe('when RENTAL_ENABLED is false', () => {
-    afterEach(() => {
-      flags.RENTAL_ENABLED = true;
-    });
+  it('renders the external link from links.external', () => {
+    setSiteInfo({ 'links.external': { label: '행사 사이트', url: 'https://event.example.com' } });
+    setup();
+    const link = screen.getByRole('link', { name: '행사 사이트' });
+    expect(link).toHaveAttribute('href', 'https://event.example.com');
+    expect(screen.queryByRole('link', { name: '2025 새길' })).toBeNull();
+  });
+
+  describe('when rental.enabled is false', () => {
 
     it('renders 대여 신청 as a disabled, non-navigating item', async () => {
-      flags.RENTAL_ENABLED = false;
+      setSiteInfo({ 'rental.enabled': false });
       const user = userEvent.setup();
       const { container } = setup();
       const item = screen.getByText('대여 신청').closest('a');

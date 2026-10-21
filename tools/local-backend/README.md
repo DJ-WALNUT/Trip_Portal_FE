@@ -46,3 +46,18 @@ $env:VITE_API_TARGET='http://localhost:5000'; npm run dev
 ## 주의
 
 로그 엑셀 다운로드 버튼은 운영 URL이 하드코딩되어 있으니 클릭 금지입니다.
+
+## 정보 관리 기능 로컬 테스트
+
+1. 위 4~5단계대로 백엔드(5000)와 프론트 dev 서버를 띄웁니다. 백엔드는 시작할 때 `db.create_all()`로 `site_settings` 테이블을 만들고 기본값을 채웁니다.
+2. `/admin`에서 마스터 비밀번호(`devmaster`)로 로그인한 뒤 `/admin/site-info`를 열어 설정과 학사일정을 수정합니다. 서브 관리자(`devsub`)는 수정 API가 403입니다.
+3. 값을 저장한 뒤 홈, 푸터, 대여 화면에 반영되는지 확인하고, 확인이 끝나면 `rental.enabled` 등 바꾼 값을 원래대로 되돌립니다. (`seed_dev_data.py --force`는 백엔드를 끈 상태에서만 실행)
+4. 백엔드 테스트는 BE 폴더에서 이 가상환경으로 실행합니다. (`requirements-dev.txt`에 pytest)
+
+```powershell
+cd ../../../Trip_Portal_BE
+pip install -r requirements-dev.txt
+python -m pytest -q
+```
+
+참고: BE `.env`의 비밀번호가 위와 다르면 `ADMIN_PASSWORD`/`SUB_PASSWORD`를 해당 프로세스 환경변수로만 지정해 `python app.py`를 실행할 수 있습니다. (`.env`보다 우선)

@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSiteInfo } from '@/context/SiteInfoContext';
+import MultilineText from '@/components/MultilineText';
 import './Footer.css';
 
 function Footer() {
+  const { info } = useSiteInfo();
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -13,11 +16,10 @@ function Footer() {
           <li><Link to="/credits">Credits</Link></li>
         </ul>
         <p>
-          홈페이지 운영 책임자 : 김세호<br/>
-          &copy; 2026 Catholic University of Korea.<br/>
-          CUK Engineering Student Council <strong>Trip</strong>. All Rights Reserved<br/>
-          14662 경기 부천시 원미구 지봉로 43 가톨릭대학교 니콜스관 N507 공과대학 학생회실<br/>
-          E Mail : cukeng2026@gmail.com
+          홈페이지 운영 책임자 : {info['contact.manager']}<br/>
+          <MultilineText text={info['footer.copyright']} /><br/>
+          {info['contact.address']}<br/>
+          E Mail : {info['contact.email']}
         </p>
       </div>
     </footer>

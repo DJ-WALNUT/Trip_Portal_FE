@@ -6,8 +6,10 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import axios from 'axios'
 import AdminReturnPage from './AdminReturnPage'
+import { setSiteInfo, resetSiteInfo } from '@/test/mockSiteInfo'
 
 vi.mock('axios')
+vi.mock('@/context/SiteInfoContext', () => import('@/test/mockSiteInfo').then((m) => m.contextModule))
 vi.mock('@/components/icons/LucianIcon', () => ({ default: (p) => <span data-icon={p.name} /> }))
 
 const HERE = dirname(fileURLToPath(import.meta.url))
@@ -29,6 +31,16 @@ describe('AdminReturnPage overdue rows', () => {
   afterEach(() => {
     vi.useRealTimers()
     localStorage.clear()
+    resetSiteInfo()
+  })
+
+  it('rental.return_days=10: a rental 5 days old is not overdue and the due-date label follows', async () => {
+    setSiteInfo({ 'rental.return_days': 10 })
+    const { container } = render(<MemoryRouter><AdminReturnPage /></MemoryRouter>)
+    await screen.findAllByText('연체자')
+    expect(container.querySelectorAll('tr[data-overdue="true"]')).toHaveLength(0)
+    expect(screen.getByText(/10일 전/)).toBeInTheDocument()
+    expect(container.querySelector('.borrow-dates__due')).toHaveTextContent('2026-10-11')
   })
 
   it('tints only rows overdue from the day after due (table row and card)', async () => {
