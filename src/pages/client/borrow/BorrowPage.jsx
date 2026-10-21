@@ -139,7 +139,8 @@ function BorrowPage() {
             items: Array.from(cart),
             date: formatDate(todayKST),      // 오늘 날짜
             returnDate: formatDate(returnDayKST) // 4일 뒤 날짜
-          }
+          },
+          replace: true
         });
 
       } else {

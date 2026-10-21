@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import axios from 'axios'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import BorrowPage from './BorrowPage'
 
 vi.mock('axios')
@@ -113,5 +115,23 @@ describe('BorrowPage wizard', () => {
     fireEvent.click(btn)
     await waitFor(() => expect(screen.getByRole('button', { name: /신청 중|대여 신청하기/ })).toBeDisabled())
     await act(async () => { postResolve({ data: { status: 'fail', message: 'x' } }) })
+  })
+
+  it('guards double submit event via ref', async () => {
+    setup(); await toForm(); await fill()
+    const form = screen.getByLabelText('이름').closest('form')
+    fireEvent.submit(form); fireEvent.submit(form)
+    expect(axios.post).toHaveBeenCalledTimes(1)
+    await act(async () => { postResolve({ data: { status: 'fail', message: 'x' } }) })
+  })
+})
+
+describe('BorrowPage.css tokens', () => {
+  it('uses only defined --space-N tokens', () => {
+    const css = readFileSync(resolve('src/pages/client/borrow/BorrowPage.css'), 'utf-8')
+    const tokens = readFileSync(resolve('src/styles/tokens.css'), 'utf-8')
+    const used = [...new Set([...css.matchAll(/var\((--space-\d+)\)/g)].map((m) => m[1]))]
+    expect(used.length).toBeGreaterThan(0)
+    used.forEach((v) => expect(tokens).toContain(v + ':'))
   })
 })
