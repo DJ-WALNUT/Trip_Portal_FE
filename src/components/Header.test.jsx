@@ -1,5 +1,5 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, within, cleanup } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import Header from './Header';
@@ -12,7 +12,6 @@ const setup = () =>
   );
 
 describe('Header', () => {
-  afterEach(cleanup);
 
   it('keeps all menu links', () => {
     setup();

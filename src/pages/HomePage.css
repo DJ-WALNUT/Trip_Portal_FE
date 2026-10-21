@@ -1,13 +1,14 @@
-/* src/pages/HomePage.css */
+/* src/pages/HomePage.css (모바일 우선, min-width 쿼리로 확장) */
 
-/* --- 1. 상단 배너 섹션 --- */
+/* --- 1. 히어로 --- */
 .hero-section {
   position: relative;
-  height: 53vh; /* 공대 감성 가득한 시원한 높이 */
+  min-height: 420px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  border-radius: var(--radius-card);
 }
 
 .hero-background {
@@ -16,323 +17,287 @@
   z-index: 1;
 }
 
-/* 텍스트 가독성을 위한 핵심! */
+/* 텍스트 가독성을 위해 어둡게 덮는다 */
 .hero-dim-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.5) 0%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.5) 100%
+    rgba(0, 31, 63, 0.6) 0%,
+    rgba(0, 31, 63, 0.25) 50%,
+    rgba(0, 31, 63, 0.65) 100%
   );
   z-index: 2;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10; /* 갤러리보다 위로 */
+  width: 100%;
+  max-width: 720px;
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  box-sizing: border-box;
+  pointer-events: none; /* 빈 영역에서는 갤러리 드래그가 가능하도록 */
 }
 
 .catch-phrase {
-  position: relative;
-  font-weight: 600;
-  z-index: 10; /* 갤러리보다 위로 */
-  color: white;
+  color: #fff;
   text-align: center;
-  /* 텍스트 그림자로 가독성 끝판왕 만들기 */
-  text-shadow: 0 0 20px rgb(14, 16, 102), 0 0 15px rgba(59, 223, 245, 0.7);
+  font-weight: 600;
+  text-shadow: 0 1px 12px rgba(0, 31, 63, 0.8);
 }
 
-.hero-main-title {
-  font-size: 4rem;
+.catch-phrase .hero-sub-text { font-size: var(--fs-body); opacity: 0.9; margin: 0 0 var(--space-2); }
+.catch-phrase .hero-main-title {
+  font-size: 1.9rem;
   font-weight: 800;
-  letter-spacing: -2px;
-  margin-top: 10px;
+  letter-spacing: -1px;
+  margin: 0;
+  word-break: keep-all;
 }
 
-.catch-phrase p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 0.5rem; }
-.catch-phrase h1 { font-size: 2.5rem; font-weight: 700; }
+.hero-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  width: 100%;
+  pointer-events: auto;
+}
 
-/* --- 2. 공지사항 섹션 스타일 (NEW) --- */
+.hero-actions .ui-btn.hero-action {
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 84px;
+  padding: var(--space-3) var(--space-2);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--color-navy-900);
+  box-shadow: var(--shadow-md);
+  font-size: 0.9rem;
+}
+
+.hero-actions .ui-btn.hero-action:hover { background: #fff; border-color: var(--color-saegil); }
+
+/* --- 2. 본문 --- */
+.home-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4) 0 var(--space-6);
+  min-width: 0;
+}
+
+/* 학교 바로가기 칩: 모바일은 가로 스크롤 */
+.school-links {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding: var(--space-1) 0;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.school-links::-webkit-scrollbar { display: none; }
+
+.school-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-navy-700);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.school-chip:hover { border-color: var(--color-saegil); background: var(--gray-50); }
+
+/* 공지 | aside */
+.home-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.home-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+/* 공지 카드 */
 .notice-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--light-gray);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
 }
-
-.notice-header h2 {
-    font-size: 1.8rem;
-    color: var(--main-navy);
-    font-weight: 700;
-    margin: 0;
-}
-
+.notice-header h2 { font-size: var(--fs-sub); color: var(--color-navy-900); font-weight: 700; margin: 0; }
 .more-link {
-    font-size: 0.9rem;
-    color: #888;
-    transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
 }
+.more-link:hover { color: var(--color-saegil); }
 
-.more-link:hover {
-    color: var(--accent-blue);
-}
+.notice-list { margin: 0; padding: 0; list-style: none; }
+.notice-item { border-bottom: 1px solid var(--gray-100); min-width: 0; }
+.notice-item:last-child { border-bottom: 0; }
+.notice-empty { padding: var(--space-4) 0; color: var(--color-text-muted); }
 
-/* 좌우 2분할 레이아웃 */
-.notice-content {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 2rem;
-    width: 100%;
+.notice-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  min-width: 0;
+  color: var(--color-text);
+  text-decoration: none;
 }
-
-/* 왼쪽: 공지 리스트 + D-day */
-.notice-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1.5rem;
-    min-width: 0; /* 중요: 그리드 자식이 내용물 때문에 늘어나는 것을 방지 */
-}
-
-.notice-list {
-    margin: 0;
-    padding: 0;
-}
-
-.notice-item {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-width: 0; /* 중요 */
-    
-    padding: .8rem 0;
-    border-bottom: 1px solid #f1f1f1;
-    cursor: pointer;
-    transition: padding-left .2s;
-}
-
-.notice-item a {
-    display: block;
-    width: 100%;
-    min-width: 0; /* 중요: Link 태그가 글자 길이만큼 커지는 것을 방지 */
-    text-decoration: none;
-    overflow: hidden; /* 안전장치 */
-}
-
-.notice-item:hover {
-    padding-left: 0.5rem;
-    color: var(--accent-blue);
-}
-
-.notice-item::before {
-    content: '•';
-    color: var(--main-navy);
-    font-weight: bold;
-    margin-right: 0.8rem;
-    font-size: 1.2rem;
-}
+.notice-link:hover .notice-title { color: var(--color-saegil); }
+.notice-link .ui-badge { flex: 0 0 auto; }
 
 .notice-title {
-    display: block;
-    width: 100%;
-    white-space: nowrap;    /* 줄바꿈 금지 */
-    overflow: hidden;       /* 넘치는 부분 숨김 */
-    text-overflow: ellipsis; /* ... 표시 */
-    font-size: 1.1rem;
-    font-weight: 500;
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--fs-body);
+  font-weight: 500;
 }
 
-/* D-Day 박스 스타일 */
-.d-day-wrapper {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border: 2px solid var(--main-navy); /* 사진의 검은/진한 테두리 반영 */
-    border-radius: var(--border-radius);
-    padding: 1.2rem;
-    background-color: white;
+/* D-Day 카드 */
+.dday-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-sub);
+  color: var(--color-navy-900);
 }
 
-.d-day-item {
-    text-align: center;
-}
-
+.d-day-wrapper { display: flex; justify-content: space-around; align-items: center; }
+.d-day-item { text-align: center; }
 .d-day-badge {
-    display: inline-block;
-    padding: 0.3rem 1rem;
-    color: white;
-    font-weight: 700;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 4px;
+  margin-bottom: var(--space-2);
+  font-size: 0.9rem;
+}
+.d-day-badge.start { background-color: #6c8dbf; } /* 개강 */
+.d-day-badge.end { background-color: #8cc63f; }   /* 종강 */
+.d-day-count { font-size: 1.4rem; font-weight: 800; color: var(--color-navy-900); }
+
+/* 인스타 슬라이더 */
+.insta-card {
+  position: relative;
+  min-height: 280px;
+  aspect-ratio: 3 / 4;
+  max-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4);
+  box-sizing: border-box;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  color: #fff;
+  background-color: #999;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
 }
 
-.d-day-badge.start { background-color: #6c8dbf; } /* 개강 (보라/파랑) */
-.d-day-badge.end { background-color: #8cc63f; }   /* 종강 (연두) */
+/* 카드 전체를 덮는 링크 (컨트롤은 그 위) */
+.insta-link { position: absolute; inset: 0; z-index: 1; }
 
-.d-day-count {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--text-color);
-}
+.sns-header { position: relative; z-index: 2; pointer-events: none; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); }
+.sns-id { font-weight: 700; font-size: var(--fs-body); }
 
-/* 오른쪽: SNS 슬라이더 카드 */
-.notice-right {
-    position: relative;
-    border-radius: var(--border-radius);
-    min-height: 320px; /* 높이 확보 */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1rem;
-    color: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    
-    text-decoration: none; 
-    transition: transform 0.2s, box-shadow 0.2s;
-    background-color: #ddd; /* 이미지 로딩 전 배경색 */
-}
-
-/*.notice-right:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}*/
-
-.sns-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-}
-
-.sns-icon { font-size: 1.5rem; }
-.sns-id { font-weight: 700; font-size: 1.1rem; }
-
-/* 하단 페이지네이션 컨트롤러 */
 .sns-pagination-control {
-    align-self: flex-end;
-    background: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
-    backdrop-filter: blur(4px);
-    padding: 0.1rem 0.7rem;
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    font-weight: 600;
+  position: relative;
+  z-index: 2;
+  align-self: flex-end;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .arrow-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-weight: bold;
-    font-size: 1.1rem;
-    padding: 7px;
-    cursor: pointer;
-    line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
 }
-
-.arrow-btn:hover { color: var(--accent-blue); }
+.arrow-btn:hover { color: var(--color-sky); }
 .page-indicator { min-width: 40px; text-align: center; }
 
-
-/* --- 3. 바로가기 섹션 (기존 유지) --- */
-.shortcut-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-.shortcut-card {
-    background: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px solid var(--light-gray);
-}
-
-.shortcut-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    border-color: var(--accent-blue);
-}
-
-.main-card .icon { font-size: 2.5rem; }
-.main-card h3 { font-size: 1.5rem; color: var(--main-navy); margin-bottom: 0.5rem; }
-.main-card p { color: #666; }
-
-/* 작은 그리드 (외부 링크) */
-.small-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-.small-card { 
-    justify-content: center; 
-    font-weight: 600; 
-    padding: 1.5rem;
-    color: var(--text-color);
-}
-
+/* --- 3. 점검 화면 --- */
 .maintenance-section {
-  padding: 60px 20px;
+  padding: var(--space-8) 0;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 400px;
 }
 
-.maintenance-card {
-  background: #ffffff;
-  border-radius: 15px;
-  padding: 40px;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* 기존 카드들과 통일된 그림자 */
-  max-width: 600px;
-  width: 100%;
-}
-
-.maintenance-icon {
-  font-size: 50px;
-  margin-bottom: 20px;
-  display: block;
-}
-
-.maintenance-card h2 {
-  color: #333;
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-}
-
-.maintenance-card p {
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-
+.maintenance-card { max-width: 600px; width: 100%; padding: var(--space-8) var(--space-5); text-align: center; box-sizing: border-box; }
+.maintenance-icon { display: flex; justify-content: center; margin-bottom: var(--space-5); color: var(--color-navy-700); }
+.maintenance-card h2 { color: var(--color-navy-900); font-size: var(--fs-title); margin: 0 0 var(--space-3); }
+.maintenance-card p { color: var(--color-text-muted); line-height: 1.6; margin: 0 0 var(--space-2); }
 .maintenance-info {
-  margin: 25px 0px;
-  padding: 15px;
-  background-color: #f8f9fa;
-  border-radius: 10px;
+  margin: var(--space-6) 0;
+  padding: var(--space-4);
+  background-color: var(--gray-50);
+  border-radius: var(--radius-control);
   font-size: 0.9rem;
-  color: #888;
+}
+.maintenance-card .school-links { flex-wrap: wrap; justify-content: center; overflow-x: visible; }
+
+/* --- 태블릿 --- */
+@media (min-width: 768px) {
+  .hero-section { min-height: 460px; }
+  .catch-phrase .hero-main-title { font-size: 2.8rem; }
+  .hero-actions .ui-btn.hero-action { flex-direction: row; min-height: 64px; font-size: var(--fs-body); }
+  .school-links { flex-wrap: wrap; overflow-x: visible; }
+  .home-body { padding-top: var(--space-6); gap: var(--space-6); }
+  .home-grid { gap: var(--space-6); }
+  .home-aside { flex-direction: row; }
+  .home-aside > * { flex: 1 1 0; }
 }
 
-/* 모바일 대응 */
-@media (max-width: 768px) {
-    .hero-section {
-        height: 33vh;
-    }
-
-    .notice-content {
-        grid-template-columns: 1fr; /* 세로 배치 */
-    }
-    
-    .notice-right {
-        min-height: 250px;
-        aspect-ratio: 3/4;
-    }
-
-    .catch-phrase h1 { font-size: 1.9rem; }
+/* --- 데스크톱 --- */
+@media (min-width: 1024px) {
+  .hero-section { min-height: 53vh; }
+  .catch-phrase .hero-main-title { font-size: 4rem; letter-spacing: -2px; }
+  .home-grid { grid-template-columns: 1.6fr 1fr; align-items: start; }
+  .home-aside { flex-direction: column; }
 }
