@@ -80,5 +80,34 @@
   .borrow-body { padding-bottom: 0; }
   .borrow-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-4); }
   .borrow-item { align-items: center; text-align: center; padding: var(--space-6) var(--space-4); }
-  .borrow-form { max-width: 560px; }
+  /* 2단계: 데스크톱에서는 카드 한 장으로 묶는다 */
+  .borrow-form {
+    max-width: 640px;
+    margin-inline: auto;
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* 왼쪽: 선택된 물품 / 오른쪽: 신청자 정보 + 버튼 */
+  .borrow-form {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    column-gap: var(--space-8);
+    align-items: start;
+  }
+  .borrow-form > * { grid-column: 2; }
+  .borrow-form > .borrow-cart {
+    grid-column: 1;
+    grid-row: 1 / span 6;
+    margin-bottom: 0;
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-4));
+  }
 }
