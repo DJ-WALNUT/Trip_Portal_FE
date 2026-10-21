@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react'
+import { Search, Check } from 'lucide-react'
 import { Button, BottomBar } from '@/components/ui'
 
 function BorrowItemStep({ categories, selectedCategory, onCategory, searchTerm, onSearch, items, outOfStockItems = [], cart, onToggle, onNext }) {
@@ -17,7 +17,7 @@ function BorrowItemStep({ categories, selectedCategory, onCategory, searchTerm, 
       >
         <span className="borrow-item__name">{name}</span>
         <span className="borrow-item__stock">남은 수량: {out ? '품절' : item['재고현황'] + '개'}</span>
-        {selected && <span className="borrow-item__check" aria-hidden="true">✔</span>}
+        {selected && <span className="borrow-item__check" aria-hidden="true"><Check size={16} /></span>}
       </button>
     )
   }

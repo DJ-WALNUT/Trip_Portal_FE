@@ -105,6 +105,11 @@ main.sphere-main {
   outline: none;
 }
 
+.item__image:focus-visible {
+  outline: 2px solid var(--color-saegil);
+  outline-offset: 2px;
+}
+
 .item__image img {
   width: 100%;
   height: 100%;
