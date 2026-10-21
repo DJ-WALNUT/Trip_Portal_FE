@@ -6,6 +6,7 @@ import AdminTeaserPage from './pages/admin/AdminTeaserPage';
 import DinoGame from './components/z_dino(easter)/DinoGame';
 
 import MainLayout from './layouts/MainLayout';
+import AdminLayout from './layouts/AdminLayout';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -114,9 +115,11 @@ function App() {
             <Route path="/terms/privacy" element={<PrivacyPage />} />
             <Route path="/terms/emailrefusal" element={<EmailRefusalPage />} />
             <Route path="/credits" element={<CreditsPage />} />
+          </Route>
 
-            <Route path="/admin" element={<AdminLoginPage />} />
-            <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<AdminLoginPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<AdminLayout />}>
               <Route path="/admin/teaser" element={<AdminTeaserPage />} />
               <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
               <Route path="/admin/notices" element={<AdminNoticeListPage />} />
