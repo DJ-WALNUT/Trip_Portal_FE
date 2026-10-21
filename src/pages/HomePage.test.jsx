@@ -47,6 +47,16 @@ describe('HomePage', () => {
     })
   })
 
+  it('hero background gallery is inert and hidden from assistive tech', async () => {
+    const { container } = renderHome()
+    await screen.findByText('오늘 공지')
+    const bg = container.querySelector('.hero-background')
+    expect(bg).not.toBeNull()
+    expect(bg).toHaveAttribute('inert')
+    expect(bg).toHaveAttribute('aria-hidden', 'true')
+    expect(within(bg).queryAllByRole('button')).toHaveLength(0)
+  })
+
   it('hero quick actions', async () => {
     renderHome()
     await screen.findByText('오늘 공지')

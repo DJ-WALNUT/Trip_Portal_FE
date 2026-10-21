@@ -205,7 +205,7 @@ function HomePage() {
     <div className="main-page-container">
       <section className="hero-section">
         {/* 1. 배경: Dome Gallery (제스처 적용됨) */}
-        <div className="hero-background">
+        <div className="hero-background" inert aria-hidden="true">
           <DomeGallery
             images={galleryImages.length > 0 ? galleryImages : []}
             segments={39}
