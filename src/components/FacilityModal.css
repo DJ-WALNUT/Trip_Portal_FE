@@ -20,6 +20,37 @@
   animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* 동방: 평면도를 읽을 수 있도록 넓게, 작은 화면에서는 스크롤 */
+.modal-content--wide {
+  max-width: 640px;
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+.modal-media-tabs {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-2) 60px 0 var(--space-3);
+  background: var(--gray-100);
+}
+
+.modal-media-tab {
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--gray-500);
+  cursor: pointer;
+}
+.modal-media-tab[aria-selected="true"] {
+  color: var(--color-navy-900);
+  border-bottom-color: var(--color-saegil);
+}
+.modal-media-tab:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: -2px; }
+
 .modal-content p{
   text-align: left;
   margin: 0;

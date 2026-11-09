@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_레이어_1" data-name="레이어 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 982.59 470.7">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        stroke-width: 5px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-1, .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-5 {
+        font-size: 19.1px;
+      }
+
+      .cls-5, .cls-6, .cls-7, .cls-8 {
+        font-family: GangwonEduPowerExtraBold, GangwonEduPower;
+      }
+
+      .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-3 {
+        stroke-dasharray: 8.01 8.01;
+      }
+
+      .cls-4 {
+        stroke-width: 3px;
+      }
+
+      .cls-9 {
+        fill: #c7b299;
+      }
+
+      .cls-10 {
+        fill: #ccc;
+      }
+
+      .cls-6 {
+        font-size: 26.01px;
+      }
+
+      .cls-7 {
+        font-size: 12px;
+      }
+
+      .cls-8 {
+        font-size: 22.1px;
+      }
+    </style>
+  </defs>
+  <polygon id="_남자화장실" data-name="남자화장실" class="cls-10" points="464.43 54.15 464.43 87.8 360.09 88.2 360.09 2.5 494.43 2.5 494.43 54.15 464.43 54.15"/>
+  <polygon id="_여자화장실" data-name="여자화장실" class="cls-10" points="464.43 54.15 494.43 54.15 494.43 2.5 561.92 2.5 561.92 143.39 433.13 143.39 433.13 87.8 464.43 87.8 464.43 54.15"/>
+  <polygon id="_계단" data-name="계단" class="cls-10" points="104.17 334.11 2.5 435.78 2.57 325.89 41.3 287.15 41.3 268.63 104.7 268.63 104.17 334.11"/>
+  <g id="room">
+    <rect class="cls-9" x="423.26" y="142.8" width="138.45" height="68.33"/>
+    <rect class="cls-9" x="623.96" y="77.89" width="67.27" height="133.83"/>
+    <rect class="cls-9" x="691.22" y="77.89" width="62.65" height="133.83"/>
+    <rect class="cls-9" x="753.87" y="77.89" width="66.65" height="133.83"/>
+    <rect class="cls-9" x="561.92" y="77.89" width="62.03" height="133.83"/>
+    <rect class="cls-9" x="379" y="266.46" width="88.52" height="79.65"/>
+    <rect class="cls-9" x="467.52" y="266.46" width="88.7" height="79.65"/>
+    <rect class="cls-9" x="556.22" y="266.46" width="88.17" height="79.65"/>
+    <rect class="cls-9" x="644.39" y="266.46" width="88.52" height="79.65"/>
+    <rect class="cls-9" x="732.91" y="266.46" width="87.61" height="79.65"/>
+    <rect class="cls-9" x="864.35" y="258.85" width="115.74" height="82.7"/>
+    <polygon class="cls-9" points="980.09 258.85 864.43 258.85 864.43 170.41 947.22 170.41 980.09 202.59 980.09 258.85"/>
+    <polygon class="cls-9" points="948.61 427.72 864.35 427.72 864.35 341.54 980.09 341.54 980.09 399.72 948.61 427.72"/>
+    <polygon class="cls-9" points="281.13 313.8 313.3 346.11 379 346.11 379 266.46 281.13 266.46 281.13 313.8"/>
+    <rect class="cls-9" x="716.52" y="386.93" width="104" height="81.26"/>
+    <rect class="cls-9" x="611.48" y="386.93" width="105.04" height="81.26"/>
+    <rect class="cls-9" x="506.26" y="386.93" width="105.22" height="81.26"/>
+    <polygon class="cls-9" points="506.26 468.2 424 468.2 392.43 436.59 392.43 386.93 506.26 386.93 506.26 468.2"/>
+  </g>
+  <g>
+    <text class="cls-5" transform="translate(567.54 152.06)"><tspan x="0" y="0">동방 2</tspan></text>
+    <text class="cls-5" transform="translate(469.61 186.71)"><tspan x="0" y="0">동방 1</tspan></text>
+    <text class="cls-5" transform="translate(632.19 152.06)"><tspan x="0" y="0">동방 3</tspan></text>
+    <text class="cls-5" transform="translate(697.15 152.06)"><tspan x="0" y="0">동방 4</tspan></text>
+    <text class="cls-5" transform="translate(761.8 152.06)"><tspan x="0" y="0">동방 5</tspan></text>
+    <text class="cls-5" transform="translate(750.73 311.53)"><tspan x="0" y="0">동방 11</tspan></text>
+    <text class="cls-5" transform="translate(740.01 436.2)"><tspan x="0" y="0">동방 15</tspan></text>
+    <text class="cls-5" transform="translate(893.71 308.19)"><tspan x="0" y="0">동방 17</tspan></text>
+    <text class="cls-5" transform="translate(893.71 394.43)"><tspan x="0" y="0">동방 18</tspan></text>
+    <text class="cls-5" transform="translate(893.71 222.94)"><tspan x="0" y="0">동방 16</tspan></text>
+    <text class="cls-5" transform="translate(635.49 436.2)"><tspan x="0" y="0">동방 14</tspan></text>
+    <text class="cls-5" transform="translate(530.36 436.2)"><tspan x="0" y="0">동방 13</tspan></text>
+    <text class="cls-5" transform="translate(420.84 436.2)"><tspan x="0" y="0">동방 12</tspan></text>
+    <text class="cls-5" transform="translate(660.14 311.53)"><tspan x="0" y="0">동방 10</tspan></text>
+    <text class="cls-5" transform="translate(574.91 311.53)"><tspan x="0" y="0">동방 9</tspan></text>
+    <text class="cls-5" transform="translate(486.47 311.53)"><tspan x="0" y="0">동방 8</tspan></text>
+    <text class="cls-5" transform="translate(397.86 311.53)"><tspan x="0" y="0">동방 7</tspan></text>
+    <text class="cls-5" transform="translate(304.67 311.53)"><tspan x="0" y="0">동방 6</tspan></text>
+  </g>
+  <path class="cls-4" d="M851.7,74.98h18.22c0,10.05-8.16,18.22-18.22,18.22h0v-18.22h0Z" transform="translate(1721.6087 168.1739) rotate(-180)"/>
+  <path class="cls-4" d="M833.48,74.98h0c10.05,0,18.22,8.16,18.22,18.22h-18.22v-18.22h0Z"/>
+  <path class="cls-4" d="M882.87,131.8h18.22c0,10.05-8.16,18.22-18.22,18.22h0v-18.22h0Z" transform="translate(751.0652 1032.8913) rotate(-90)"/>
+  <path class="cls-4" d="M882.87,113.59h0c10.05,0,18.22,8.16,18.22,18.22h-18.22v-18.22h0Z" transform="translate(1014.6739 -769.2826) rotate(90)"/>
+  <g id="wall">
+    <polyline class="cls-2" points="433.13 105.8 433.13 87.8 464.43 87.8 464.43 54.15 494.43 54.15 494.43 2.5"/>
+    <polyline class="cls-2" points="561.92 77.89 820.52 77.89 820.52 211.72"/>
+    <polyline class="cls-2" points="820.52 93.2 882.87 93.2 882.87 170.41"/>
+    <polyline class="cls-2" points="108.35 131.67 170.96 194.28 235.13 130.11 300.22 195.2 360.22 135.2 360.22 83.2"/>
+    <g>
+      <line class="cls-2" x1="6.35" y1="233.67" x2="9.18" y2="230.85"/>
+      <line class="cls-3" x1="14.84" y1="225.18" x2="102.69" y2="137.34"/>
+      <line class="cls-2" x1="105.52" y1="134.5" x2="108.35" y2="131.67"/>
+    </g>
+    <polyline class="cls-2" points="2.57 325.89 41.3 287.15 41.3 268.63 6.35 233.67"/>
+    <polyline class="cls-2" points="104.7 268.63 104.17 334.11 2.5 435.78"/>
+    <polyline class="cls-2" points="236.7 268.63 236.7 332.54 170.83 398.41 104.17 334.11"/>
+    <polyline class="cls-2" points="392.43 432.2 335.04 432.2 236.04 333.2"/>
+    <polyline class="cls-2" points="392.43 386.93 392.43 435.85 424 468.2 820.52 468.2 820.52 427.72 949.22 427.72 980.09 396.85 980.09 202.59 947.91 170.41 864.43 170.41"/>
+    <line class="cls-2" x1="820.52" y1="386.93" x2="820.52" y2="427.72"/>
+    <polyline class="cls-2" points="281.13 266.46 281.13 313.93 313.3 346.11 820.52 346.11 820.52 266.46"/>
+    <polyline class="cls-2" points="423.48 211.72 423.48 143.39 561.92 143.39 561.92 2.5 360.09 2.5 360.09 87.02 405.22 87.02 405.22 67.72"/>
+    <line class="cls-2" x1="561.92" y1="143.39" x2="561.92" y2="211.72"/>
+    <line class="cls-2" x1="691.22" y1="77.89" x2="691.22" y2="211.72"/>
+    <line class="cls-2" x1="623.96" y1="211.72" x2="623.96" y2="77.89"/>
+    <line class="cls-1" x1="753.87" y1="211.72" x2="753.87" y2="77.89"/>
+    <line class="cls-1" x1="379" y1="266.46" x2="379" y2="346.11"/>
+    <line class="cls-1" x1="467.52" y1="266.46" x2="467.52" y2="346.11"/>
+    <line class="cls-1" x1="556.22" y1="266.46" x2="556.22" y2="346.11"/>
+    <line class="cls-1" x1="644.39" y1="266.46" x2="644.39" y2="346.11"/>
+    <line class="cls-1" x1="732.91" y1="266.46" x2="732.91" y2="346.11"/>
+    <line class="cls-1" x1="716.52" y1="386.93" x2="716.52" y2="468.2"/>
+    <line class="cls-1" x1="611.48" y1="386.93" x2="611.48" y2="468.2"/>
+    <line class="cls-1" x1="506.26" y1="386.93" x2="506.26" y2="468.2"/>
+    <line class="cls-2" x1="864.35" y1="258.85" x2="980.09" y2="258.85"/>
+    <line class="cls-2" x1="864.35" y1="341.54" x2="980.09" y2="341.54"/>
+  </g>
+  <text class="cls-8" transform="translate(32.99 340.54)"><tspan x="0" y="0">계단</tspan></text>
+  <text class="cls-8" transform="translate(373.37 37.77)"><tspan x="0" y="0">남자화장실</tspan></text>
+  <text class="cls-8" transform="translate(446.63 125.49)"><tspan x="0" y="0">여자화장실</tspan></text>
+  <text class="cls-6" transform="translate(73.14 239.16)"><tspan x="0" y="0">소피이바라관 2층</tspan></text>
+  <text class="cls-7" transform="translate(20.09 208.2) rotate(-45)"><tspan x="0" y="0">스타트업 라운지↑</tspan></text>
+</svg>

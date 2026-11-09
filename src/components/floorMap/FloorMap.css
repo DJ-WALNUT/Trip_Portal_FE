@@ -1,0 +1,111 @@
+/* 동방 평면도 (FacilityModal 안에서 사용) */
+.floor-map {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--gray-100);
+}
+
+.floor-map-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  /* 닫기 버튼(우상단 44px)과 겹치지 않도록 */
+  padding-right: 52px;
+  min-height: 44px;
+}
+
+.floor-map-place {
+  font-weight: 700;
+  color: var(--color-navy-900);
+}
+
+.floor-map-zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-navy-900);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.floor-map-zoom:hover { border-color: var(--color-saegil); }
+.floor-map-zoom:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
+
+.floor-map-canvas {
+  background: var(--color-surface);
+  border-radius: var(--radius-control);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.floor-map-canvas .floor-map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+}
+
+/* SVG가 지정한 웹폰트가 없을 때 바탕체로 떨어지지 않도록 사이트 폰트 사용 */
+.floor-map-canvas .floor-map-svg text {
+  font-family: inherit;
+  font-weight: 800;
+}
+
+/* 대상 외의 방은 흐리게 */
+.floor-map-svg.is-focused .floor-map-rooms > * {
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+/* 대상 동방: 사이트 강조색 + 맥동 테두리 */
+.floor-map-svg.is-focused .floor-map-rooms > .floor-map-target {
+  opacity: 1;
+  fill: var(--color-saegil);
+  stroke: var(--color-navy-900);
+  stroke-width: 4px;
+  animation: floorMapPulse 1.6s ease-in-out infinite;
+}
+
+.floor-map-svg .floor-map-target-label {
+  fill: #fff;
+  paint-order: stroke;
+  stroke: var(--color-navy-900);
+  stroke-width: 3px;
+}
+
+@keyframes floorMapPulse {
+  0%, 100% { stroke-opacity: 1; }
+  50% { stroke-opacity: 0.25; }
+}
+
+.floor-map-caption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.85rem;
+  color: var(--gray-700);
+}
+
+.floor-map-legend {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--color-saegil);
+  border: 2px solid var(--color-navy-900);
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floor-map-svg.is-focused .floor-map-rooms > .floor-map-target { animation: none; }
+  .floor-map-svg.is-focused .floor-map-rooms > * { transition: none; }
+}

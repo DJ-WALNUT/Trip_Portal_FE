@@ -5,7 +5,16 @@ import LucianIcon from '@/components/icons/LucianIcon';
 import axios from 'axios'; // axios 임포트
 import CampusMap from '../../components/CampusMap'; 
 import FacilityModal from '../../components/FacilityModal';
+import { formatLocation } from '../../components/floorMap/floorMaps';
 import './MapPage.css';
+
+// 검색 결과에서 건물마다 바로 보여줄 시설 수 (나머지는 건물 상세에서)
+const MAX_FACILITY_HITS = 5;
+
+const matchesFacility = (f, lowerTerm) =>
+  f.name.toLowerCase().includes(lowerTerm) ||
+  (f.loc && f.loc.toLowerCase().includes(lowerTerm)) ||
+  (f.desc && f.desc.toLowerCase().includes(lowerTerm));
 
 const MapPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -54,19 +63,16 @@ const MapPage = () => {
       // [수정] 대소문자 구분 없이 검색하기 위해 검색어를 소문자로 변환
       const lowerTerm = searchTerm.toLowerCase();
 
-      const results = Object.entries(buildingsData).filter(([, bldg]) => {
-        // 1. 건물 이름 매칭 (예: "니콜스")
-        const isBuildingMatch = bldg.name.toLowerCase().includes(lowerTerm);
-
-        // 2. 시설 이름 또는 **위치(주소)** 매칭 (예: "입학처" or "N201")
-        const isFacilityMatch = bldg.facilities.some(f => 
-          f.name.toLowerCase().includes(lowerTerm) || 
-          (f.loc && f.loc.toLowerCase().includes(lowerTerm)) ||// [추가됨] 여기서 주소(loc)를 검사합니다.
-          (f.desc && f.desc.toLowerCase().includes(lowerTerm))
-        );
-
-        return isBuildingMatch || isFacilityMatch;
-      });
+      // 건물 이름(예: "니콜스") 또는 시설 이름·주소·설명(검색어 포함, 예: "입학처", "N201", "코마방") 매칭.
+      // 시설이 매칭되면 건물 아래에 바로 보여줘서 한 번에 시설 팝업(동방은 평면도)으로 갈 수 있게 한다.
+      const results = Object.entries(buildingsData)
+        .map(([id, bldg]) => ({
+          id,
+          bldg,
+          buildingMatch: bldg.name.toLowerCase().includes(lowerTerm),
+          hits: bldg.facilities.filter((f) => matchesFacility(f, lowerTerm)),
+        }))
+        .filter((r) => r.buildingMatch || r.hits.length > 0);
       return { type: 'search', data: results };
     }
 
@@ -140,11 +146,7 @@ const MapPage = () => {
                   if (displayContent.data.name.toLowerCase().includes(lowerTerm)) return true;
 
                   // 3. 그게 아니라면, 시설 이름이나 주소가 검색어를 포함하는 것만 남김
-                  return (
-                    fac.name.toLowerCase().includes(lowerTerm) || 
-                    (fac.loc && fac.loc.toLowerCase().includes(lowerTerm)) ||
-                    (fac.desc && fac.desc.toLowerCase().includes(lowerTerm))
-                  );
+                  return matchesFacility(fac, lowerTerm);
                 });
 
                 if (filteredFacilities.length > 0) {
@@ -156,7 +158,7 @@ const MapPage = () => {
                       onClick={() => handleFacilityClick(fac)}
                     >
                       <span className="fac-name">{fac.name}</span>
-                      <span className="fac-loc"><MapPin size={14}/> {fac.loc}</span>
+                      <span className="fac-loc"><MapPin size={14}/> {formatLocation(fac.loc)}</span>
                     </button>
                   ));
                 } else {
@@ -171,12 +173,38 @@ const MapPage = () => {
         {displayContent.type === 'search' && (
           <div className="search-results">
             <div className="section-label">검색 결과 ({displayContent.data.length})</div>
-            {displayContent.data.map(([id, bldg]) => (
-              <button type="button" key={id} className="result-item" onClick={() => setSelectedBuildingId(id)}>
-                <span className="bldg-name">{bldg.name}</span>
-                <ArrowRight size={16} />
-              </button>
-            ))}
+            {displayContent.data.map(({ id, bldg, buildingMatch, hits }) => {
+              // 건물명으로 찾은 경우엔 건물 전체를 보려는 의도이므로 시설을 나열하지 않는다
+              const shown = buildingMatch ? [] : hits.slice(0, MAX_FACILITY_HITS);
+              const more = buildingMatch ? 0 : hits.length - shown.length;
+              return (
+                <div key={id} className="result-group">
+                  <button type="button" className="result-item" onClick={() => setSelectedBuildingId(id)}>
+                    <span className="bldg-name">{bldg.name}</span>
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </button>
+                  {shown.length > 0 && (
+                    <ul className="result-facilities">
+                      {shown.map((fac, idx) => (
+                        <li key={idx}>
+                          <button type="button" className="result-facility" onClick={() => handleFacilityClick(fac)}>
+                            <span className="fac-name">{fac.name}</span>
+                            <span className="fac-loc"><MapPin size={14} aria-hidden="true" /> {formatLocation(fac.loc)}</span>
+                          </button>
+                        </li>
+                      ))}
+                      {more > 0 && (
+                        <li>
+                          <button type="button" className="result-more" onClick={() => setSelectedBuildingId(id)}>
+                            {bldg.name}에서 {more}곳 더 보기
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
 

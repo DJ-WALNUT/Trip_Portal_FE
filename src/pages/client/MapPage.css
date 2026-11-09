@@ -197,3 +197,45 @@
 }
 .map-page-container .empty-state h3 { color: var(--gray-700); margin-bottom: var(--space-1); }
 .map-page-container .empty-state-icon { opacity: 0.25; margin: 0 auto var(--space-4); display: block; }
+
+/* 검색 결과: 건물 아래 일치하는 시설 (한 번에 팝업으로) */
+.result-facilities {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-1) 0 var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.result-group .result-item:has(+ .result-facilities) { border-bottom: 0; }
+
+.result-facility,
+.result-more {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-bg);
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+}
+.result-more {
+  justify-content: center;
+  border-style: dashed;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+.result-facility:hover,
+.result-more:hover { border-color: var(--color-saegil); }
+.result-facility:focus-visible,
+.result-more:focus-visible { outline: 2px solid var(--color-saegil); outline-offset: 2px; }
