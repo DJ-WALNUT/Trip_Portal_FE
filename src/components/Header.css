@@ -191,6 +191,18 @@
 
 /* ===== 사용자 Header: 모바일/태블릿 우측 슬라이드 패널 (<1024px) ===== */
 @media (max-width: 1023.98px) {
+    /* 아래로 스크롤하면 위로 숨고, 위로 스크롤하면 내려온다 (data-hidden은 useHideOnScroll) */
+    .site-header {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        will-change: transform;
+    }
+
+    /* 키보드 포커스가 헤더로 들어오면 숨김 해제 */
+    .site-header[data-hidden="true"]:not(:focus-within) {
+        transform: translateY(-100%);
+        box-shadow: none;
+    }
+
     .site-header .main-nav {
         position: fixed;
         top: var(--header-h);
@@ -276,6 +288,10 @@
         opacity: 1;
         pointer-events: auto;
     }
+}
+
+@media (max-width: 1023.98px) and (prefers-reduced-motion: reduce) {
+    .site-header { transition: none; }
 }
 
 /* ===== 사용자 Header: 데스크톱 (>=1024px) ===== */

@@ -90,6 +90,43 @@ describe('Header', () => {
     expect(screen.queryByRole('link', { name: '2025 새길' })).toBeNull();
   });
 
+  describe('hide on scroll (mobile)', () => {
+    const scrollTo = (y) => {
+      Object.defineProperty(window, 'scrollY', { value: y, writable: true, configurable: true });
+      fireEvent.scroll(window);
+    };
+    afterEach(() => scrollTo(0));
+
+    it('hides when scrolling down past the header and shows again when scrolling up', () => {
+      const { container } = setup();
+      const header = container.querySelector('header');
+      expect(header).toHaveAttribute('data-hidden', 'false');
+      scrollTo(300);
+      expect(header).toHaveAttribute('data-hidden', 'true');
+      scrollTo(250);
+      expect(header).toHaveAttribute('data-hidden', 'false');
+    });
+
+    it('stays visible near the top and ignores tiny jitters', () => {
+      const { container } = setup();
+      const header = container.querySelector('header');
+      scrollTo(40);
+      expect(header).toHaveAttribute('data-hidden', 'false');
+      scrollTo(300);
+      scrollTo(297); // 손떨림 수준의 역방향은 무시
+      expect(header).toHaveAttribute('data-hidden', 'true');
+    });
+
+    it('never hides while the mobile menu is open', async () => {
+      const user = userEvent.setup();
+      const { container } = setup();
+      const header = container.querySelector('header');
+      await user.click(screen.getByRole('button', { name: '메뉴 열기' }));
+      scrollTo(400);
+      expect(header).toHaveAttribute('data-hidden', 'false');
+    });
+  });
+
   describe('when rental.enabled is false', () => {
 
     it('renders 대여 신청 as a disabled, non-navigating item', async () => {

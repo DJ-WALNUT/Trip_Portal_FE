@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown, Megaphone, Package, Map, Network, GraduationCap, ExternalLink } from 'lucide-react';
 import { useSiteInfo } from '@/context/SiteInfoContext';
+import { useHideOnScroll } from '@/lib/useHideOnScroll';
 import './Header.css';
 
 function Header() {
@@ -9,6 +10,9 @@ function Header() {
   const external = info['links.external'];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); //드롭다운 상태
+  // 모바일: 아래로 스크롤하면 헤더를 숨기고 위로 스크롤하면 다시 보여준다 (메뉴가 열려 있으면 항상 표시)
+  const scrolledAway = useHideOnScroll();
+  const isHidden = scrolledAway && !isMenuOpen;
 
   // 1. 외부 클릭 감지를 위한 Ref 생성
   const navRef = useRef(null); // 네비게이션 메뉴 감지
@@ -85,7 +89,7 @@ function Header() {
   }, [isMenuOpen, isDropdownOpen]); // 상태가 변할 때마다 이펙트 재실행
 
   return (
-    <header className="header site-header">
+    <header className="header site-header" data-hidden={isHidden}>
       <div className="header-content">
         <Link to="/" className="logo" onClick={closeMenu}>
            {/* ▼▼▼ 로고 이미지 추가 (글자 왼쪽에 배치) ▼▼▼ */}

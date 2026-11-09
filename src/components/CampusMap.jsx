@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../pages/client/MapPage.css'; // 스타일 파일
 import { BUILDINGS, BACKGROUND_ELEMENTS } from './CampusMapData.js';
+import { BUILDINGS_BOX, fitViewBox, padBox, shiftUp } from './campusMapView';
+
+// 건물 영역(+여유)을 화면에 맞출 기준. 지도 칸 크기가 바뀔 때마다 이 영역이 꽉 차도록 viewBox를 다시 잡는다.
+// shiftUp: 지도를 칸 안에서 살짝 위로 올려 상단의 길만 있는 부분을 덜 보이게 한다 (SHIFT_UP_RATIO).
+const FOCUS = shiftUp(padBox(BUILDINGS_BOX));
+const FOCUS_ASPECT = FOCUS.w / FOCUS.h;
 
 const CampusMap = ({ selectedBuilding, onBuildingClick }) => {
+  const wrapperRef = useRef(null);
+  const [viewBox, setViewBox] = useState(() => fitViewBox(FOCUS, FOCUS_ASPECT));
+
+  // 기기 화면비/회전/창 크기와 관계없이 건물 영역이 지도 칸을 최대한 채우도록 맞춘다
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      if (width > 0 && height > 0) setViewBox(fitViewBox(FOCUS, width / height));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const getBuildingClass = (buildingId, colorClass) => {
     const isSelected = selectedBuilding === buildingId;
@@ -10,10 +30,10 @@ const CampusMap = ({ selectedBuilding, onBuildingClick }) => {
   };
 
   return (
-    <div className="map-wrapper">
+    <div className="map-wrapper" ref={wrapperRef}>
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        viewBox="0 0 1114.27 1155.08"
+        viewBox={viewBox}
         className="campus-map-svg"
       >
         <defs>
