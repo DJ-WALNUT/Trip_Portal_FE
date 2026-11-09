@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { X, MapPin, Info } from 'lucide-react';
 import FloorMap from './floorMap/FloorMap';
-import { findClubRoom } from './floorMap/floorMaps';
+import { findMapRoom } from './floorMap/floorMaps';
 import './FacilityModal.css';
 
 const FacilityModal = ({ isOpen, onClose, facility }) => {
   // 배포 환경 도메인
   const BASE_URL = import.meta.env.PROD ? 'https://trip-api.cukeng.kr' : '';
   const open = !!(isOpen && facility);
-  const clubRoom = open ? findClubRoom(facility.loc) : null;
+  const mapRoom = open ? findMapRoom(facility.loc) : null;
   const hasPhoto = !!facility?.imgUrl;
 
-  // 동방은 평면도가 기본, 사진이 있으면 탭으로 전환. 다른 시설을 열면 다시 평면도부터.
+  // 평면도에 있는 곳(동방, 총동연 등)은 평면도가 기본, 사진이 있으면 탭으로 전환. 다른 시설을 열면 다시 평면도부터.
   const [viewState, setViewState] = useState({ facility: null, view: 'map' });
   const view = viewState.facility === facility ? viewState.view : 'map';
   const setView = (next) => setViewState({ facility, view: next });
@@ -25,7 +25,7 @@ const FacilityModal = ({ isOpen, onClose, facility }) => {
 
   if (!open) return null;
 
-  const showMap = clubRoom && (view === 'map' || !hasPhoto);
+  const showMap = mapRoom && (view === 'map' || !hasPhoto);
 
   const photo = (
     <div className="modal-image-container">
@@ -42,7 +42,7 @@ const FacilityModal = ({ isOpen, onClose, facility }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
-        className={`modal-content${clubRoom ? ' modal-content--wide' : ''}`}
+        className={`modal-content${mapRoom ? ' modal-content--wide' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-label={facility.name}
@@ -53,8 +53,8 @@ const FacilityModal = ({ isOpen, onClose, facility }) => {
           <X size={20} aria-hidden="true" />
         </button>
 
-        {/* 동방 + 사진이 있으면: 평면도 / 사진 탭 */}
-        {clubRoom && hasPhoto && (
+        {/* 평면도 + 사진이 있으면: 평면도 / 사진 탭 */}
+        {mapRoom && hasPhoto && (
           <div className="modal-media-tabs" role="tablist" aria-label="보기 전환">
             {[['map', '평면도'], ['photo', '사진']].map(([key, label]) => (
               <button
@@ -71,14 +71,14 @@ const FacilityModal = ({ isOpen, onClose, facility }) => {
           </div>
         )}
 
-        {showMap ? <FloorMap map={clubRoom.map} number={clubRoom.number} /> : photo}
+        {showMap ? <FloorMap map={mapRoom.map} label={mapRoom.label} name={facility.loc} /> : photo}
 
         {/* 텍스트 정보 영역 */}
         <div className="modal-body">
           <div className="modal-title-row">
             <h3>{facility.name}</h3>
             <span className="modal-badge">
-              <MapPin size={14} /> {clubRoom ? `${clubRoom.map.floor} · ${facility.loc}` : facility.loc}
+              <MapPin size={14} /> {mapRoom ? `${mapRoom.map.floor} · ${facility.loc}` : facility.loc}
             </span>
           </div>
 

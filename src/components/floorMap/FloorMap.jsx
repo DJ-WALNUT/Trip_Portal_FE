@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef, useState } from 'react'
 import { ZoomIn, ZoomOut } from 'lucide-react'
-import { parseClubRoomNumber } from './floorMaps'
+import { normalizeLabel } from './floorMaps'
 import './FloorMap.css'
 
 // 좁은 화면에서는 평면도 전체가 너무 작아 라벨을 읽기 어려우므로 확대 상태로 시작한다.
@@ -10,12 +10,11 @@ const startsZoomed = () => typeof window !== 'undefined' && !!window.matchMedia?
 const toRoot = (svg, el) => svg.getScreenCTM().inverse().multiply(el.getScreenCTM())
 
 /**
- * 라벨("동방 N")의 중심점을 기준으로 그 점을 포함하는 방 도형을 찾는다.
+ * 라벨("동방 N", "총동연" 등)의 중심점을 기준으로 그 점을 포함하는 방 도형을 찾는다.
  * 방 도형에는 id가 없어서 라벨 위치로 매칭한다. (회전된 방도 CTM으로 처리)
  */
-function locateRoom(svg, roomGroup, number) {
-  const label = [...svg.querySelectorAll('text')]
-    .find((t) => parseClubRoomNumber(t.textContent.replace(/\s+/g, ' ')) === number)
+function locateRoom(svg, roomGroup, target) {
+  const label = [...svg.querySelectorAll('text')].find((t) => normalizeLabel(t.textContent) === target)
   if (!label || typeof label.getBBox !== 'function' || !svg.getScreenCTM()) return null
 
   const lb = label.getBBox()
@@ -53,9 +52,9 @@ function zoomedViewBox(full, box) {
 }
 
 /**
- * 동방 평면도. map은 FLOOR_MAPS 항목, number는 강조할 동방 번호.
+ * 평면도. map은 FLOOR_MAPS 항목, label은 강조할 곳의 정규화된 라벨(findMapRoom 결과), name은 표시용 이름.
  */
-const FloorMap = ({ map, number }) => {
+const FloorMap = ({ map, label, name }) => {
   const canvasRef = useRef(null)
   const geometry = useRef(null) // { full, box } — 대상 동방을 찾았을 때만
   const [zoomed, setZoomed] = useState(startsZoomed)
@@ -74,7 +73,7 @@ const FloorMap = ({ map, number }) => {
     const [x, y, w, h] = (svg.getAttribute('viewBox') || '').split(/[\s,]+/).map(Number)
     const full = w > 0 && h > 0 ? { x, y, w, h } : null
     const roomGroup = svg.querySelector(`[id="fm-${map.id}-room"]`)
-    const found = locateRoom(svg, roomGroup, number)
+    const found = locateRoom(svg, roomGroup, label)
 
     svg.classList.add('floor-map-svg')
     roomGroup?.classList.add('floor-map-rooms')
@@ -85,7 +84,7 @@ const FloorMap = ({ map, number }) => {
     }
 
     geometry.current = full && found ? { full, box: found.box } : null
-  }, [map.id, map.svg, number])
+  }, [map.id, map.svg, label])
 
   // 위 effect 다음에 실행되어(선언 순서) 찾은 위치 기준으로 확대/전체 보기를 적용한다
   useLayoutEffect(() => {
@@ -94,12 +93,12 @@ const FloorMap = ({ map, number }) => {
     if (!svg || !g) return
     const { full, box } = g
     svg.setAttribute('viewBox', zoomed ? zoomedViewBox(full, box) : `${full.x} ${full.y} ${full.w} ${full.h}`)
-  }, [zoomed, map.id, map.svg, number])
+  }, [zoomed, map.id, map.svg, label])
 
   const place = `${map.buildingName} ${map.floor}`
 
   return (
-    <figure className="floor-map" aria-label={`${place} 평면도, 동방 ${number} 위치`}>
+    <figure className="floor-map" aria-label={`${place} 평면도, ${name} 위치`}>
       <div className="floor-map-toolbar">
         <span className="floor-map-place">{place}</span>
         <button
@@ -115,7 +114,7 @@ const FloorMap = ({ map, number }) => {
       <div ref={canvasRef} className="floor-map-canvas" />
       <figcaption className="floor-map-caption">
         <span className="floor-map-legend" aria-hidden="true" />
-        동방 {number} · {place}
+        {name} · {place}
       </figcaption>
     </figure>
   )

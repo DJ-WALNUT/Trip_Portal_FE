@@ -26,6 +26,12 @@ describe('FacilityModal', () => {
     expect(screen.getByText('3층 · 동방 19')).toBeInTheDocument()
   })
 
+  it('shows a floor plan for named rooms like 총동연', () => {
+    render(<FacilityModal isOpen facility={{ name: '총동아리연합회실', loc: '총동연', desc: '' }} onClose={() => {}} />)
+    expect(screen.getByRole('figure', { name: '소피이바라관 3층 평면도, 총동연 위치' })).toBeInTheDocument()
+    expect(screen.getByText('3층 · 총동연')).toBeInTheDocument()
+  })
+
   it('lets club rooms with a photo switch between floor plan and photo', async () => {
     render(<FacilityModal isOpen facility={{ name: '밴드실험', loc: '동방 37', imgUrl: '/api/campus/image/x.jpg' }} onClose={() => {}} />)
     expect(screen.getByRole('figure')).toBeInTheDocument()
