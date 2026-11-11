@@ -1,0 +1,97 @@
+.survey-page {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-4) var(--space-12);
+}
+
+.survey-title-cell {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.survey-page .board-link {
+  color: var(--color-navy-900);
+  font-weight: 600;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.survey-page .board-link:hover { color: var(--color-saegil); text-decoration: underline; }
+
+/* 소요시간·보상 칩 */
+.survey-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--gray-50);
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* 목록 안의 바로가기 버튼: 공용 버튼보다 작게 */
+.survey-page .ui-btn.survey-go-btn {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  gap: var(--space-1);
+  font-size: 14px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.survey-closed-text { color: var(--color-text-muted); font-size: 14px; }
+
+/* 마감된 설문은 흐리게 */
+.survey-page .rtable__table tr[data-closed="true"],
+.survey-page .rtable__cards li[data-closed="true"] { opacity: 0.55; }
+
+.survey-page .rtable__table th:nth-child(2),
+.survey-page .rtable__table td:nth-child(2) { width: 100px; white-space: nowrap; }
+.survey-page .rtable__table th:nth-child(3),
+.survey-page .rtable__table td:nth-child(3) { width: 120px; white-space: nowrap; }
+.survey-page .rtable__table th:nth-child(4),
+.survey-page .rtable__table td:nth-child(4) { width: 180px; }
+
+.survey-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
+  margin-top: var(--space-6);
+}
+.survey-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--gray-700);
+  font: inherit;
+  cursor: pointer;
+}
+.survey-page-btn:hover:not(:disabled) { border-color: var(--color-saegil); }
+.survey-page-btn.active {
+  background: var(--color-navy-700);
+  border-color: var(--color-navy-700);
+  color: #fff;
+  font-weight: 700;
+}
+.survey-page-btn:disabled { opacity: 0.4; cursor: default; }
+.survey-page .board-link:focus-visible,
+.survey-page-btn:focus-visible {
+  outline: 2px solid var(--color-saegil);
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .survey-page { padding-inline: var(--space-6); }
+}

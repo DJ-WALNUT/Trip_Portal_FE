@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown, Megaphone, Package, Map, Network, GraduationCap, ExternalLink } from 'lucide-react';
+import { Menu, X, ChevronDown, Megaphone, ClipboardList, Package, Map, Network, GraduationCap, ExternalLink } from 'lucide-react';
 import { useSiteInfo } from '@/context/SiteInfoContext';
 import { useHideOnScroll } from '@/lib/useHideOnScroll';
 import './Header.css';
@@ -102,6 +102,7 @@ function Header() {
         <nav className="main-nav" data-open={isMenuOpen} ref={navRef}>
           <ul>
             <li><Link to="/notices" onClick={closeMenu}><Megaphone size={18} aria-hidden="true" />공지사항</Link></li>
+            <li><Link to="/surveys" onClick={closeMenu}><ClipboardList size={18} aria-hidden="true" />설문조사</Link></li>
             <li className="dropdown-container">
               <a href="#" onClick={toggleDropdown} className="dropdown-btn" aria-expanded={isDropdownOpen}>
                 <Package size={18} aria-hidden="true" />대여사업 <ChevronDown size={16} className="arrow" aria-hidden="true" />

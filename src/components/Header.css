@@ -304,3 +304,8 @@
         display: none;
     }
 }
+
+/* 메뉴가 7개라 좁은 데스크톱(1024~1199px)에서는 항목 간격을 줄여 한 줄을 유지한다 */
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+    .site-header .main-nav > ul { gap: var(--space-4); }
+}

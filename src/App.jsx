@@ -16,6 +16,7 @@ import { SiteInfoProvider } from './context/SiteInfoContext';
 import HomePage from './pages/HomePage';
 import NoticePage from './pages/client/notice/NoticePage';
 import NoticeDetailPage from './pages/client/notice/NoticeDetailPage';
+import SurveyPage from './pages/client/survey/SurveyPage';
 import MapPage from './pages/client/MapPage';
 import BorrowPage from './pages/client/borrow/BorrowPage';
 import CheckPage from './pages/client/borrow/CheckPage';
@@ -118,6 +119,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/notices" element={<NoticePage />} />
             <Route path="/notices/:id" element={<NoticeDetailPage />} />
+            <Route path="/surveys" element={<SurveyPage />} />
             <Route path="/campusmap" element={<MapPage />} />
             <Route path="/departments" element={<DepartmentPage />} />
             <Route path="/organ" element={<OrganPage />} />

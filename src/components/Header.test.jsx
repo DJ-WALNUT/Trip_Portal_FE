@@ -19,9 +19,10 @@ describe('Header', () => {
 
   it('keeps all menu links', () => {
     setup();
-    ['공지사항', '대여 신청', '신청/대여 확인', '성심지도', '조직도', '단과대 및 학과', '2025 새길'].forEach((t) => {
+    ['공지사항', '설문조사', '대여 신청', '신청/대여 확인', '성심지도', '조직도', '단과대 및 학과', '2025 새길'].forEach((t) => {
       expect(screen.getByRole('link', { name: t })).toBeInTheDocument();
     });
+    expect(screen.getByRole('link', { name: '설문조사' })).toHaveAttribute('href', '/surveys');
     const saegil = screen.getByRole('link', { name: '2025 새길' });
     expect(saegil).toHaveAttribute('href', 'https://2025saegil.cukeng.kr');
     expect(saegil).toHaveAttribute('target', '_blank');
