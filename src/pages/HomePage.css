@@ -174,7 +174,8 @@
 .home-grid > .home-main > .notice-card { order: 1; }
 .home-grid > .home-aside > .dday-card { order: 2; }
 .home-grid > .home-main > .home-survey-card { order: 3; }
-.home-grid > .home-aside > .insta-card { order: 4; }
+/* 그리드 항목이 되면 aspect-ratio + max-height 때문에 폭이 줄어들므로 폭을 고정한다 */
+.home-grid > .home-aside > .insta-card { order: 4; width: 100%; }
 
 /* 설문조사 카드: 공지 카드보다 약하게 (작은 제목, 낮은 행) */
 .home-survey-header {
