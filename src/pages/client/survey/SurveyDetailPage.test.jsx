@@ -44,6 +44,14 @@ describe('SurveyDetailPage', () => {
     expect(screen.getByRole('link', { name: 'https://example.com/help' })).toHaveAttribute('target', '_blank')
   })
 
+  it('does not show the author even though the API sends one', async () => {
+    axios.get.mockResolvedValue({ data: survey })
+    setup()
+    await screen.findByRole('heading', { level: 1, name: '학식 만족도 조사' })
+    expect(screen.queryByText('여정 학생회')).toBeNull()
+    expect(screen.queryByText('작성자')).toBeNull()
+  })
+
   it('closed survey shows a disabled button and no survey link', async () => {
     axios.get.mockResolvedValue({ data: { ...survey, deadline: '2026-01-01', is_closed: true } })
     setup()

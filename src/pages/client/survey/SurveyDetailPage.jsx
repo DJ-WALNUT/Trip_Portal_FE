@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Calendar, User, Eye, Clock, Gift, Hourglass, ExternalLink } from 'lucide-react';
+import { Calendar, Eye, Clock, Gift, Hourglass, ExternalLink } from 'lucide-react';
 import { Badge, Button, Spinner } from '@/components/ui';
 import { formatNoticeDate } from '@/lib/notice';
 import { getSurveyBadge, isSafeSurveyLink } from '@/lib/survey';
@@ -73,7 +73,7 @@ function SurveyDetailPage() {
         <header className="survey-detail__header">
           <h1 className="survey-detail__title">{survey.title}</h1>
           <div className="survey-detail__meta">
-            <span className="survey-detail__meta-item"><User size={14} aria-hidden="true" /><span className="ui-sr-only">작성자</span> {survey.author}</span>
+            {/* 작성자 입력칸이 없어 백엔드 기본값(여정 학생회)만 오므로 표시하지 않는다 */}
             <span className="survey-detail__meta-item"><Calendar size={14} aria-hidden="true" /><span className="ui-sr-only">작성일</span> {formatNoticeDate(survey.date)}</span>
             <span className="survey-detail__meta-item"><Eye size={14} aria-hidden="true" /><span className="ui-sr-only">조회수</span> {survey.views}</span>
             <span className="survey-detail__meta-item">
