@@ -194,7 +194,8 @@
     /* 아래로 스크롤하면 위로 숨고, 위로 스크롤하면 내려온다 (data-hidden은 useHideOnScroll) */
     .site-header {
         transition: transform 0.25s ease, box-shadow 0.25s ease;
-        will-change: transform;
+        /* 주의: will-change/transform을 상시로 두면 안의 position:fixed 패널·오버레이가
+           뷰포트가 아닌 헤더 기준으로 배치되어 높이가 0으로 찌그러진다 */
     }
 
     /* 키보드 포커스가 헤더로 들어오면 숨김 해제 */
