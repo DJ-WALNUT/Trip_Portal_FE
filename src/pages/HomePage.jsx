@@ -8,6 +8,8 @@ import DomeGallery from '../components/DomeGallery';
 import { Card, Badge, Button } from '@/components/ui';
 import LucianIcon from '@/components/icons/LucianIcon';
 import { isNewNotice } from '@/lib/notice';
+import { toSurveyList } from '@/lib/survey';
+import HomeSurveyCard from '@/components/HomeSurveyCard';
 import { useSiteInfo } from '@/context/SiteInfoContext';
 import MultilineText from '@/components/MultilineText';
 import './HomePage.css';
@@ -92,6 +94,7 @@ function HomePage() {
   // --- 1. 상태 관리 ---
   const [notices, setNotices] = useState([]); // 공지사항
   const [instaPosts, setInstaPosts] = useState([]); // 인스타그램
+  const [surveys, setSurveys] = useState([]); // 진행중 설문조사 (최대 3건)
   const [dDayInfo, setDDayInfo] = useState({ // 학사일정 D-Day
     left: { label: '-', count: '-' },
     right: { label: '-', count: '-' }
@@ -139,6 +142,17 @@ function HomePage() {
         if (!err.response || err.response.status >= 500) {
           setIsServerDown(true);
         }
+      });
+
+    // (5) 진행중 설문조사 (서버가 마감 임박순으로 정렬해 준다)
+    // 실패해도 카드만 숨기고, 점검 중 판정에는 영향을 주지 않는다.
+    axios.get('/api/surveys')
+      .then(res => {
+        setSurveys(toSurveyList(res.data).filter(s => !s.is_closed).slice(0, 3));
+      })
+      .catch(err => {
+        console.error("설문조사 로드 실패", err);
+        setSurveys([]);
       });
   }, []);
 
@@ -252,6 +266,7 @@ function HomePage() {
         <SchoolLinks />
 
         <div className="home-grid">
+          <div className="home-main">
           <Card as="section" className="notice-card">
             <div className="notice-header">
               <h2>공지사항</h2>
@@ -271,6 +286,8 @@ function HomePage() {
               ))}
             </ul>
           </Card>
+          <HomeSurveyCard surveys={surveys} />
+          </div>
 
           <aside className="home-aside">
             <Card className="dday-card">

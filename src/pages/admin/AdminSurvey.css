@@ -1,0 +1,25 @@
+/* 관리자 설문조사: 목록 */
+.admin-survey-title { display: flex; align-items: center; gap: var(--space-2); max-width: 480px; min-width: 0; }
+.admin-survey-title__text { flex: 0 1 auto; min-width: 0; font-weight: 600; color: var(--color-text); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.admin-survey-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.ui-btn.admin-survey-icon-btn { min-width: 44px; padding: 0; justify-content: center; }
+.admin-survey-list .rtable__table tr[data-private="true"] > td,
+.admin-survey-list .rtable__cards li[data-private="true"] { background: var(--color-bg); }
+
+/* 관리자 설문조사: 작성/수정 폼 */
+.admin-survey-form { display: grid; gap: 0; max-width: 760px; padding: var(--space-5); }
+.admin-survey-form .ui-field textarea { min-height: 220px; resize: vertical; }
+.admin-survey-form__row { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: var(--space-4); }
+.admin-survey-form__toggle { margin-bottom: var(--space-4); }
+.admin-survey-form__error {
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-control);
+  background: var(--tone-overdue-bg);
+  color: var(--tone-overdue-fg);
+  font-weight: 600;
+}
+.admin-survey-form__actions { display: flex; gap: var(--space-3); justify-content: flex-end; }
+@media (min-width: 768px) {
+  .admin-survey-form__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

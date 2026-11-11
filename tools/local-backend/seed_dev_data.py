@@ -86,6 +86,19 @@ def sqlite_seed(db_path):
             link_url VARCHAR(500) NOT NULL,
             created_at DATETIME
         );
+        CREATE TABLE IF NOT EXISTS surveys (
+            id INTEGER NOT NULL PRIMARY KEY,
+            title VARCHAR(200) NOT NULL,
+            content TEXT NOT NULL,
+            link_url VARCHAR(500) NOT NULL,
+            deadline DATE,
+            duration VARCHAR(30),
+            reward VARCHAR(50),
+            author VARCHAR(50),
+            views INTEGER,
+            is_public BOOLEAN,
+            created_at DATETIME
+        );
         """)
         notices = [
             ("[필독] 물품 대여 이용 안내", "## 이용 안내\n\n- 학생증을 지참해 주세요.\n- 대여 기간은 **7일**입니다.", "여정 학생회", 120, 1, ts(30), 1),
@@ -101,6 +114,19 @@ def sqlite_seed(db_path):
         con.executemany(
             "INSERT INTO insta_posts (img_filename, link_url, created_at) VALUES (?,?,?)",
             [(f"dev_insta_{i}.jpg", f"https://www.instagram.com/p/dev{i}/", ts(i)) for i in (1, 2, 3)])
+        day = lambda d: (now + timedelta(days=d)).strftime("%Y-%m-%d")
+        form = "https://forms.example.com/dev"
+        surveys = [
+            ("학식 만족도 조사", "학식에 대한 의견을 들려주세요.\n3분이면 끝나요!", f"{form}1", day(2), "3분", "추첨 기프티콘", 12, 1, ts(1)),
+            ("학생회 사업 아이디어 상시 접수", "하고 싶은 사업이 있다면 언제든 남겨 주세요.", f"{form}2", None, None, None, 30, 1, ts(5)),
+            ("축제 부스 수요 조사", "올해 축제에서 보고 싶은 부스를 골라 주세요.", f"{form}3", day(14), "5분", None, 8, 1, ts(0)),
+            ("1학기 대여사업 만족도 조사", "지난 학기 대여사업 설문입니다. 참여해 주셔서 감사합니다.", f"{form}4", day(-10), "2분", "커피 쿠폰", 64, 1, ts(40)),
+            ("비공개 임시 설문", "관리자만 볼 수 있는 임시 글입니다.", f"{form}5", day(7), None, None, 0, 0, ts(2)),
+        ]
+        con.executemany(
+            "INSERT INTO surveys (title, content, link_url, deadline, duration, reward, author, views, is_public, created_at)"
+            " VALUES (?,?,?,?,?,?,'여정 학생회',?,?,?)",
+            surveys)
         con.commit()
     finally:
         con.close()

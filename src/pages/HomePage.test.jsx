@@ -143,4 +143,38 @@ describe('HomePage', () => {
     expect(screen.getByRole('link', { name: /대여 확인/ })).toHaveAttribute('href', '/check')
     expect(screen.getByRole('link', { name: /성심지도/ })).toHaveAttribute('href', '/campusmap')
   })
+
+  describe('survey card', () => {
+    const mk = (id, over = {}) => ({ id, title: `설문 ${id}`, deadline: null, is_closed: false, link_url: 'https://f.example.com', ...over })
+    const withSurveys = (impl) => axios.get.mockImplementation((url) => {
+      if (url === '/api/notices') return Promise.resolve({ data: notices })
+      if (url === '/api/surveys') return impl()
+      return Promise.resolve({ data: [] })
+    })
+
+    it('lists at most 3 open surveys after the notice card, with links', async () => {
+      withSurveys(() => Promise.resolve({ data: [mk(1), mk(2, { is_closed: true }), mk(3), mk(4), mk(5)] }))
+      const { container } = renderHome()
+      const heading = await screen.findByRole('heading', { name: '심심하세요? 설문조사 하실래요?' })
+      const card = heading.closest('.home-survey-card')
+      const links = within(card).getAllByRole('link')
+      expect(links.map((a) => a.getAttribute('href'))).toEqual(['/surveys', '/surveys/1', '/surveys/3', '/surveys/4'])
+      const notice = container.querySelector('.notice-card')
+      expect(notice.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+      expect(container.querySelector('.home-main').contains(card)).toBe(true)
+    })
+
+    it.each([
+      ['no open surveys', () => Promise.resolve({ data: [mk(1, { is_closed: true })] })],
+      ['malformed response', () => Promise.resolve({ data: '<html></html>' })],
+      ['request failure', () => Promise.reject(new Error('down'))],
+    ])('hidden on %s, and the home page still renders', async (_, impl) => {
+      withSurveys(impl)
+      const { container } = renderHome()
+      await screen.findByText('오늘 공지')
+      await waitFor(() => expect(axios.get).toHaveBeenCalledWith('/api/surveys'))
+      expect(container.querySelector('.home-survey-card')).toBeNull()
+      expect(screen.queryByText('여정은 지금 점검 중!')).toBeNull()
+    })
+  })
 })

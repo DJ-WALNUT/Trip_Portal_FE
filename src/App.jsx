@@ -16,6 +16,8 @@ import { SiteInfoProvider } from './context/SiteInfoContext';
 import HomePage from './pages/HomePage';
 import NoticePage from './pages/client/notice/NoticePage';
 import NoticeDetailPage from './pages/client/notice/NoticeDetailPage';
+import SurveyPage from './pages/client/survey/SurveyPage';
+import SurveyDetailPage from './pages/client/survey/SurveyDetailPage';
 import MapPage from './pages/client/MapPage';
 import BorrowPage from './pages/client/borrow/BorrowPage';
 import CheckPage from './pages/client/borrow/CheckPage';
@@ -32,6 +34,8 @@ import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminNoticeListPage from './pages/admin/AdminNoticeListPage';
 import AdminNoticeWritePage from './pages/admin/AdminNoticeWritePage';
+import AdminSurveyListPage from './pages/admin/AdminSurveyListPage';
+import AdminSurveyWritePage from './pages/admin/AdminSurveyWritePage';
 import AdminInstagramPage from './pages/admin/AdminInstagramPage';
 import AdminSiteInfoPage from './pages/admin/AdminSiteInfoPage';
 import AdminApprovePage from './pages/admin/borrow/AdminApprovePage';
@@ -118,6 +122,8 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/notices" element={<NoticePage />} />
             <Route path="/notices/:id" element={<NoticeDetailPage />} />
+            <Route path="/surveys" element={<SurveyPage />} />
+            <Route path="/surveys/:id" element={<SurveyDetailPage />} />
             <Route path="/campusmap" element={<MapPage />} />
             <Route path="/departments" element={<DepartmentPage />} />
             <Route path="/organ" element={<OrganPage />} />
@@ -139,6 +145,9 @@ function App() {
               <Route path="/admin/notices" element={<AdminNoticeListPage />} />
               <Route path="/admin/notices/write" element={<AdminNoticeWritePage />} />
               <Route path="/admin/notices/edit/:id" element={<AdminNoticeWritePage />} />
+              <Route path="/admin/surveys" element={<AdminSurveyListPage />} />
+              <Route path="/admin/surveys/write" element={<AdminSurveyWritePage />} />
+              <Route path="/admin/surveys/edit/:id" element={<AdminSurveyWritePage />} />
               <Route path="/admin/instagram" element={<AdminInstagramPage />} />
               <Route path="/admin/site-info" element={<AdminSiteInfoPage />} />
               <Route path="/admin/borrow/approve" element={<AdminApprovePage />} />
