@@ -6,11 +6,14 @@ import { ResponsiveTable, Badge, Button, PageHeader, EmptyState, Spinner } from 
 import LucianIcon from '@/components/icons/LucianIcon';
 import { formatNoticeDate } from '@/lib/notice';
 import { getSurveyBadge, isSafeSurveyLink, toSurveyList } from '@/lib/survey';
+import { useSiteInfo } from '@/context/SiteInfoContext';
+import { instagramUrl } from '@/lib/siteInfo';
 import './SurveyPage.css';
 
 const ITEMS_PER_PAGE = 10;
 
 function SurveyPage() {
+  const { info } = useSiteInfo();
   const [surveys, setSurveys] = useState([]);
   const [status, setStatus] = useState('loading'); // loading | ready | error
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,6 +96,13 @@ function SurveyPage() {
         description="심심하세요? 설문조사 하실래요?"
         icon={<LucianIcon name="check" size={28} />}
       />
+
+      <p className="survey-guide">
+        설문조사 등록요청은{' '}
+        <a href={instagramUrl(info['sns.instagram'])} target="_blank" rel="noopener noreferrer">공과대학 인스타</a>,{' '}
+        <a href={info['sns.kakao']} target="_blank" rel="noopener noreferrer">공과대학 카카오톡 채널</a>로
+        문의해주시기 바랍니다.
+      </p>
 
       {status === 'loading' && <Spinner />}
       {status === 'error' && <EmptyState title="설문조사를 불러오지 못했습니다." />}

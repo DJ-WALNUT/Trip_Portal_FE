@@ -5,6 +5,18 @@
   padding: var(--space-6) var(--space-4) var(--space-12);
 }
 
+/* 등록요청 안내: 대여 완료 페이지 .success-guide와 같은 안내 박스 */
+.survey-guide {
+  background: #eaf5fc;
+  color: var(--color-navy-900);
+  padding: var(--space-4);
+  border-radius: var(--radius-control);
+  line-height: 1.6;
+  margin: 0 0 var(--space-4);
+  word-break: keep-all;
+}
+.survey-guide a { color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
 .survey-title-cell {
   display: inline-flex;
   flex-wrap: wrap;

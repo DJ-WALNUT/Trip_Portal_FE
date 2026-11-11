@@ -27,6 +27,16 @@ describe('SurveyPage', () => {
     expect(screen.getByText('심심하세요? 설문조사 하실래요?')).toBeInTheDocument()
   })
 
+  it('shows the registration guide with Instagram and Kakao channel links', async () => {
+    await setup([])
+    const insta = screen.getByRole('link', { name: '공과대학 인스타' })
+    expect(insta).toHaveAttribute('href', 'https://www.instagram.com/cuk.engineering')
+    expect(insta).toHaveAttribute('target', '_blank')
+    const kakao = screen.getByRole('link', { name: '공과대학 카카오톡 채널' })
+    expect(kakao).toHaveAttribute('href', 'https://pf.kakao.com/_xcyDGn')
+    expect(kakao).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
   it('open row: title links to detail, button opens the survey in a new tab, chips shown', async () => {
     const { container } = await setup([open, closed])
     const table = container.querySelector('.rtable__table')
