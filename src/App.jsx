@@ -35,6 +35,7 @@ import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminNoticeListPage from './pages/admin/AdminNoticeListPage';
 import AdminNoticeWritePage from './pages/admin/AdminNoticeWritePage';
 import AdminSurveyListPage from './pages/admin/AdminSurveyListPage';
+import AdminSurveyWritePage from './pages/admin/AdminSurveyWritePage';
 import AdminInstagramPage from './pages/admin/AdminInstagramPage';
 import AdminSiteInfoPage from './pages/admin/AdminSiteInfoPage';
 import AdminApprovePage from './pages/admin/borrow/AdminApprovePage';
@@ -145,6 +146,8 @@ function App() {
               <Route path="/admin/notices/write" element={<AdminNoticeWritePage />} />
               <Route path="/admin/notices/edit/:id" element={<AdminNoticeWritePage />} />
               <Route path="/admin/surveys" element={<AdminSurveyListPage />} />
+              <Route path="/admin/surveys/write" element={<AdminSurveyWritePage />} />
+              <Route path="/admin/surveys/edit/:id" element={<AdminSurveyWritePage />} />
               <Route path="/admin/instagram" element={<AdminInstagramPage />} />
               <Route path="/admin/site-info" element={<AdminSiteInfoPage />} />
               <Route path="/admin/borrow/approve" element={<AdminApprovePage />} />
