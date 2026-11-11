@@ -65,4 +65,16 @@ describe('SurveyDetailPage', () => {
     expect(await screen.findByText('존재하지 않거나 삭제된 설문조사입니다.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: '목록으로' })).toBeInTheDocument()
   })
+
+  it.each([
+    ['rate limited', { response: { status: 429 } }],
+    ['server error', { response: { status: 500 } }],
+    ['network down', new Error('Network Error')],
+  ])('%s: says loading failed, not that the survey was deleted', async (_, error) => {
+    axios.get.mockRejectedValue(error)
+    setup()
+    expect(await screen.findByText('설문조사를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.')).toBeInTheDocument()
+    expect(screen.queryByText('존재하지 않거나 삭제된 설문조사입니다.')).toBeNull()
+    expect(screen.getByRole('button', { name: '목록으로' })).toBeInTheDocument()
+  })
 })

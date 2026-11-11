@@ -26,6 +26,7 @@ function SurveyDetailPage() {
   const navigate = useNavigate();
   const [survey, setSurvey] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false); // 404가 아닌 실패 (요청 제한, 서버 오류, 네트워크)
   const processedId = useRef(null); // StrictMode 이중 실행으로 조회수가 두 번 오르지 않게
 
   useEffect(() => {
@@ -39,6 +40,7 @@ function SurveyDetailPage() {
       .catch((err) => {
         console.error('설문조사 상세조회 실패', err);
         setSurvey(null);
+        setFailed(err?.response?.status !== 404);
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -51,7 +53,11 @@ function SurveyDetailPage() {
     return (
       <div className="survey-detail">
         <div className="survey-detail__missing">
-          <p>존재하지 않거나 삭제된 설문조사입니다.</p>
+          <p>
+            {failed
+              ? '설문조사를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.'
+              : '존재하지 않거나 삭제된 설문조사입니다.'}
+          </p>
           <Button onClick={goList}>목록으로</Button>
         </div>
       </div>
