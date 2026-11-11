@@ -21,3 +21,13 @@ describe('site-info nav', () => {
     expect(labels('sub')).not.toContain('정보 관리')
   })
 })
+
+describe('survey nav', () => {
+  it('shows 설문조사 right after 공지사항 for every role', () => {
+    for (const role of ['master', 'sub']) {
+      const items = getAdminNav(role).flatMap((g) => g.items)
+      const i = items.findIndex((x) => x.to === '/admin/notices')
+      expect(items[i + 1]).toMatchObject({ to: '/admin/surveys', label: '설문조사' })
+    }
+  })
+})
